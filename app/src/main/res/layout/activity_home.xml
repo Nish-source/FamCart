@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- ==================== LOGIN BANNER (Clickable → dismiss or navigate to LoginActivity) ==================== -->
+    <TextView
+        android:id="@+id/btn_login_banner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#22C55E"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:text="You need to login first!.."
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ==================== SCROLLABLE CONTENT ==================== -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login_banner">
+
+        <LinearLayout
+            android:id="@+id/layout_scroll_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- ==================== HEADER: Deliver To + Actions ==================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="12dp">
+
+                <!-- Address Selector (Clickable group → opens AddressPickerActivity) -->
+                <LinearLayout
+                    android:id="@+id/btn_address_selector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_location_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:contentDescription="Location"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/bg_search_bar"
+                        app:tint="#22C55E" />
+
+                    <TextView
+                        android:id="@+id/tv_deliver_to_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Deliver to"
+                        android:textColor="#6A7282"
+                        android:textSize="13sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_address_dropdown"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        android:contentDescription="Select address"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/bg_search_bar"
+                        app:tint="#6A7282" />
+
+                </LinearLayout>
+
+                <!-- Profile Avatar (Clickable → opens ProfileActivity) -->
+                <ImageView
+                    android:id="@+id/btn_profile_avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="View profile"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_search_bar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Notification Bell (Clickable → opens NotificationsActivity) -->
+                <ImageView
+                    android:id="@+id/btn_notifications"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_circle_light_green"
+                    android:clickable="true"
+                    android:contentDescription="View notifications"
+                    android:focusable="true"
+                    android:padding="10dp"
+                    android:src="@drawable/bg_search_bar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_profile_avatar"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- ==================== SEARCH BAR (Clickable → opens SearchActivity) ==================== -->
+            <LinearLayout
+                android:id="@+id/btn_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/bg_search_bar"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:id="@+id/iv_search_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="Search"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/bg_search_bar"
+                    app:tint="#99A1AF" />
+
+                <TextView
+                    android:id="@+id/tv_search_hint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Search groceries, fruits..."
+                    android:textColor="#99A1AF"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <!-- ==================== PROMOTIONAL BANNER (Clickable → opens OffersActivity) ==================== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_promo_banner"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_gradient_green">
+
+                    <ImageView
+                        android:id="@+id/iv_banner_image"
+                        android:layout_width="150dp"
+                        android:layout_height="0dp"
+                        android:alpha="0.8"
+                        android:contentDescription="Fresh groceries"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg_search_bar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_banner_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.1"
+                        android:text="FAMCART DELIVERY"
+                        android:textAllCaps="true"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="11sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_banner_title"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif-black"
+                        android:letterSpacing="-0.025"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="Stock up on Daily Essentials in "
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_banner_subtitle" />
+
+                    <TextView
+                        android:id="@+id/tv_banner_highlight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:fontFamily="sans-serif-black"
+                        android:letterSpacing="-0.025"
+                        android:text="15 minutes"
+                        android:textColor="#FEF08A"
+                        android:textSize="22sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_banner_title" />
+
+                    <!-- Shop Now CTA (Clickable → navigates to ShopActivity) -->
+                    <LinearLayout
+                        android:id="@+id/btn_shop_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_button_white_rounded"
+                        android:clickable="true"
+                        android:elevation="4dp"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_shop_now_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:text="Shop Now"
+                            android:textColor="#22C55E"
+                            android:textSize="13sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_shop_now_arrow"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginStart="8dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/bg_search_bar"
+                            app:tint="#22C55E" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ==================== CATEGORIES SECTION ==================== -->
+            <LinearLayout
+                android:id="@+id/layout_categories_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_categories_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.025"
+                    android:text="Categories"
+                    android:textColor="#101828"
+                    android:textSize="18sp" />
+
+                <!-- See All (Clickable → opens CategoriesListActivity) -->
+                <TextView
+                    android:id="@+id/btn_categories_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:text="See All"
+                    android:textColor="#22C55E"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!-- Categories Horizontal Scroll -->
+            <HorizontalScrollView
+                android:id="@+id/hsv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_categories_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Category: Dairy & Bread (Clickable → opens CategoryDetailActivity) -->
+                    <LinearLayout
+                        android:id="@+id/btn_category_dairy_bread"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_category_dairy"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/bg_category_item"
+                            android:clipToOutline="true"
+                            android:contentDescription="Dairy and Bread"
+                            android:padding="6dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bg_search_bar" />
+
+                        <TextView
+                            android:id="@+id/tv_category_dairy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="Dairy &amp; Bread"
+                            android:textColor="#4A5565"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Category: Snacks -->
+                    <LinearLayout
+                        android:id="@+id/btn_category_snacks"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_category_snacks"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/bg_category_item"
+                            android:clipToOutline="true"
+                            android:contentDescription="Snacks"
+                            android:padding="8dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bg_search_bar" />
+
+                        <TextView
+                            android:id="@+id/tv_category_snacks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="Snacks"
+                            android:textColor="#4A5565"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Category: Sweet Tooth -->
+                    <LinearLayout
+                        android:id="@+id/btn_category_sweet_tooth"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_category_sweet_tooth"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/bg_category_item"
+                            android:clipToOutline="true"
+                            android:contentDescription="Sweet Tooth"
+                            android:padding="4dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bg_search_bar" />
+
+                        <TextView
+                            android:id="@+id/tv_category_sweet_tooth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="Sweet Tooth"
+                            android:textColor="#4A5565"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Category: Pharma -->
+                    <LinearLayout
+                        android:id="@+id/btn_category_pharma"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_category_pharma"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/bg_category_item"
+                            android:clipToOutline="true"
+                            android:contentDescription="Pharma"
+                            android:padding="7dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bg_search_bar" />
+
+                        <TextView
+                            android:id="@+id/tv_category_pharma"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="Pharma"
+                            android:textColor="#4A5565"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <!-- Category: Beverages -->
+                    <LinearLayout
+                        android:id="@+id/btn_category_beverages"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_category_beverages"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:background="@drawable/bg_category_item"
+                            android:clipToOutline="true"
+                            android:contentDescription="Beverages"
+                            android:padding="8dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/bg_search_bar" />
+
+                        <TextView
+                            android:id="@+id/tv_category_beverages"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="Beverages"
+                            android:textColor="#4A5565"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- ==================== TODAY'S OFFERS SECTION ==================== -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_offers_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_offers_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.025"
+                    android:text="Today's Offers"
+                    android:textColor="#101828"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_offers_hot_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_badge_hot"
+                    android:fontFamily="sans-serif"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="HOT"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_offers_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_offers_title"
+                    app:layout_constraintTop_toTopOf="@id/tv_offers_title" />
+
+                <!-- See All (Clickable → opens AllOffersActivity) -->
+                <TextView
+                    android:id="@+id/btn_offers_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:text="See All"
+                    android:textColor="#22C55E"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Offers Horizontal Scroll -->
+            <HorizontalScrollView
+                android:id="@+id/hsv_offers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_offers_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/offer_card_amul_ice_cream"
+                        layout="@layout/item_offer_card"
+                        android:layout_width="160dp"
+                        android:layout_height="218dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/offer_card_pharmacy"
+                        layout="@layout/item_offer_card"
+                        android:layout_width="160dp"
+                        android:layout_height="218dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/offer_card_personal_care"
+                        layout="@layout/item_offer_card"
+                        android:layout_width="160dp"
+                        android:layout_height="218dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- ==================== DAIRY, MILK & EGGS SECTION ==================== -->
+            <LinearLayout
+                android:id="@+id/layout_dairy_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_dairy_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.025"
+                    android:text="Dairy, Milk &amp; Eggs"
+                    android:textColor="#101828"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/btn_dairy_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:text="See All"
+                    android:textColor="#22C55E"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_dairy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_dairy_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/card_product_yakult"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_amul_milk"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_epigamia"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- ==================== BREAD & BAKERY SECTION ==================== -->
+            <LinearLayout
+                android:id="@+id/layout_bread_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_bread_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.025"
+                    android:text="Bread &amp; Bakery"
+                    android:textColor="#101828"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/btn_bread_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:text="See All"
+                    android:textColor="#22C55E"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_bread"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_bread_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/card_product_white_bread"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_unibic_cookies"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_elaichi_rusk"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <!-- ==================== COLD DRINKS & JUICES SECTION ==================== -->
+            <LinearLayout
+                android:id="@+id/layout_cold_drinks_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_cold_drinks_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="-0.025"
+                    android:text="Cold Drinks &amp; Juices"
+                    android:textColor="#101828"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/btn_cold_drinks_see_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:text="See All"
+                    android:textColor="#22C55E"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_cold_drinks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layout_cold_drinks_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/card_product_coca_cola"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_mogu_mogu"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <include
+                        android:id="@+id/card_product_amul_kool"
+                        layout="@layout/item_product_card"
+                        android:layout_width="170dp"
+                        android:layout_height="204dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ==================== BOTTOM NAVIGATION BAR ==================== -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_bottom_nav"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Home Tab (Active) -->
+        <LinearLayout
+            android:id="@+id/btn_tab_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/indicator_tab_home"
+                android:layout_width="20dp"
+                android:layout_height="2dp"
+                android:background="#22C55E" />
+
+            <ImageView
+                android:id="@+id/iv_tab_home"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="4dp"
+                android:contentDescription="Home"
+                android:importantForAccessibility="no"
+                android:src="@drawable/bg_search_bar"
+                app:tint="#22C55E" />
+
+            <TextView
+                android:id="@+id/tv_tab_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Home"
+                android:textColor="#22C55E"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <!-- Search Tab -->
+        <LinearLayout
+            android:id="@+id/btn_tab_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_search"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="Search"
+                android:importantForAccessibility="no"
+                android:src="@drawable/bg_search_bar"
+                app:tint="#99A1AF" />
+
+            <TextView
+                android:id="@+id/tv_tab_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Search"
+                android:textColor="#99A1AF"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <!-- Cart Tab (with badge) -->
+        <LinearLayout
+            android:id="@+id/btn_tab_cart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:id="@+id/iv_tab_cart"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:contentDescription="Cart"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/bg_search_bar"
+                    app:tint="#99A1AF" />
+
+                <TextView
+                    android:id="@+id/tv_cart_badge_count"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginEnd="-6dp"
+                    android:background="@drawable/bg_badge_orange"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_tab_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Cart"
+                android:textColor="#99A1AF"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <!-- Orders Tab -->
+        <LinearLayout
+            android:id="@+id/btn_tab_orders"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_orders"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="Orders"
+                android:importantForAccessibility="no"
+                android:src="@drawable/bg_search_bar"
+                app:tint="#99A1AF" />
+
+            <TextView
+                android:id="@+id/tv_tab_orders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Orders"
+                android:textColor="#99A1AF"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <!-- Profile Tab -->
+        <LinearLayout
+            android:id="@+id/btn_tab_profile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_profile"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="6dp"
+                android:contentDescription="Profile"
+                android:importantForAccessibility="no"
+                android:src="@drawable/bg_search_bar"
+                app:tint="#99A1AF" />
+
+            <TextView
+                android:id="@+id/tv_tab_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Profile"
+                android:textColor="#99A1AF"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
