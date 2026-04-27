@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gradient background for the promotional banner: green gradient (150° angle) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#22C55E"
+        android:centerColor="#86EFAC"
+        android:endColor="#DCFCE7"
+        android:angle="315"
+        android:type="linear" />
+    <corners android:radius="24dp" />
+</shape>

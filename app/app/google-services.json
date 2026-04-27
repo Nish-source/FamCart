@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "179591398445",
+    "project_id": "famcart-35d04",
+    "storage_bucket": "famcart-35d04.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179591398445:android:1183491ff5019c6948e4a4",
+        "android_client_info": {
+          "package_name": "com.example.famcart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClfQrIdApZ_MFDHVdS_fEoRWVvSUwG_PY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
