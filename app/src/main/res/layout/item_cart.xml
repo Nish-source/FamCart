@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_cart_item"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/iv_product_image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_image_container"
+        android:clipToOutline="true"
+        android:contentDescription="Product image"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="#101828"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintStart_toEndOf="@id/iv_product_image"
+        app:layout_constraintTop_toTopOf="@id/iv_product_image" />
+
+    <TextView
+        android:id="@+id/tv_product_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#99A1AF"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintStart_toEndOf="@id/iv_product_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
+
+    <ImageView
+        android:id="@+id/btn_delete"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="Remove item"
+        android:focusable="true"
+        android:padding="4dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Bottom row: Price + Qty stepper -->
+    <TextView
+        android:id="@+id/tv_item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="sans-serif-black"
+        android:textColor="#101828"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_product_image"
+        app:layout_constraintStart_toEndOf="@id/iv_product_image" />
+
+    <LinearLayout
+        android:id="@+id/layout_qty_stepper"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_qty_stepper"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_product_image"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_qty_minus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Decrease"
+            android:focusable="true"
+            android:padding="6dp"
+            android:src="@drawable/ic_minus"
+            app:tint="#22C55E" />
+
+        <TextView
+            android:id="@+id/tv_qty_count"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:textColor="#101828"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/btn_qty_plus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Increase"
+            android:focusable="true"
+            android:padding="6dp"
+            android:src="@drawable/ic_plus"
+            app:tint="#22C55E" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

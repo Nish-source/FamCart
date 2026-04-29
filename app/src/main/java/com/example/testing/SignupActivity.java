@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,14 @@ public class SignupActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signupButton);
 
         mAuth = FirebaseAuth.getInstance();
+
+        // Login link
+        TextView loginText = findViewById(R.id.loginText);
+        if (loginText != null) {
+            loginText.setOnClickListener(v -> {
+                finish(); // Go back to LoginActivity
+            });
+        }
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
