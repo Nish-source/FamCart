@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9FAFB">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <!-- Green Gradient Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_gradient_green_header"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="56dp"
+                android:paddingBottom="24dp">
+
+                <!-- Toolbar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/btn_back"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_profile_card"
+                        android:clickable="true"
+                        android:contentDescription="Go back"
+                        android:focusable="true"
+                        android:padding="11dp"
+                        android:src="@drawable/ic_back_arrow" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-black"
+                        android:letterSpacing="-0.025"
+                        android:text="Profile"
+                        android:textColor="#101828"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <!-- User Info Card -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_profile_card"
+                    android:elevation="2dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <!-- Green accent bar -->
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="64dp"
+                        android:background="#22C55E" />
+
+                    <!-- Avatar -->
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="12dp">
+                        <ImageView
+                            android:id="@+id/iv_avatar"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:contentDescription="Profile picture"
+                            android:src="@drawable/ic_account_circle2"
+                            app:tint="#22C55E" />
+                        <View
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="bottom|end"
+                            android:background="@drawable/bg_success_circle" />
+                    </FrameLayout>
+
+                    <!-- Name & Email -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-black"
+                            android:text="FamCart User"
+                            android:textColor="#101828"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/tv_user_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="user@famcart.com"
+                            android:textColor="#99A1AF"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:id="@+id/tv_user_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="#99A1AF"
+                            android:textSize="12sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_edit_profile"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle_light_green"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_edit"
+                        android:contentDescription="Edit Profile" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Stats Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_profile_card"
+                android:elevation="2dp"
+                android:orientation="horizontal"
+                android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_orders_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="12"
+                        android:textColor="#101828"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Orders"
+                        android:textColor="#99A1AF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="0.8dp"
+                    android:layout_height="40dp"
+                    android:background="#F3F4F6" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_saved_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="₹248"
+                        android:textColor="#101828"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Saved"
+                        android:textColor="#99A1AF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <View
+                    android:layout_width="0.8dp"
+                    android:layout_height="40dp"
+                    android:background="#F3F4F6" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="240"
+                        android:textColor="#101828"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Points"
+                        android:textColor="#99A1AF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Gold Member Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_membership_banner"
+                android:elevation="4dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_circle_light_green"
+                    android:backgroundTint="#33FFFFFF"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_crown"
+                    android:contentDescription="Gold Member" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="FamCart Gold Member"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="Free delivery on all orders · Extra 5% off"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/white"
+                    android:contentDescription="View Membership" />
+            </LinearLayout>
+
+            <!-- MY ACCOUNT Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.05"
+                android:text="MY ACCOUNT"
+                android:textAllCaps="true"
+                android:textColor="#99A1AF"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_profile_card"
+                android:elevation="2dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_my_orders" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_addresses" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_payments" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_wishlist" />
+            </LinearLayout>
+
+            <!-- REWARDS & OFFERS Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.05"
+                android:text="REWARDS &amp; OFFERS"
+                android:textAllCaps="true"
+                android:textColor="#99A1AF"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_profile_card"
+                android:elevation="2dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_refer" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_rewards" />
+            </LinearLayout>
+
+            <!-- SETTINGS Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.05"
+                android:text="SETTINGS"
+                android:textAllCaps="true"
+                android:textColor="#99A1AF"
+                android:textSize="11sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_profile_card"
+                android:elevation="2dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_notifications" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_app_settings" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_help" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+                <include layout="@layout/item_profile_menu" android:id="@+id/menu_privacy" />
+            </LinearLayout>
+
+            <!-- Log Out Button -->
+            <LinearLayout
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_button_logout"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:contentDescription="Logout"
+                    android:src="@drawable/ic_logout" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Log Out"
+                    android:textColor="#FF6467"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Version -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="FamCart v2.4.1"
+                android:textColor="#D1D5DC"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Nav -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_bottom_nav"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout android:id="@+id/btn_tab_home" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Home" android:src="@drawable/homebutton" app:tint="#99A1AF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Home" android:textColor="#99A1AF" android:textSize="10sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/btn_tab_search" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Search" android:src="@drawable/ic_search_icon" app:tint="#99A1AF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Search" android:textColor="#99A1AF" android:textSize="10sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/btn_tab_cart" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Cart" android:src="@drawable/cart" app:tint="#99A1AF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Cart" android:textColor="#99A1AF" android:textSize="10sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/btn_tab_orders" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Orders" android:src="@drawable/orders_button" app:tint="#99A1AF" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Orders" android:textColor="#99A1AF" android:textSize="10sp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/btn_tab_profile" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Profile" android:src="@drawable/profile_button" app:tint="#22C55E" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Profile" android:textColor="#22C55E" android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

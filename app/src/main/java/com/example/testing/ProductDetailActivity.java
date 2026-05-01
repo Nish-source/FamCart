@@ -1,11 +1,14 @@
 package com.example.testing;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -131,6 +134,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 return;
             }
 
+            // Disable button briefly to prevent double-taps
+            btnAddToCart.setEnabled(false);
+
             String userId = auth.getCurrentUser().getUid();
             DatabaseReference cartRef = FirebaseDatabase.getInstance()
                     .getReference("users")
@@ -140,6 +146,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             // Check if product already exists in cart
             cartRef.orderByChild("productId").equalTo(currentProduct.getProductId())
                     .get().addOnCompleteListener(task -> {
+                        btnAddToCart.setEnabled(true);
+
                         if (task.isSuccessful() && task.getResult().exists()) {
                             // Update existing item
                             String existingKey = task.getResult().getChildren().iterator().next().getKey();
@@ -147,7 +155,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             if (existingItem != null && existingKey != null) {
                                 int newCount = existingItem.getCount() + quantity;
                                 cartRef.child(existingKey).child("count").setValue(newCount);
-                                Toast.makeText(this, "Cart updated!", Toast.LENGTH_SHORT).show();
+                                showCartSnackbar("Cart updated! (" + newCount + " in cart)");
                             }
                         } else {
                             // Add new item
@@ -164,10 +172,26 @@ public class ProductDetailActivity extends AppCompatActivity {
                             if (key != null) {
                                 cartRef.child(key).setValue(cartItem);
                             }
-                            Toast.makeText(this, "Added to cart!", Toast.LENGTH_SHORT).show();
+                            showCartSnackbar("Added to cart!");
                         }
-                        finish();
+                        // User stays on the current screen — no finish() or navigation
                     });
         });
+    }
+
+    /**
+     * Show a Snackbar with "View Cart" action — user can optionally navigate
+     * to Cart, or ignore and keep browsing. Modern grocery-app pattern.
+     */
+    private void showCartSnackbar(String message) {
+        View rootView = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        snackbar.setAction("View Cart", view -> {
+            startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
+        });
+        snackbar.setActionTextColor(0xFF22C55E); // Brand green
+        snackbar.setBackgroundTint(0xFF1F2937);   // Dark slate
+        snackbar.setTextColor(0xFFFFFFFF);         // White
+        snackbar.show();
     }
 }

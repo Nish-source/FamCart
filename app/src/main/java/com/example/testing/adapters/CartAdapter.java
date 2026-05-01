@@ -85,7 +85,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivImage, btnDelete, btnPlus, btnMinus;
+        ImageView ivImage, btnPlus, btnMinus;
+        View btnDelete; // FrameLayout in XML — must be View, not ImageView
         TextView tvName, tvQuantity, tvPrice, tvQtyCount;
 
         ViewHolder(@NonNull View itemView) {

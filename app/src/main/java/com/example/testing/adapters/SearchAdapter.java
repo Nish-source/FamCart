@@ -4,6 +4,7 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public interface OnProductClickListener {
         void onProductClick(Product product);
+        void onAddToCartClick(Product product);
     }
 
     public SearchAdapter(OnProductClickListener listener) {
@@ -50,7 +52,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.tvName.setText(product.getName());
         holder.tvQuantity.setText(product.getQuantity());
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", product.getPrice()));
-        holder.tvRating.setText(String.valueOf(product.getRating()));
 
         if (product.getOriginalPrice() > product.getPrice()) {
             holder.tvOriginalPrice.setVisibility(View.VISIBLE);
@@ -69,6 +70,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 listener.onProductClick(product);
             }
         });
+
+        holder.btnAddToCart.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onAddToCartClick(product);
+            }
+        });
     }
 
     @Override
@@ -78,7 +85,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
-        TextView tvName, tvQuantity, tvPrice, tvOriginalPrice, tvRating;
+        TextView tvName, tvQuantity, tvPrice, tvOriginalPrice;
+        FrameLayout btnAddToCart;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,7 +95,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             tvQuantity = itemView.findViewById(R.id.tv_product_quantity);
             tvPrice = itemView.findViewById(R.id.tv_product_price);
             tvOriginalPrice = itemView.findViewById(R.id.tv_product_original_price);
-            tvRating = itemView.findViewById(R.id.tv_product_rating);
+            btnAddToCart = itemView.findViewById(R.id.btn_add_to_cart);
         }
     }
 }

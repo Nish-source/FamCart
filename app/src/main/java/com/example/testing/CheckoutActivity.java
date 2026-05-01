@@ -2,9 +2,11 @@ package com.example.testing;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +30,18 @@ import java.util.Locale;
 
 public class CheckoutActivity extends AppCompatActivity {
 
+    private static final String TAG = "CheckoutActivity";
+    private static final double DELIVERY_FEE = 25.0;
+    private static final double FREE_DELIVERY_THRESHOLD = 199.0;
+    private static final double TAX_RATE = 0.02;
+
     private LinearLayout layoutOrderItems;
-    private TextView tvSubtotal, tvTotal;
+    private TextView tvSubtotal, tvDeliveryFee, tvTotal;
     private EditText etAddress;
     private TextView btnPlaceOrder;
 
     private List<CartItem> cartItems = new ArrayList<>();
+    private double subtotalAmount = 0;
     private double totalAmount = 0;
     private boolean isProcessing = false;
 
@@ -41,6 +49,8 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        Log.d(TAG, "CheckoutActivity created");
 
         initViews();
         setupClickListeners();
@@ -50,6 +60,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void initViews() {
         layoutOrderItems = findViewById(R.id.layout_order_items);
         tvSubtotal = findViewById(R.id.tv_subtotal);
+        tvDeliveryFee = findViewById(R.id.tv_delivery_fee);
         tvTotal = findViewById(R.id.tv_total);
         etAddress = findViewById(R.id.et_address);
         btnPlaceOrder = findViewById(R.id.btn_place_order);
@@ -64,6 +75,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void loadCartForCheckout() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
+            Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -78,14 +90,14 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cartItems.clear();
-                totalAmount = 0;
+                subtotalAmount = 0;
 
                 for (DataSnapshot child : snapshot.getChildren()) {
                     CartItem item = child.getValue(CartItem.class);
                     if (item != null) {
                         item.setCartItemId(child.getKey());
                         cartItems.add(item);
-                        totalAmount += item.getTotalPrice();
+                        subtotalAmount += item.getTotalPrice();
                     }
                 }
 
@@ -95,11 +107,13 @@ public class CheckoutActivity extends AppCompatActivity {
                     return;
                 }
 
+                Log.d(TAG, "Loaded " + cartItems.size() + " items, subtotal: " + subtotalAmount);
                 populateOrderSummary();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to load cart: " + error.getMessage());
                 Toast.makeText(CheckoutActivity.this, "Failed to load cart", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -110,21 +124,40 @@ public class CheckoutActivity extends AppCompatActivity {
         layoutOrderItems.removeAllViews();
 
         for (CartItem item : cartItems) {
-            View row = LayoutInflater.from(this).inflate(android.R.layout.simple_list_item_1, layoutOrderItems, false);
-            TextView tv = row.findViewById(android.R.id.text1);
-            tv.setTextSize(13);
-            tv.setTextColor(0xFF6A7282);
-            tv.setPadding(0, 8, 0, 8);
-            tv.setText(String.format(Locale.getDefault(),
-                    "%s × %d — ₹%.0f",
-                    item.getProductName(),
-                    item.getCount(),
-                    item.getTotalPrice()));
+            View row = LayoutInflater.from(this).inflate(R.layout.item_checkout_order, layoutOrderItems, false);
+
+            TextView tvName = row.findViewById(R.id.tv_item_name);
+            TextView tvQty = row.findViewById(R.id.tv_item_qty);
+            TextView tvPrice = row.findViewById(R.id.tv_item_price);
+            ImageView ivImage = row.findViewById(R.id.iv_item_image);
+
+            tvName.setText(item.getProductName());
+            tvQty.setText(String.format(Locale.getDefault(), "%s × %d", item.getProductQuantity(), item.getCount()));
+            tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
+
+            if (item.getDrawableResId() != 0) {
+                ivImage.setImageResource(item.getDrawableResId());
+            }
+
             layoutOrderItems.addView(row);
         }
 
-        tvSubtotal.setText(String.format(Locale.getDefault(), "₹%.0f", totalAmount));
-        tvTotal.setText(String.format(Locale.getDefault(), "₹%.0f", totalAmount));
+        // Calculate delivery and taxes
+        double delivery = subtotalAmount >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+        double taxes = subtotalAmount * TAX_RATE;
+        totalAmount = subtotalAmount + delivery + taxes;
+
+        tvSubtotal.setText(String.format(Locale.getDefault(), "₹%.0f", subtotalAmount));
+
+        if (delivery == 0) {
+            tvDeliveryFee.setText("FREE");
+            tvDeliveryFee.setTextColor(0xFF22C55E);
+        } else {
+            tvDeliveryFee.setText(String.format(Locale.getDefault(), "₹%.0f", delivery));
+            tvDeliveryFee.setTextColor(0xFF101828);
+        }
+
+        tvTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
     }
 
     private void placeOrder() {
@@ -150,6 +183,9 @@ public class CheckoutActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             isProcessing = false;
+            btnPlaceOrder.setText("Place Order");
+            btnPlaceOrder.setEnabled(true);
+            Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -162,6 +198,14 @@ public class CheckoutActivity extends AppCompatActivity {
         DatabaseReference ordersRef = userRef.child("orders");
         String orderId = ordersRef.push().getKey();
 
+        if (orderId == null) {
+            isProcessing = false;
+            btnPlaceOrder.setText("Place Order");
+            btnPlaceOrder.setEnabled(true);
+            Toast.makeText(this, "Failed to create order. Please try again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Order order = new Order(
                 orderId,
                 new ArrayList<>(cartItems),
@@ -170,27 +214,31 @@ public class CheckoutActivity extends AppCompatActivity {
                 "Placed"
         );
 
-        if (orderId != null) {
-            ordersRef.child(orderId).setValue(order).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // Clear cart after successful order
-                    userRef.child("cart").removeValue().addOnCompleteListener(clearTask -> {
-                        isProcessing = false;
-                        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "Placing order: " + orderId);
 
-                        // Navigate to orders screen
-                        Intent intent = new Intent(this, OrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    });
-                } else {
+        ordersRef.child(orderId).setValue(order).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "Order saved successfully, clearing cart");
+                // Clear cart after successful order
+                userRef.child("cart").removeValue().addOnCompleteListener(clearTask -> {
                     isProcessing = false;
-                    btnPlaceOrder.setText("Place Order");
-                    btnPlaceOrder.setEnabled(true);
-                    Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+
+                    // Navigate to Order Placed screen
+                    Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
+                    intent.putExtra("order_id", orderId);
+                    intent.putExtra("total_amount", totalAmount);
+                    intent.putExtra("address", address);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                });
+            } else {
+                isProcessing = false;
+                btnPlaceOrder.setText("Place Order");
+                btnPlaceOrder.setEnabled(true);
+                Log.e(TAG, "Failed to place order", task.getException());
+                Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

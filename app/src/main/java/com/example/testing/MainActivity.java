@@ -2,14 +2,10 @@ package com.example.testing;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.famcart.R;
 import com.example.testing.models.Product;
@@ -25,17 +21,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         setupBottomNav();
         setupSearchBar();
         setupProductCardClicks();
+        setupHeaderClicks();
         updateCartBadge();
     }
 
@@ -69,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Profile tab
         findViewById(R.id.btn_tab_profile).setOnClickListener(v -> {
-            Toast.makeText(this, "Profile coming soon", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ProfileActivity.class));
         });
     }
 
@@ -78,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_search_bar).setOnClickListener(v -> {
             startActivity(new Intent(this, SearchActivity.class));
         });
+    }
+
+    private void setupHeaderClicks() {
+        // Profile avatar in header
+        try {
+            findViewById(R.id.btn_profile_avatar).setOnClickListener(v -> {
+                startActivity(new Intent(this, ProfileActivity.class));
+            });
+        } catch (Exception ignored) {}
     }
 
     private void setupProductCardClicks() {
@@ -131,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
                 android.widget.TextView badge = findViewById(R.id.tv_cart_badge_count);
                 if (badge != null) {
                     if (count > 0) {
-                        badge.setVisibility(android.view.View.VISIBLE);
+                        badge.setVisibility(View.VISIBLE);
                         badge.setText(String.valueOf(count));
                     } else {
-                        badge.setVisibility(android.view.View.GONE);
+                        badge.setVisibility(View.GONE);
                     }
                 }
             }

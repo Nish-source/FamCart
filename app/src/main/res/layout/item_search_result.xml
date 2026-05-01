@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Search result item card — matches Figma Search Screen 2 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,78 +10,60 @@
     android:focusable="true"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="16dp"
-    app:cardElevation="1dp"
+    app:cardElevation="2dp"
     app:rippleColor="#2222C55E"
     app:strokeWidth="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:gravity="top"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp">
 
-        <ImageView
-            android:id="@+id/iv_product_image"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:background="@drawable/bg_image_container"
-            android:clipToOutline="true"
-            android:contentDescription="Product image"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!-- Product Image with light green bg -->
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_image_container">
 
-        <TextView
-            android:id="@+id/tv_product_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="2"
-            android:textColor="#101828"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_product_image"
-            app:layout_constraintTop_toTopOf="@id/iv_product_image" />
+            <ImageView
+                android:id="@+id/iv_product_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Product image"
+                android:padding="4dp"
+                android:scaleType="fitCenter" />
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/tv_product_quantity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#99A1AF"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_product_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
-
+        <!-- Content Column -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="6dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@id/iv_product_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_product_image">
+            android:orientation="vertical">
 
+            <!-- Top: Name + Subtitle -->
             <TextView
-                android:id="@+id/tv_product_price"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_product_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
                 android:textColor="#101828"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_product_original_price"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_product_quantity"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif"
                 android:textColor="#99A1AF"
                 android:textSize="12sp" />
@@ -90,36 +73,58 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
+            <!-- Bottom: Price row + Add button -->
             <LinearLayout
-                android:id="@+id/layout_rating"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rating_badge"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="2dp">
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="★"
-                    android:textColor="#F59E0B"
-                    android:textSize="9sp" />
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="#101828"
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_product_rating"
+                    android:id="@+id/tv_product_original_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="#364153"
-                    android:textSize="10sp" />
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="#575C64"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Green circular + button -->
+                <FrameLayout
+                    android:id="@+id/btn_add_to_cart"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_circle_green"
+                    android:clickable="true"
+                    android:elevation="3dp"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Add to cart"
+                        android:src="@drawable/ic_plus"
+                        app:tint="@color/white" />
+                </FrameLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
