@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
-import com.example.testing.models.Order;
-import com.example.testing.utils.ImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,9 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -38,9 +37,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final double TAX_RATE = 0.02;
 
     private LinearLayout layoutOrderItems;
-    private TextView tvSubtotal, tvDeliveryFee, tvTotal;
+    private TextView tvSubtotal, tvDeliveryFee, tvTaxes, tvTotal, tvBottomTotal;
     private EditText etAddress;
-    private TextView btnPlaceOrder;
+    private TextView btnPlaceOrder, tvSelectedMethod;
+
+    // Payment method radio views
+    private View radioCod, radioUpi, radioCard;
+    private String selectedPaymentMethod = "cod"; // default
 
     private List<CartItem> cartItems = new ArrayList<>();
     private double subtotalAmount = 0;
@@ -56,6 +59,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         initViews();
         setupClickListeners();
+        setupPaymentMethodSelection();
         loadCartForCheckout();
     }
 
@@ -63,15 +67,67 @@ public class CheckoutActivity extends AppCompatActivity {
         layoutOrderItems = findViewById(R.id.layout_order_items);
         tvSubtotal = findViewById(R.id.tv_subtotal);
         tvDeliveryFee = findViewById(R.id.tv_delivery_fee);
+        tvTaxes = findViewById(R.id.tv_taxes);
         tvTotal = findViewById(R.id.tv_total);
+        tvBottomTotal = findViewById(R.id.tv_bottom_total);
         etAddress = findViewById(R.id.et_address);
         btnPlaceOrder = findViewById(R.id.btn_place_order);
+        tvSelectedMethod = findViewById(R.id.tv_selected_method);
+
+        radioCod = findViewById(R.id.radio_cod);
+        radioUpi = findViewById(R.id.radio_upi);
+        radioCard = findViewById(R.id.radio_card);
+
+        // Select COD by default
+        selectPaymentMethod("cod");
     }
 
     private void setupClickListeners() {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         btnPlaceOrder.setOnClickListener(v -> placeOrder());
+    }
+
+    private void setupPaymentMethodSelection() {
+        findViewById(R.id.option_cod).setOnClickListener(v -> selectPaymentMethod("cod"));
+        findViewById(R.id.option_upi).setOnClickListener(v -> selectPaymentMethod("upi"));
+        findViewById(R.id.option_card).setOnClickListener(v -> selectPaymentMethod("card"));
+    }
+
+    private void selectPaymentMethod(String method) {
+        selectedPaymentMethod = method;
+
+        // Reset all radio visuals
+        radioCod.setSelected(false);
+        radioUpi.setSelected(false);
+        radioCard.setSelected(false);
+
+        // Set selected
+        switch (method) {
+            case "cod":
+                radioCod.setSelected(true);
+                tvSelectedMethod.setText("Selected: Cash on Delivery");
+                break;
+            case "upi":
+                radioUpi.setSelected(true);
+                tvSelectedMethod.setText("Selected: UPI Payment");
+                break;
+            case "card":
+                radioCard.setSelected(true);
+                tvSelectedMethod.setText("Selected: Credit / Debit Card");
+                break;
+        }
+
+        // Save preference to Firebase
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            String userId = auth.getCurrentUser().getUid();
+            FirebaseDatabase.getInstance()
+                    .getReference("users")
+                    .child(userId)
+                    .child("preferredPayment")
+                    .setValue(method);
+        }
     }
 
     private void loadCartForCheckout() {
@@ -83,11 +139,38 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         String userId = auth.getCurrentUser().getUid();
-        DatabaseReference cartRef = FirebaseDatabase.getInstance()
+        DatabaseReference userRef = FirebaseDatabase.getInstance()
                 .getReference("users")
-                .child(userId)
-                .child("cart");
+                .child(userId);
 
+        // Load preferred payment method
+        userRef.child("preferredPayment").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String method = snapshot.getValue(String.class);
+                if (method != null) {
+                    selectPaymentMethod(method);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+        // Load saved address
+        userRef.child("address").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String address = snapshot.getValue(String.class);
+                if (address != null && !address.isEmpty()) {
+                    etAddress.setText(address);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+
+        // Load cart items
+        DatabaseReference cartRef = userRef.child("cart");
         cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,7 +220,9 @@ public class CheckoutActivity extends AppCompatActivity {
             tvQty.setText(String.format(Locale.getDefault(), "%s × %d", item.getProductQuantity(), item.getCount()));
             tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
 
-            ImageLoader.loadCartItem(this, item, ivImage);
+            if (item.getDrawableResId() != 0) {
+                ivImage.setImageResource(item.getDrawableResId());
+            }
 
             layoutOrderItems.addView(row);
         }
@@ -157,7 +242,9 @@ public class CheckoutActivity extends AppCompatActivity {
             tvDeliveryFee.setTextColor(0xFF101828);
         }
 
+        tvTaxes.setText(String.format(Locale.getDefault(), "₹%.2f", taxes));
         tvTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
+        tvBottomTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
     }
 
     private void placeOrder() {
@@ -182,137 +269,120 @@ public class CheckoutActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
-            resetButton();
+            isProcessing = false;
+            btnPlaceOrder.setText("Place Order  →");
+            btnPlaceOrder.setEnabled(true);
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         String userId = auth.getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(userId);
 
-        // Create order
-        DatabaseReference ordersRef = userRef.child("orders");
-        String orderId = ordersRef.push().getKey();
+        // Save the address for future use
+        userRef.child("address").setValue(address);
 
-        if (orderId == null) {
-            resetButton();
-            Toast.makeText(this, "Failed to create order. Please try again.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Read user profile data (name, phone) then create the order
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String userName = snapshot.child("name").getValue(String.class);
+                String userPhone = snapshot.child("phone").getValue(String.class);
 
-        Order order = new Order(
-                orderId,
-                new ArrayList<>(cartItems),
-                totalAmount,
-                System.currentTimeMillis(),
-                "Placed"
-        );
+                // Create order
+                DatabaseReference ordersRef = userRef.child("orders");
+                String orderId = ordersRef.push().getKey();
 
-        Log.d(TAG, "Placing order: " + orderId);
+                if (orderId == null) {
+                    isProcessing = false;
+                    btnPlaceOrder.setText("Place Order  →");
+                    btnPlaceOrder.setEnabled(true);
+                    Toast.makeText(CheckoutActivity.this, "Failed to create order. Please try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-        ordersRef.child(orderId).setValue(order).addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                resetButton();
-                Log.e(TAG, "Failed to place order", task.getException());
-                Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
-                return;
+                // Build enriched order map with all details the admin needs
+                Map<String, Object> orderData = new HashMap<>();
+                orderData.put("orderId", orderId);
+                orderData.put("userId", userId);
+                orderData.put("userName", userName != null ? userName : "");
+                orderData.put("address", address);
+                orderData.put("phone", userPhone != null ? userPhone : "");
+                orderData.put("paymentMethod", selectedPaymentMethod);
+                orderData.put("items", new ArrayList<>(cartItems));
+                orderData.put("totalAmount", totalAmount);
+                orderData.put("timestamp", System.currentTimeMillis());
+                orderData.put("status", "Placed");
+
+                Log.d(TAG, "Placing order: " + orderId);
+
+                ordersRef.child(orderId).setValue(orderData).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Order saved successfully, clearing cart");
+
+                        // Also mirror to global /orders node for admin access
+                        FirebaseDatabase.getInstance()
+                                .getReference("orders")
+                                .child(orderId)
+                                .setValue(orderData);
+
+                        // Add notification for this order
+                        addNotification(userId, "Order Placed",
+                                "Your order #" + orderId.substring(0, Math.min(8, orderId.length())).toUpperCase()
+                                        + " has been placed. Total: ₹" + String.format(Locale.getDefault(), "%.2f", totalAmount));
+
+                        // Clear cart after successful order
+                        userRef.child("cart").removeValue().addOnCompleteListener(clearTask -> {
+                            isProcessing = false;
+
+                            // Navigate to Order Placed screen
+                            Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
+                            intent.putExtra("order_id", orderId);
+                            intent.putExtra("total_amount", totalAmount);
+                            intent.putExtra("address", address);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+                        });
+                    } else {
+                        isProcessing = false;
+                        btnPlaceOrder.setText("Place Order  →");
+                        btnPlaceOrder.setEnabled(true);
+                        Log.e(TAG, "Failed to place order", task.getException());
+                        Toast.makeText(CheckoutActivity.this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
-            Log.d(TAG, "Order saved: " + orderId);
-
-            // ── Step 2: Reduce product quantities in Firebase ──
-            reduceProductQuantities(cartItems, () -> {
-
-                // ── Step 3: Clear the cart ──
-                userRef.child("cart").removeValue().addOnCompleteListener(clearTask -> {
-                    isProcessing = false;
-
-                    Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
-                    intent.putExtra("order_id", orderId);
-                    intent.putExtra("total_amount", totalAmount);
-                    intent.putExtra("address", address);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                });
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                isProcessing = false;
+                btnPlaceOrder.setText("Place Order  →");
+                btnPlaceOrder.setEnabled(true);
+                Toast.makeText(CheckoutActivity.this, "Failed to read user data", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
+    /**
+     * Add an in-app notification entry to Firebase for this user.
+     */
+    private void addNotification(String userId, String title, String message) {
+        DatabaseReference notifRef = FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(userId)
+                .child("notifications");
 
-    private void reduceProductQuantities(List<CartItem> items, Runnable onComplete) {
-        if (items.isEmpty()) {
-            onComplete.run();
-            return;
+        String key = notifRef.push().getKey();
+        if (key != null) {
+            Map<String, Object> notification = new HashMap<>();
+            notification.put("title", title);
+            notification.put("message", message);
+            notification.put("timestamp", System.currentTimeMillis());
+            notification.put("read", false);
+            notifRef.child(key).setValue(notification);
         }
-
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
-
-        // AtomicInteger lets us count async callbacks safely across multiple Firebase calls
-        AtomicInteger pendingCount = new AtomicInteger(items.size());
-
-        for (CartItem item : items) {
-            String productId = item.getProductId();
-            if (productId == null || productId.isEmpty()) {
-                // No product ID — skip and check if all done
-                if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                continue;
-            }
-
-            productsRef.child(productId)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                // Try to read quantity as a number
-                                Object rawQty = snapshot.child("stockQuantity").getValue();
-                                if (rawQty instanceof Long) {
-                                    long currentQty = (Long) rawQty;
-                                    long newQty = Math.max(0, currentQty - item.getCount());
-                                    productsRef.child(productId).child("stockQuantity").setValue(newQty)
-                                            .addOnCompleteListener(t -> {
-                                                Log.d(TAG, "Updated qty for " + productId
-                                                        + ": " + currentQty + " → " + newQty);
-                                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                                            });
-                                } else if (rawQty instanceof Double) {
-                                    // Firebase sometimes reads integers as Double
-                                    double currentQty = (Double) rawQty;
-                                    double newQty = Math.max(0, currentQty - item.getCount());
-                                    productsRef.child(productId).child("quantity").setValue((long) newQty)
-                                            .addOnCompleteListener(t -> {
-                                                Log.d(TAG, "Updated qty (double) for " + productId);
-                                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                                            });
-                                } else {
-                                    // Quantity is a String like "500ml" — do not modify it
-                                    Log.d(TAG, "Skipping quantity reduction for " + productId
-                                            + " (non-numeric: " + rawQty + ")");
-                                    if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                                }
-                            } else {
-                                // Product not found in Firebase — skip
-                                Log.w(TAG, "Product not found in Firebase: " + productId);
-                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Log.e(TAG, "Error reading product " + productId + ": " + error.getMessage());
-                            // Don't block checkout on a single failure
-                            if (pendingCount.decrementAndGet() == 0) onComplete.run();
-                        }
-                    });
-        }
-    }
-
-    private void resetButton() {
-        isProcessing = false;
-        btnPlaceOrder.setText("Place Order");
-        btnPlaceOrder.setEnabled(true);
     }
 }

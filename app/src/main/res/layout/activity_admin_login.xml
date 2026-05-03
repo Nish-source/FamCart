@@ -11,23 +11,43 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:paddingHorizontal="28dp"
-        android:paddingTop="60dp"
+        android:paddingTop="48dp"
         android:paddingBottom="32dp">
 
-        <!-- Logo -->
+        <!-- Back Arrow -->
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/famcart_logo"
-            android:scaleType="centerCrop"
-            android:contentDescription="FamCart Logo"
-            android:layout_marginBottom="24dp" />
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_back_arrow"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Admin Shield Icon -->
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bg_admin_accent"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_admin_shield"
+                android:contentDescription="Admin" />
+
+        </LinearLayout>
 
         <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome Back"
+            android:text="Admin Login"
             android:textSize="26sp"
             android:textColor="#101828"
             android:fontFamily="sans-serif-black"
@@ -37,30 +57,30 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign in to continue shopping"
+            android:text="Sign in with your admin credentials"
             android:textSize="14sp"
             android:textColor="#99A1AF"
             android:fontFamily="sans-serif"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="36dp" />
 
-        <!-- Phone Label -->
+        <!-- Email Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Phone Number"
+            android:text="Email Address"
             android:textSize="13sp"
             android:textColor="#364153"
             android:fontFamily="sans-serif-medium"
             android:layout_marginBottom="8dp" />
 
-        <!-- Phone Input -->
+        <!-- Email Input -->
         <EditText
-            android:id="@+id/phoneInput"
+            android:id="@+id/adminEmailInput"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:hint="Enter 10-digit number"
-            android:inputType="phone"
+            android:hint="admin@famcart.com"
+            android:inputType="textEmailAddress"
             android:background="@drawable/bg_input_field"
             android:padding="16dp"
             android:textColor="#101828"
@@ -81,10 +101,10 @@
 
         <!-- Password Input -->
         <EditText
-            android:id="@+id/passwordInput"
+            android:id="@+id/adminPasswordInput"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:hint="Enter your password"
+            android:hint="Enter admin password"
             android:inputType="textPassword"
             android:background="@drawable/bg_input_field"
             android:padding="16dp"
@@ -92,64 +112,31 @@
             android:textColorHint="#99A1AF"
             android:fontFamily="sans-serif"
             android:textSize="14sp"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="36dp" />
 
         <!-- Login Button -->
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/adminLoginButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="Login"
+            android:text="Sign In"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:fontFamily="sans-serif-black"
-            android:backgroundTint="#22C55E"
-            android:layout_marginBottom="20dp" />
+            android:background="@drawable/bg_admin_button"
+            android:layout_marginBottom="16dp" />
 
-        <!-- Signup Link -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't have an account? "
-                android:textColor="#6A7282"
-                android:fontFamily="sans-serif"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/signupText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:textColor="#22C55E"
-                android:fontFamily="sans-serif-black"
-                android:textSize="14sp"
-                android:clickable="true"
-                android:focusable="true" />
-
-        </LinearLayout>
-
-        <!-- Admin Login Link (subtle) -->
+        <!-- Hint text -->
         <TextView
-            android:id="@+id/adminLoginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login as Admin"
+            android:text="Admin access is restricted"
             android:textColor="#99A1AF"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif"
             android:textSize="12sp"
-            android:layout_marginTop="24dp"
             android:drawableStart="@drawable/ic_admin_shield"
             android:drawablePadding="6dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="8dp" />
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 

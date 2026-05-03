@@ -41,7 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh stats when returning from Orders etc.
+        // Refresh data when returning from Edit Profile, Orders, etc.
+        loadUserData();
         loadStats();
     }
 
@@ -98,26 +99,49 @@ public class ProfileActivity extends AppCompatActivity {
         // Back button
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Edit profile
+        // Edit profile — opens EditProfileActivity
         findViewById(R.id.btn_edit_profile).setOnClickListener(v ->
-                Toast.makeText(this, "Edit Profile — Coming soon", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, EditProfileActivity.class)));
 
         // My Orders
-        findViewById(R.id.menu_my_orders).setOnClickListener(v -> {
-            startActivity(new Intent(this, OrdersActivity.class));
-        });
+        findViewById(R.id.menu_my_orders).setOnClickListener(v ->
+                startActivity(new Intent(this, OrdersActivity.class)));
 
-        // Other menu items placeholder
-        View.OnClickListener comingSoon = v -> Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
-        findViewById(R.id.menu_addresses).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_payments).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_wishlist).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_refer).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_rewards).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_notifications).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_app_settings).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_help).setOnClickListener(comingSoon);
-        findViewById(R.id.menu_privacy).setOnClickListener(comingSoon);
+        // Saved Addresses — placeholder (address is handled in Edit Profile)
+        findViewById(R.id.menu_addresses).setOnClickListener(v ->
+                startActivity(new Intent(this, EditProfileActivity.class)));
+
+        // Payment Methods — opens checkout where payment methods are managed
+        findViewById(R.id.menu_payments).setOnClickListener(v ->
+                Toast.makeText(this, "Payment methods can be managed during checkout", Toast.LENGTH_SHORT).show());
+
+        // Wishlist — opens WishlistActivity
+        findViewById(R.id.menu_wishlist).setOnClickListener(v ->
+                startActivity(new Intent(this, WishlistActivity.class)));
+
+        // Refer & Earn — placeholder
+        findViewById(R.id.menu_refer).setOnClickListener(v ->
+                Toast.makeText(this, "Share your referral code to earn ₹50!", Toast.LENGTH_SHORT).show());
+
+        // FamCart Rewards — placeholder
+        findViewById(R.id.menu_rewards).setOnClickListener(v ->
+                Toast.makeText(this, "Rewards program coming soon!", Toast.LENGTH_SHORT).show());
+
+        // Notifications — opens NotificationsActivity
+        findViewById(R.id.menu_notifications).setOnClickListener(v ->
+                startActivity(new Intent(this, NotificationsActivity.class)));
+
+        // App Settings — placeholder
+        findViewById(R.id.menu_app_settings).setOnClickListener(v ->
+                Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show());
+
+        // Help & Support — placeholder
+        findViewById(R.id.menu_help).setOnClickListener(v ->
+                Toast.makeText(this, "Contact us at support@famcart.com", Toast.LENGTH_SHORT).show());
+
+        // Privacy & Security — placeholder
+        findViewById(R.id.menu_privacy).setOnClickListener(v ->
+                Toast.makeText(this, "Your data is safe with us", Toast.LENGTH_SHORT).show());
 
         // Logout with confirmation dialog
         findViewById(R.id.btn_logout).setOnClickListener(v -> {
@@ -176,7 +200,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String phone = email.replace("@famcart.com", "");
                 if (phone.matches("[0-9]{10}")) {
                     tvUserPhone.setText("+91 " + phone.substring(0, 5) + " " + phone.substring(5));
-                    tvUserPhone.setVisibility(android.view.View.VISIBLE);
+                    tvUserPhone.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -203,8 +227,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String phone = snapshot.child("phone").getValue(String.class);
                 if (phone != null && phone.matches("[0-9]{10}")) {
                     tvUserPhone.setText("+91 " + phone.substring(0, 5) + " " + phone.substring(5));
-                    tvUserPhone.setVisibility(android.view.View.VISIBLE);
+                    tvUserPhone.setVisibility(View.VISIBLE);
                 }
+
+                // Update wishlist count
+                updateWishlistSubtitle(snapshot);
 
                 // Update rewards subtitle with actual points
                 View rewardsItem = findViewById(R.id.menu_rewards);
@@ -220,6 +247,21 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+    }
+
+    private void updateWishlistSubtitle(DataSnapshot userSnapshot) {
+        long wishlistCount = userSnapshot.child("wishlist").getChildrenCount();
+        View wishlistItem = findViewById(R.id.menu_wishlist);
+        if (wishlistItem != null) {
+            TextView tvSub = wishlistItem.findViewById(R.id.tv_menu_subtitle);
+            if (tvSub != null) {
+                if (wishlistCount > 0) {
+                    tvSub.setText(wishlistCount + " items saved");
+                } else {
+                    tvSub.setText("Items you've saved");
+                }
+            }
+        }
     }
 
     private void loadStats() {

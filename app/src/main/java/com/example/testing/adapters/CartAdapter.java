@@ -1,5 +1,5 @@
 package com.example.testing.adapters;
-import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
-import com.example.testing.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,20 +46,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
-        Context context = holder.itemView.getContext();
-
 
         holder.tvName.setText(item.getProductName());
         holder.tvQuantity.setText(item.getProductQuantity());
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
         holder.tvQtyCount.setText(String.valueOf(item.getCount()));
 
-        ImageLoader.loadCartItem(context, item, holder.ivImage);
-
-
-//        if (item.getDrawableResId() != 0) {
-//            holder.ivImage.setImageResource(item.getDrawableResId());
-//        }
+        if (item.getDrawableResId() != 0) {
+            holder.ivImage.setImageResource(item.getDrawableResId());
+        }
 
         holder.btnPlus.setOnClickListener(v -> {
             if (listener != null) {

@@ -14,7 +14,7 @@ public class Product {
     private int drawableResId;
 
     public Product() {
-
+        // Required for Firebase
     }
 
     public Product(String productId, String name, String description, String category,
@@ -59,8 +59,4 @@ public class Product {
 
     public int getDrawableResId() { return drawableResId; }
     public void setDrawableResId(int drawableResId) { this.drawableResId = drawableResId; }
-
-    public boolean hasImageUrl() {
-        return imageUrl != null && !imageUrl.isEmpty();
-    }
 }

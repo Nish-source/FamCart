@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText phoneInput, passwordInput;
     Button loginButton;
-    TextView signupText;
+    TextView signupText, adminLoginText;
     FirebaseAuth mAuth;
 
     @Override
@@ -28,9 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
         signupText = findViewById(R.id.signupText);
+        adminLoginText = findViewById(R.id.adminLoginText);
         mAuth = FirebaseAuth.getInstance();
 
-
+        // Auto-navigate if already logged in
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -41,6 +42,12 @@ public class LoginActivity extends AppCompatActivity {
 
         signupText.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+
+        // Admin login entry point — opens separate admin flow
+        adminLoginText.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
             startActivity(intent);
         });
 

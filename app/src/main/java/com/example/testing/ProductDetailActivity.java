@@ -5,42 +5,32 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
-import com.example.testing.utils.ImageLoader;
-
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 
 import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private ImageView ivProductImage;
+    private ImageView ivProductImage, btnWishlist;
     private TextView tvName, tvQuantity, tvPrice, tvOriginalPrice, tvDiscountBadge;
     private TextView tvRating, tvDescription, tvCategory;
     private TextView tvQtyCount;
     private TextView btnAddToCart;
-    private ProgressBar progressBar;
 
     private Product currentProduct;
     private int quantity = 1;
+    private boolean isWishlisted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +39,25 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         initViews();
 
+        // Back button
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
+        // Get product
         String productId = getIntent().getStringExtra("product_id");
-        if (productId == null || productId.isEmpty()) {
+        if (productId != null) {
+            currentProduct = ProductDataProvider.getProductById(productId);
+        }
+
+        if (currentProduct == null) {
             Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        // Show loading state while Firebase fetches
-        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-
-        // ── STEP 1: Try to load from Firebase ──
-        loadProductFromFirebase(productId);
+        populateUI();
+        setupQuantityControls();
+        setupAddToCart();
+        setupWishlist();
     }
 
     private void initViews() {
@@ -77,61 +72,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvCategory = findViewById(R.id.tv_category);
         tvQtyCount = findViewById(R.id.tv_qty_count);
         btnAddToCart = findViewById(R.id.btn_add_to_cart);
-        progressBar = findViewById(R.id.progress_bar); // optional — safe null check used below
+        btnWishlist = findViewById(R.id.btn_wishlist);
     }
-
-    private void loadProductFromFirebase(String productId) {
-        DatabaseReference productRef = FirebaseDatabase.getInstance()
-                .getReference("Products")
-                .child(productId);
-
-        productRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-
-                if (snapshot.exists()) {
-                    // ── Firebase product found ──
-                    currentProduct = snapshot.getValue(Product.class);
-                    if (currentProduct != null) {
-                        currentProduct.setProductId(productId); // ensure ID is set
-                        populateUI();
-                        setupQuantityControls();
-                        setupAddToCart();
-                    } else {
-                        fallbackToLocalProduct(productId);
-                    }
-                } else {
-                    // ── Not in Firebase — try local data ──
-                    fallbackToLocalProduct(productId);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-                // Network error — use local product
-                fallbackToLocalProduct(productId);
-            }
-        });
-    }
-
-    /** Uses ProductDataProvider as a fallback when Firebase doesn't have the product. */
-    private void fallbackToLocalProduct(String productId) {
-        currentProduct = ProductDataProvider.getProductById(productId);
-        if (currentProduct == null) {
-            Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-        populateUI();
-        setupQuantityControls();
-        setupAddToCart();
-    }
-
-    // ─────────────────────────────────────────────
-    // UI Population
-    // ─────────────────────────────────────────────
 
     private void populateUI() {
         tvName.setText(currentProduct.getName());
@@ -141,8 +83,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvDescription.setText(currentProduct.getDescription());
         tvCategory.setText(currentProduct.getCategory());
 
-        // ── IMAGE: Use Glide for URL images, setImageResource for local ──
-        ImageLoader.loadProduct(this, currentProduct, ivProductImage);
+        if (currentProduct.getDrawableResId() != 0) {
+            ivProductImage.setImageResource(currentProduct.getDrawableResId());
+        }
 
         // Original price with strikethrough
         if (currentProduct.getOriginalPrice() > currentProduct.getPrice()) {
@@ -150,8 +93,8 @@ public class ProductDetailActivity extends AppCompatActivity {
             tvOriginalPrice.setText(String.format(Locale.getDefault(), "₹%.0f", currentProduct.getOriginalPrice()));
             tvOriginalPrice.setPaintFlags(tvOriginalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-            int discount = (int) (((currentProduct.getOriginalPrice() - currentProduct.getPrice())
-                    / currentProduct.getOriginalPrice()) * 100);
+            // Calculate discount percentage
+            int discount = (int) (((currentProduct.getOriginalPrice() - currentProduct.getPrice()) / currentProduct.getOriginalPrice()) * 100);
             tvDiscountBadge.setVisibility(View.VISIBLE);
             tvDiscountBadge.setText(discount + "% OFF");
         } else {
@@ -163,8 +106,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void setupQuantityControls() {
-        tvQtyCount.setText(String.valueOf(quantity));
-
         findViewById(R.id.btn_qty_plus).setOnClickListener(v -> {
             if (quantity < 10) {
                 quantity++;
@@ -187,10 +128,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         btnAddToCart.setText(String.format(Locale.getDefault(), "Add to Cart — ₹%.0f", total));
     }
 
-    // ─────────────────────────────────────────────
-    // Add to Cart
-    // ─────────────────────────────────────────────
-
     private void setupAddToCart() {
         btnAddToCart.setOnClickListener(v -> {
             FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -199,6 +136,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 return;
             }
 
+            // Disable button briefly to prevent double-taps
             btnAddToCart.setEnabled(false);
 
             String userId = auth.getCurrentUser().getUid();
@@ -213,58 +151,90 @@ public class ProductDetailActivity extends AppCompatActivity {
                         btnAddToCart.setEnabled(true);
 
                         if (task.isSuccessful() && task.getResult().exists()) {
-                            // Update existing item count
+                            // Update existing item
                             String existingKey = task.getResult().getChildren().iterator().next().getKey();
-                            CartItem existingItem = task.getResult().getChildren().iterator().next()
-                                    .getValue(CartItem.class);
+                            CartItem existingItem = task.getResult().getChildren().iterator().next().getValue(CartItem.class);
                             if (existingItem != null && existingKey != null) {
                                 int newCount = existingItem.getCount() + quantity;
                                 cartRef.child(existingKey).child("count").setValue(newCount);
                                 showCartSnackbar("Cart updated! (" + newCount + " in cart)");
                             }
                         } else {
-                            // Add new item — use imageUrl if available
+                            // Add new item
                             String key = cartRef.push().getKey();
-                            CartItem cartItem;
-
-                            if (currentProduct.hasImageUrl()) {
-                                cartItem = new CartItem(
-                                        currentProduct.getProductId(),
-                                        currentProduct.getName(),
-                                        currentProduct.getQuantity(),
-                                        currentProduct.getPrice(),
-                                        quantity,
-                                        currentProduct.getImageUrl()   // ← Firebase URL
-                                );
-                            } else {
-                                cartItem = new CartItem(
-                                        currentProduct.getProductId(),
-                                        currentProduct.getName(),
-                                        currentProduct.getQuantity(),
-                                        currentProduct.getPrice(),
-                                        quantity,
-                                        currentProduct.getDrawableResId()  // ← local drawable
-                                );
-                            }
-
+                            CartItem cartItem = new CartItem(
+                                    currentProduct.getProductId(),
+                                    currentProduct.getName(),
+                                    currentProduct.getQuantity(),
+                                    currentProduct.getPrice(),
+                                    quantity,
+                                    currentProduct.getDrawableResId()
+                            );
                             cartItem.setCartItemId(key);
                             if (key != null) {
                                 cartRef.child(key).setValue(cartItem);
                             }
                             showCartSnackbar("Added to cart!");
                         }
+                        // User stays on the current screen — no finish() or navigation
                     });
         });
     }
 
+    /**
+     * Show a Snackbar with "View Cart" action — user can optionally navigate
+     * to Cart, or ignore and keep browsing. Modern grocery-app pattern.
+     */
     private void showCartSnackbar(String message) {
         View rootView = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
-        snackbar.setAction("View Cart", view ->
-                startActivity(new Intent(ProductDetailActivity.this, CartActivity.class)));
-        snackbar.setActionTextColor(0xFF22C55E);
-        snackbar.setBackgroundTint(0xFF1F2937);
-        snackbar.setTextColor(0xFFFFFFFF);
+        snackbar.setAction("View Cart", view -> {
+            startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
+        });
+        snackbar.setActionTextColor(0xFF22C55E); // Brand green
+        snackbar.setBackgroundTint(0xFF1F2937);   // Dark slate
+        snackbar.setTextColor(0xFFFFFFFF);         // White
         snackbar.show();
+    }
+
+    /**
+     * Setup wishlist heart toggle — checks current state and toggles on click.
+     */
+    private void setupWishlist() {
+        if (btnWishlist == null || currentProduct == null) return;
+
+        // Check current wishlist state
+        WishlistActivity.isInWishlist(currentProduct.getProductId(), inWishlist -> {
+            isWishlisted = inWishlist;
+            updateWishlistIcon();
+        });
+
+        btnWishlist.setOnClickListener(v -> {
+            isWishlisted = !isWishlisted;
+            updateWishlistIcon();
+            WishlistActivity.toggleWishlist(currentProduct.getProductId());
+
+            View rootView = findViewById(android.R.id.content);
+            if (isWishlisted) {
+                Snackbar.make(rootView, "Added to wishlist ❤", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(0xFF1F2937)
+                        .setTextColor(0xFFFFFFFF)
+                        .show();
+            } else {
+                Snackbar.make(rootView, "Removed from wishlist", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(0xFF1F2937)
+                        .setTextColor(0xFFFFFFFF)
+                        .show();
+            }
+        });
+    }
+
+    private void updateWishlistIcon() {
+        if (btnWishlist == null) return;
+        if (isWishlisted) {
+            btnWishlist.setColorFilter(0xFFEF4444); // Red filled
+        } else {
+            btnWishlist.setColorFilter(0xFF99A1AF); // Grey outline
+        }
     }
 }

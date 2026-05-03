@@ -40,6 +40,17 @@
             android:textColor="#101828"
             android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/btn_wishlist"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Wishlist"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_wishlist" />
+
     </LinearLayout>
 
     <!-- Scrollable Content -->

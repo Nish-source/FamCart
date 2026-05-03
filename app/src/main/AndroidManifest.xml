@@ -6,7 +6,6 @@
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/famcart_logo"
@@ -15,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamCart">
 
+        <activity android:name="com.example.testing.SignupActivity" />
+        <activity android:name="com.example.testing.LoginActivity" />
         <activity
             android:name="com.example.testing.SplashActivity"
             android:exported="true">
@@ -48,6 +49,24 @@
             android:exported="false" />
         <activity
             android:name="com.example.testing.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.WishlistActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.NotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.AdminLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.AdminOrdersActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.testing.AdminOrderDetailActivity"
             android:exported="false" />
     </application>
 
