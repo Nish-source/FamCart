@@ -1,6 +1,8 @@
 package com.example.testing.adapters;
 
+import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famcart.R;
 import com.example.testing.models.Product;
+import com.example.testing.utils.ImageLoader;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +52,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = products.get(position);
+        Context context = holder.itemView.getContext();
+
+        Log.d("IMAGE_URL", product.getImageUrl());
+
 
         holder.tvName.setText(product.getName());
         holder.tvQuantity.setText(product.getQuantity());
@@ -61,9 +69,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             holder.tvOriginalPrice.setVisibility(View.GONE);
         }
 
-        if (product.getDrawableResId() != 0) {
-            holder.ivImage.setImageResource(product.getDrawableResId());
-        }
+        ImageLoader.loadProduct(context, product, holder.ivImage);
+
+
+//        if (product.getDrawableResId() != 0) {
+//            holder.ivImage.setImageResource(product.getDrawableResId());
+//        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {

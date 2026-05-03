@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -14,9 +15,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +29,11 @@ import com.example.testing.adapters.SearchAdapter;
 import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,30 +61,40 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     private LinearLayout layoutRecentHeader;
     private LinearLayout rowRecent1, rowRecent2;
     private LinearLayout rowPopular1, rowPopular2;
+    private ProgressBar progressBar;
     private SearchAdapter adapter;
 
     private SharedPreferences prefs;
     private List<String> recentSearches = new ArrayList<>();
 
+    private List<Product> allFirebaseProducts = new ArrayList<>();
+    private boolean isFirebaseLoaded = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            Log.e("FamCartCRASH", "CRASH: " + throwable.getMessage(), throwable);
+        });
+
         setContentView(R.layout.activity_search);
 
-        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-
-        initViews();
-        setupRecyclerView();
-        setupClickListeners();
-        setupSearchInput();
-        loadRecentSearches();
-        populateIdleState();
-
-        // Start in idle state
-        showIdleState();
-
-        // Focus search input on open
-        etSearch.requestFocus();
+        try {
+            prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            initViews();
+            setupRecyclerView();
+            setupClickListeners();
+            setupSearchInput();
+            loadRecentSearches();
+            populateIdleState();
+            showIdleState();
+            prefetchFirebaseProducts();
+            etSearch.requestFocus();
+        } catch (Exception e) {
+            Log.e("FamCartCRASH", "SearchActivity crashed: " + e.getMessage(), e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void initViews() {
@@ -94,6 +110,8 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         rowRecent2 = findViewById(R.id.row_recent_2);
         rowPopular1 = findViewById(R.id.row_popular_1);
         rowPopular2 = findViewById(R.id.row_popular_2);
+
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     private void setupRecyclerView() {
@@ -103,16 +121,13 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void setupClickListeners() {
-        // Back button
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Clear search text
         btnClearSearch.setOnClickListener(v -> {
             etSearch.setText("");
             etSearch.requestFocus();
         });
 
-        // Clear all recent searches
         findViewById(R.id.btn_clear_recent).setOnClickListener(v -> {
             recentSearches.clear();
             saveRecentSearches();
@@ -133,7 +148,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                     btnClearSearch.setVisibility(View.GONE);
                 } else {
                     btnClearSearch.setVisibility(View.VISIBLE);
-                    filterProducts(query);
+                    searchProductsFromFirebase(query);
                 }
             }
 
@@ -141,7 +156,6 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             public void afterTextChanged(Editable s) {}
         });
 
-        // On search action (keyboard enter)
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             String query = etSearch.getText().toString().trim();
             if (!query.isEmpty()) {
@@ -152,14 +166,103 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         });
     }
 
-    // ─────────────────────────────────────────────
-    // State Management
-    // ─────────────────────────────────────────────
+    private void prefetchFirebaseProducts() {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
+        Log.d("FamCartDebug", "Starting Firebase fetch from: " + productsRef.toString());
+
+
+        productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("FamCartDebug", "Firebase responded. Snapshot exists: " + snapshot.exists());
+                Log.d("FamCartDebug", "Total products fetched: " + snapshot.getChildrenCount());
+                allFirebaseProducts.clear();
+
+                for (DataSnapshot productSnap : snapshot.getChildren()) {
+                    Product product = productSnap.getValue(Product.class);
+                    if (product != null) {
+                        if (product.getProductId() == null || product.getProductId().isEmpty()) {
+                            product.setProductId(productSnap.getKey());
+                        }
+                        allFirebaseProducts.add(product);
+                        Log.d("FamCartDebug", "Loaded: " + product.getName() + " | imageUrl: " + product.getImageUrl());
+                    }
+                }
+                isFirebaseLoaded = true;
+
+                String currentQuery = etSearch.getText().toString().trim();
+                if (!currentQuery.isEmpty()) {
+                    searchProductsFromFirebase(currentQuery);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FamCartDebug", "Firebase FAILED: " + error.getMessage() + " | Code: " + error.getCode());
+                Toast.makeText(SearchActivity.this,
+                        "Could not load products from server. Showing local data.",
+                        Toast.LENGTH_SHORT).show();
+                isFirebaseLoaded = true;
+                ProductDataProvider.loadProducts(products -> {
+
+                    allFirebaseProducts.clear();
+                    allFirebaseProducts.addAll(products);
+
+                    populateIdleState();
+                });
+            }
+        });
+    }
+    
+    
+    private void searchProductsFromFirebase(String query) {
+        if (!isFirebaseLoaded) {
+            if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
+
+        String lowerQuery = query.toLowerCase(Locale.getDefault()).trim();
+        List<Product> results = new ArrayList<>();
+
+        for (Product p : allFirebaseProducts) {
+
+            if (p == null) continue;
+
+            String name = p.getName() != null ? p.getName().toLowerCase(Locale.getDefault()) : "";
+
+            String category = p.getCategory() != null
+                    ? p.getCategory().toLowerCase(Locale.getDefault())
+                    : "";
+
+            String description = p.getDescription() != null
+                    ? p.getDescription().toLowerCase(Locale.getDefault())
+                    : "";
+
+            if (name.contains(lowerQuery) ||
+                    category.contains(lowerQuery) ||
+                    description.contains(lowerQuery)) {
+
+                results.add(p);
+            }
+        }
+
+        adapter.updateProducts(results);
+
+        if (results.isEmpty()) {
+            showEmptyState();
+        } else {
+            showResultsState(results.size());
+        }
+    }
+
+    
 
     private void showIdleState() {
         layoutIdleState.setVisibility(View.VISIBLE);
         layoutResultsState.setVisibility(View.GONE);
         layoutEmptyState.setVisibility(View.GONE);
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
     }
 
     private void showResultsState(int count) {
@@ -175,211 +278,10 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         layoutEmptyState.setVisibility(View.VISIBLE);
     }
 
-    private void filterProducts(String query) {
-        List<Product> filtered = ProductDataProvider.searchProducts(query);
-        adapter.updateProducts(filtered);
 
-        if (filtered.isEmpty()) {
-            showEmptyState();
-        } else {
-            showResultsState(filtered.size());
-        }
-    }
-
-    // ─────────────────────────────────────────────
-    // Idle State UI — Recent + Popular chips
-    // ─────────────────────────────────────────────
-
-    private void populateIdleState() {
-        populateRecentChips();
-        populatePopularChips();
-    }
-
-    private void populateRecentChips() {
-        rowRecent1.removeAllViews();
-        rowRecent2.removeAllViews();
-
-        if (recentSearches.isEmpty()) {
-            layoutRecentHeader.setVisibility(View.GONE);
-            rowRecent1.setVisibility(View.GONE);
-            rowRecent2.setVisibility(View.GONE);
-            return;
-        }
-
-        layoutRecentHeader.setVisibility(View.VISIBLE);
-        rowRecent1.setVisibility(View.VISIBLE);
-
-        // Split across two rows: row1 gets first 2, row2 gets next 3
-        for (int i = 0; i < recentSearches.size() && i < 5; i++) {
-            View chip = createRecentChip(recentSearches.get(i));
-            if (i < 2) {
-                rowRecent1.addView(chip);
-            } else {
-                rowRecent2.addView(chip);
-            }
-        }
-
-        rowRecent2.setVisibility(rowRecent2.getChildCount() > 0 ? View.VISIBLE : View.GONE);
-    }
-
-    private void populatePopularChips() {
-        rowPopular1.removeAllViews();
-        rowPopular2.removeAllViews();
-
-        // Row 1: first 3, Row 2: last 3
-        for (int i = 0; i < POPULAR_SEARCHES.length; i++) {
-            View chip = createPopularChip(POPULAR_SEARCHES[i]);
-            if (i < 3) {
-                rowPopular1.addView(chip);
-            } else {
-                rowPopular2.addView(chip);
-            }
-        }
-    }
-
-    /**
-     * Creates a white pill chip with a clock icon — Figma "Recent Searches" style.
-     * bg: white, rounded 20dp, subtle shadow, text: #4A5565, 13sp regular
-     */
-    private View createRecentChip(String text) {
-        LinearLayout chip = new LinearLayout(this);
-        chip.setOrientation(LinearLayout.HORIZONTAL);
-        chip.setGravity(Gravity.CENTER_VERTICAL);
-        chip.setBackground(getDrawable(R.drawable.bg_chip_recent));
-        chip.setElevation(dpToPx(2));
-
-        int hPad = dpToPx(14);
-        int vPad = dpToPx(10);
-        chip.setPadding(hPad, vPad, hPad, vPad);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMarginEnd(dpToPx(8));
-        chip.setLayoutParams(lp);
-
-        // Clock icon
-        ImageView icon = new ImageView(this);
-        icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
-        icon.setImageResource(R.drawable.ic_rewards);
-        icon.setColorFilter(0xFF99A1AF);
-        chip.addView(icon);
-
-        // Text
-        TextView tv = new TextView(this);
-        LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        tvLp.setMarginStart(dpToPx(6));
-        tv.setLayoutParams(tvLp);
-        tv.setText(text);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        tv.setTextColor(0xFF4A5565);
-        tv.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        chip.addView(tv);
-
-        chip.setClickable(true);
-        chip.setFocusable(true);
-        chip.setOnClickListener(v -> {
-            etSearch.setText(text);
-            etSearch.setSelection(text.length());
-        });
-
-        return chip;
-    }
-
-    /**
-     * Creates a green-tinted pill chip with a trending icon — Figma "Popular Searches" style.
-     * bg: #F0FDF4, border: 10% green, text: #16A34A, 13sp medium
-     */
-    private View createPopularChip(String text) {
-        LinearLayout chip = new LinearLayout(this);
-        chip.setOrientation(LinearLayout.HORIZONTAL);
-        chip.setGravity(Gravity.CENTER_VERTICAL);
-        chip.setBackground(getDrawable(R.drawable.bg_chip_popular));
-
-        int hPad = dpToPx(14);
-        int vPad = dpToPx(10);
-        chip.setPadding(hPad, vPad, hPad, vPad);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMarginEnd(dpToPx(8));
-        lp.setMarginStart(0);
-        chip.setLayoutParams(lp);
-
-        // Trending icon
-        ImageView icon = new ImageView(this);
-        icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
-        icon.setImageResource(R.drawable.ic_arrow);
-        icon.setColorFilter(0xFF16A34A);
-        chip.addView(icon);
-
-        // Text
-        TextView tv = new TextView(this);
-        LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        tvLp.setMarginStart(dpToPx(6));
-        tv.setLayoutParams(tvLp);
-        tv.setText(text);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        tv.setTextColor(0xFF16A34A);
-        tv.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        chip.addView(tv);
-
-        chip.setClickable(true);
-        chip.setFocusable(true);
-        chip.setOnClickListener(v -> {
-            etSearch.setText(text);
-            etSearch.setSelection(text.length());
-        });
-
-        return chip;
-    }
-
-    // ─────────────────────────────────────────────
-    // Recent Searches Persistence (SharedPreferences)
-    // ─────────────────────────────────────────────
-
-    private void loadRecentSearches() {
-        Set<String> saved = prefs.getStringSet(KEY_RECENT, null);
-        recentSearches.clear();
-        if (saved != null) {
-            recentSearches.addAll(saved);
-        }
-        // Default items when no history exists
-        if (recentSearches.isEmpty()) {
-            recentSearches.addAll(Arrays.asList(
-                    "Organic Milk", "Britannia Cake",
-                    "Whole Wheat Bread", "Eggs", "Coffee"));
-        }
-    }
-
-    private void saveRecentSearches() {
-        prefs.edit().putStringSet(KEY_RECENT, new HashSet<>(recentSearches)).apply();
-    }
-
-    private void addToRecentSearches(String query) {
-        // Remove duplicate then add at the start
-        recentSearches.remove(query);
-        recentSearches.add(0, query);
-        // Keep max 5
-        while (recentSearches.size() > 5) {
-            recentSearches.remove(recentSearches.size() - 1);
-        }
-        saveRecentSearches();
-        populateRecentChips();
-    }
-
-    // ─────────────────────────────────────────────
-    // Adapter Callbacks
-    // ─────────────────────────────────────────────
 
     @Override
     public void onProductClick(Product product) {
-        // Save to recent searches
         addToRecentSearches(product.getName());
 
         Intent intent = new Intent(this, ProductDetailActivity.class);
@@ -401,33 +303,202 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                 .child(userId)
                 .child("cart");
 
-        // Create cart item
-        CartItem item = new CartItem(
-                product.getProductId(),
-                product.getName(),
-                product.getQuantity(),
-                product.getPrice(),
-                1,
-                product.getDrawableResId()
-        );
 
-        cartRef.push().setValue(item).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(this, product.getName() + " added to cart", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Failed to add to cart", Toast.LENGTH_SHORT).show();
-            }
-        });
+        CartItem item;
+        if (product.hasImageUrl()) {
+            item = new CartItem(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getQuantity(),
+                    product.getPrice(),
+                    1,
+                    product.getImageUrl()   
+            );
+        } else {
+            item = new CartItem(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getQuantity(),
+                    product.getPrice(),
+                    1,
+                    product.getDrawableResId()  
+            );
+        }
+
+        // Check if product already in cart to avoid duplicates
+        cartRef.orderByChild("productId").equalTo(product.getProductId())
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().exists()) {
+                        // Product already in cart — increment count
+                        String existingKey = task.getResult().getChildren().iterator().next().getKey();
+                        CartItem existing = task.getResult().getChildren().iterator().next().getValue(CartItem.class);
+                        if (existing != null && existingKey != null) {
+                            int newCount = existing.getCount() + 1;
+                            cartRef.child(existingKey).child("count").setValue(newCount);
+                            Toast.makeText(this, "Cart updated!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // New item — add to cart
+                        cartRef.push().setValue(item).addOnCompleteListener(addTask -> {
+                            if (addTask.isSuccessful()) {
+                                Toast.makeText(this, product.getName() + " added to cart",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Failed to add to cart",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
     }
 
-    // ─────────────────────────────────────────────
-    // Utilities
-    // ─────────────────────────────────────────────
+   
+    private void populateIdleState() {
+        populateRecentChips();
+        populatePopularChips();
+    }
+
+    private void populateRecentChips() {
+        rowRecent1.removeAllViews();
+        rowRecent2.removeAllViews();
+
+        if (recentSearches.isEmpty()) {
+            layoutRecentHeader.setVisibility(View.GONE);
+            rowRecent1.setVisibility(View.GONE);
+            rowRecent2.setVisibility(View.GONE);
+            return;
+        }
+
+        layoutRecentHeader.setVisibility(View.VISIBLE);
+        rowRecent1.setVisibility(View.VISIBLE);
+
+        for (int i = 0; i < recentSearches.size() && i < 5; i++) {
+            View chip = createRecentChip(recentSearches.get(i));
+            if (i < 2) rowRecent1.addView(chip);
+            else rowRecent2.addView(chip);
+        }
+        rowRecent2.setVisibility(rowRecent2.getChildCount() > 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void populatePopularChips() {
+        rowPopular1.removeAllViews();
+        rowPopular2.removeAllViews();
+        for (int i = 0; i < POPULAR_SEARCHES.length; i++) {
+            View chip = createPopularChip(POPULAR_SEARCHES[i]);
+            if (i < 3) rowPopular1.addView(chip);
+            else rowPopular2.addView(chip);
+        }
+    }
+
+    private View createRecentChip(String text) {
+        LinearLayout chip = new LinearLayout(this);
+        chip.setOrientation(LinearLayout.HORIZONTAL);
+        chip.setGravity(Gravity.CENTER_VERTICAL);
+        chip.setBackground(getDrawable(R.drawable.bg_chip_recent));
+        chip.setElevation(dpToPx(2));
+        int hPad = dpToPx(14), vPad = dpToPx(10);
+        chip.setPadding(hPad, vPad, hPad, vPad);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMarginEnd(dpToPx(8));
+        chip.setLayoutParams(lp);
+
+        ImageView icon = new ImageView(this);
+        icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
+        icon.setImageResource(R.drawable.ic_rewards);
+        icon.setColorFilter(0xFF99A1AF);
+        chip.addView(icon);
+
+        TextView tv = new TextView(this);
+        LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        tvLp.setMarginStart(dpToPx(6));
+        tv.setLayoutParams(tvLp);
+        tv.setText(text);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        tv.setTextColor(0xFF4A5565);
+        tv.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        chip.addView(tv);
+
+        chip.setClickable(true);
+        chip.setFocusable(true);
+        chip.setOnClickListener(v -> {
+            etSearch.setText(text);
+            etSearch.setSelection(text.length());
+        });
+        return chip;
+    }
+
+    private View createPopularChip(String text) {
+        LinearLayout chip = new LinearLayout(this);
+        chip.setOrientation(LinearLayout.HORIZONTAL);
+        chip.setGravity(Gravity.CENTER_VERTICAL);
+        chip.setBackground(getDrawable(R.drawable.bg_chip_popular));
+        int hPad = dpToPx(14), vPad = dpToPx(10);
+        chip.setPadding(hPad, vPad, hPad, vPad);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMarginEnd(dpToPx(8));
+        chip.setLayoutParams(lp);
+
+        ImageView icon = new ImageView(this);
+        icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
+        icon.setImageResource(R.drawable.ic_arrow);
+        icon.setColorFilter(0xFF16A34A);
+        chip.addView(icon);
+
+        TextView tv = new TextView(this);
+        LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        tvLp.setMarginStart(dpToPx(6));
+        tv.setLayoutParams(tvLp);
+        tv.setText(text);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        tv.setTextColor(0xFF16A34A);
+        tv.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        chip.addView(tv);
+
+        chip.setClickable(true);
+        chip.setFocusable(true);
+        chip.setOnClickListener(v -> {
+            etSearch.setText(text);
+            etSearch.setSelection(text.length());
+        });
+        return chip;
+    }
+    
+
+    private void loadRecentSearches() {
+        Set<String> saved = prefs.getStringSet(KEY_RECENT, null);
+        recentSearches.clear();
+        if (saved != null) {
+            recentSearches.addAll(saved);
+        }
+        if (recentSearches.isEmpty()) {
+            recentSearches.addAll(Arrays.asList(
+                    "Organic Milk", "Britannia Cake",
+                    "Whole Wheat Bread", "Eggs", "Coffee"));
+        }
+    }
+
+    private void saveRecentSearches() {
+        prefs.edit().putStringSet(KEY_RECENT, new HashSet<>(recentSearches)).apply();
+    }
+
+    private void addToRecentSearches(String query) {
+        recentSearches.remove(query);
+        recentSearches.add(0, query);
+        while (recentSearches.size() > 5) recentSearches.remove(recentSearches.size() - 1);
+        saveRecentSearches();
+        populateRecentChips();
+    }
+
 
     private int dpToPx(int dp) {
         return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
+                TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
     private void hideKeyboard() {

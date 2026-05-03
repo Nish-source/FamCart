@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F9FAFB">
 
-    <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Green Gradient Header -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +32,7 @@
                 android:paddingTop="60dp"
                 android:paddingBottom="32dp">
 
-                <!-- Success Circle with Checkmark -->
+
                 <FrameLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp">
@@ -54,7 +53,6 @@
                         app:tint="@color/white" />
                 </FrameLayout>
 
-                <!-- Confirmation Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,7 +63,7 @@
                     android:textColor="#101828"
                     android:textSize="22sp" />
 
-                <!-- Estimated Delivery Subtitle -->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +73,7 @@
                     android:textColor="#6A7282"
                     android:textSize="14sp" />
 
-                <!-- Delivery Time Badge -->
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="52dp"
@@ -105,7 +103,7 @@
 
             </LinearLayout>
 
-            <!-- Order ID Card -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -154,7 +152,7 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <!-- Live Tracking Card -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -173,14 +171,13 @@
                     android:textColor="#101828"
                     android:textSize="16sp" />
 
-                <!-- Tracking Steps -->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
-                    <!-- Step 1: Order Placed (Active) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -205,7 +202,7 @@
                                 android:src="@drawable/ic_check_white"
                                 app:tint="@color/white" />
 
-                            <!-- Connector line -->
+
                             <View
                                 android:layout_width="2dp"
                                 android:layout_height="40dp"
@@ -242,7 +239,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Step 2: Packed (Active) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -302,7 +298,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Step 3: Out for Delivery (Current) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -360,7 +355,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Step 4: Delivered (Pending) -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -402,7 +396,7 @@
 
             </LinearLayout>
 
-            <!-- Delivery Address Card -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -451,7 +445,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Action Buttons -->
+
     <LinearLayout
         android:id="@+id/layout_bottom_buttons"
         android:layout_width="0dp"

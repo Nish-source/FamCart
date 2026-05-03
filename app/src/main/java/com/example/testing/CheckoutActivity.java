@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
 import com.example.testing.models.Order;
+import com.example.testing.utils.ImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CheckoutActivity extends AppCompatActivity {
 
@@ -135,9 +137,7 @@ public class CheckoutActivity extends AppCompatActivity {
             tvQty.setText(String.format(Locale.getDefault(), "%s × %d", item.getProductQuantity(), item.getCount()));
             tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
 
-            if (item.getDrawableResId() != 0) {
-                ivImage.setImageResource(item.getDrawableResId());
-            }
+            ImageLoader.loadCartItem(this, item, ivImage);
 
             layoutOrderItems.addView(row);
         }
@@ -182,12 +182,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
-            isProcessing = false;
-            btnPlaceOrder.setText("Place Order");
-            btnPlaceOrder.setEnabled(true);
+            resetButton();
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         String userId = auth.getCurrentUser().getUid();
         DatabaseReference userRef = FirebaseDatabase.getInstance()
@@ -199,9 +198,7 @@ public class CheckoutActivity extends AppCompatActivity {
         String orderId = ordersRef.push().getKey();
 
         if (orderId == null) {
-            isProcessing = false;
-            btnPlaceOrder.setText("Place Order");
-            btnPlaceOrder.setEnabled(true);
+            resetButton();
             Toast.makeText(this, "Failed to create order. Please try again.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -217,13 +214,22 @@ public class CheckoutActivity extends AppCompatActivity {
         Log.d(TAG, "Placing order: " + orderId);
 
         ordersRef.child(orderId).setValue(order).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "Order saved successfully, clearing cart");
-                // Clear cart after successful order
+            if (!task.isSuccessful()) {
+                resetButton();
+                Log.e(TAG, "Failed to place order", task.getException());
+                Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d(TAG, "Order saved: " + orderId);
+
+            // ── Step 2: Reduce product quantities in Firebase ──
+            reduceProductQuantities(cartItems, () -> {
+
+                // ── Step 3: Clear the cart ──
                 userRef.child("cart").removeValue().addOnCompleteListener(clearTask -> {
                     isProcessing = false;
 
-                    // Navigate to Order Placed screen
                     Intent intent = new Intent(CheckoutActivity.this, OrderPlacedActivity.class);
                     intent.putExtra("order_id", orderId);
                     intent.putExtra("total_amount", totalAmount);
@@ -232,13 +238,81 @@ public class CheckoutActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 });
-            } else {
-                isProcessing = false;
-                btnPlaceOrder.setText("Place Order");
-                btnPlaceOrder.setEnabled(true);
-                Log.e(TAG, "Failed to place order", task.getException());
-                Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+            });
         });
+    }
+
+
+    private void reduceProductQuantities(List<CartItem> items, Runnable onComplete) {
+        if (items.isEmpty()) {
+            onComplete.run();
+            return;
+        }
+
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
+
+        // AtomicInteger lets us count async callbacks safely across multiple Firebase calls
+        AtomicInteger pendingCount = new AtomicInteger(items.size());
+
+        for (CartItem item : items) {
+            String productId = item.getProductId();
+            if (productId == null || productId.isEmpty()) {
+                // No product ID — skip and check if all done
+                if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                continue;
+            }
+
+            productsRef.child(productId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                // Try to read quantity as a number
+                                Object rawQty = snapshot.child("stockQuantity").getValue();
+                                if (rawQty instanceof Long) {
+                                    long currentQty = (Long) rawQty;
+                                    long newQty = Math.max(0, currentQty - item.getCount());
+                                    productsRef.child(productId).child("stockQuantity").setValue(newQty)
+                                            .addOnCompleteListener(t -> {
+                                                Log.d(TAG, "Updated qty for " + productId
+                                                        + ": " + currentQty + " → " + newQty);
+                                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                                            });
+                                } else if (rawQty instanceof Double) {
+                                    // Firebase sometimes reads integers as Double
+                                    double currentQty = (Double) rawQty;
+                                    double newQty = Math.max(0, currentQty - item.getCount());
+                                    productsRef.child(productId).child("quantity").setValue((long) newQty)
+                                            .addOnCompleteListener(t -> {
+                                                Log.d(TAG, "Updated qty (double) for " + productId);
+                                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                                            });
+                                } else {
+                                    // Quantity is a String like "500ml" — do not modify it
+                                    Log.d(TAG, "Skipping quantity reduction for " + productId
+                                            + " (non-numeric: " + rawQty + ")");
+                                    if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                                }
+                            } else {
+                                // Product not found in Firebase — skip
+                                Log.w(TAG, "Product not found in Firebase: " + productId);
+                                if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e(TAG, "Error reading product " + productId + ": " + error.getMessage());
+                            // Don't block checkout on a single failure
+                            if (pendingCount.decrementAndGet() == 0) onComplete.run();
+                        }
+                    });
+        }
+    }
+
+    private void resetButton() {
+        isProcessing = false;
+        btnPlaceOrder.setText("Place Order");
+        btnPlaceOrder.setEnabled(true);
     }
 }

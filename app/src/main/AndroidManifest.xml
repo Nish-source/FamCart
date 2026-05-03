@@ -6,6 +6,7 @@
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/famcart_logo"
@@ -14,8 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamCart">
 
-        <activity android:name="com.example.testing.SignupActivity" />
-        <activity android:name="com.example.testing.LoginActivity" />
         <activity
             android:name="com.example.testing.SplashActivity"
             android:exported="true">

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNav() {
         // Home tab - already on home
         findViewById(R.id.btn_tab_home).setOnClickListener(v -> {
-            // Already on home, scroll to top
+
             findViewById(R.id.scroll_view_content).scrollTo(0, 0);
         });
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupSearchBar() {
-        // Search bar click opens search activity
+
         findViewById(R.id.btn_search_bar).setOnClickListener(v -> {
             startActivity(new Intent(this, SearchActivity.class));
         });
@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class));
             });
         } catch (Exception ignored) {}
+    }
+
+    private void openSearchWithQuery(String query) {
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        intent.putExtra("search_query", query);
+        startActivity(intent);
     }
 
     private void setupProductCardClicks() {
@@ -96,6 +102,26 @@ public class MainActivity extends AppCompatActivity {
         setupCardClick(R.id.card_product_mogu_mogu, "p8");
         setupCardClick(R.id.card_product_amul_kool, "p9");
 
+        findViewById(R.id.btn_dairy_see_all).setOnClickListener(v -> {
+            openSearchWithQuery("Dairy & Milk");
+        });
+
+        findViewById(R.id.btn_bread_see_all).setOnClickListener(v -> {
+            openSearchWithQuery("Bread & Bakery");
+        });
+
+        findViewById(R.id.btn_cold_drinks_see_all).setOnClickListener(v -> {
+            openSearchWithQuery("Cold Drinks & Juices");
+        });
+
+        findViewById(R.id.btn_offers_see_all).setOnClickListener(v -> {
+            openSearchWithQuery("Snacks");
+        });
+
+        findViewById(R.id.btn_categories_see_all).setOnClickListener(v -> {
+            openSearchWithQuery("");
+        });
+
         // Shop Now button
         findViewById(R.id.btn_shop_now).setOnClickListener(v -> {
             startActivity(new Intent(this, SearchActivity.class));
@@ -110,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         } catch (Exception e) {
-            // Card view might not exist, ignore
+
         }
     }
 
@@ -138,10 +164,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            private void openSearchWithQuery(String query) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra("search_query", query);
+                startActivity(intent);
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Silently fail
+
             }
         });
     }

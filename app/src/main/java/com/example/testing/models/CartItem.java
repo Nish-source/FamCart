@@ -9,6 +9,7 @@ public class CartItem {
     private double productPrice;
     private int count;
     private int drawableResId;
+    private String imageUrl;
 
     public CartItem() {
         // Required for Firebase
@@ -24,28 +25,89 @@ public class CartItem {
         this.drawableResId = drawableResId;
     }
 
-    public String getCartItemId() { return cartItemId; }
-    public void setCartItemId(String cartItemId) { this.cartItemId = cartItemId; }
+    public CartItem(String productId, String productName, String productQuantity,
+                    double productPrice, int count, String imageUrl) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        this.productPrice = productPrice;
+        this.count = count;
+        this.imageUrl = imageUrl;
+        this.drawableResId = 0;
+    }
 
-    public String getProductId() { return productId; }
-    public void setProductId(String productId) { this.productId = productId; }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public String getCartItemId() {
+        return cartItemId;
+    }
 
-    public String getProductQuantity() { return productQuantity; }
-    public void setProductQuantity(String productQuantity) { this.productQuantity = productQuantity; }
+    public void setCartItemId(String cartItemId) {
+        this.cartItemId = cartItemId;
+    }
 
-    public double getProductPrice() { return productPrice; }
-    public void setProductPrice(double productPrice) { this.productPrice = productPrice; }
+    public String getProductId() {
+        return productId;
+    }
 
-    public int getCount() { return count; }
-    public void setCount(int count) { this.count = count; }
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
-    public int getDrawableResId() { return drawableResId; }
-    public void setDrawableResId(int drawableResId) { this.drawableResId = drawableResId; }
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getDrawableResId() {
+        return drawableResId;
+    }
+
+    public void setDrawableResId(int drawableResId) {
+        this.drawableResId = drawableResId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 
     public double getTotalPrice() {
         return productPrice * count;
+    }
+
+    public boolean hasImageUrl() {
+        return imageUrl != null && !imageUrl.isEmpty();
+
     }
 }
