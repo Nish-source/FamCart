@@ -45,7 +45,9 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             order = getIntent().getSerializableExtra("admin_order", AdminOrder.class);
         } else {
-            order = (AdminOrder) getIntent().getSerializableExtra("admin_order");
+            @SuppressWarnings("deprecation")
+            AdminOrder legacyOrder = (AdminOrder) getIntent().getSerializableExtra("admin_order");
+            order = legacyOrder;
         }
         if (order == null) {
             Toast.makeText(this, "Order data not found", Toast.LENGTH_SHORT).show();

@@ -1,7 +1,5 @@
 package com.example.testing.models;
 
-import com.example.testing.models.CartItem;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class AdminOrder implements Serializable {
     private String userAddress;
     private String userPhone;
     private String paymentMethod;
-    private List<com.example.testing.models.CartItem> items;
+    private List<CartItem> items;
     private double totalAmount;
     private long timestamp;
     private String status;
@@ -45,7 +43,7 @@ public class AdminOrder implements Serializable {
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
-    public List<com.example.testing.models.CartItem> getItems() { return items; }
+    public List<CartItem> getItems() { return items; }
     public void setItems(List<CartItem> items) { this.items = items; }
 
     public double getTotalAmount() { return totalAmount; }
