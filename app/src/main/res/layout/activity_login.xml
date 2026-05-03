@@ -2,8 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:fillViewport="true">
+    android:background="?android:attr/windowBackground"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Welcome Back"
             android:textSize="26sp"
-            android:textColor="#101828"
+            android:textColor="?attr/colorOnSurface"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025" />
 
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Sign in to continue shopping"
             android:textSize="14sp"
-            android:textColor="#99A1AF"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:fontFamily="sans-serif"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="36dp" />
@@ -50,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text="Phone Number"
             android:textSize="13sp"
-            android:textColor="#364153"
+            android:textColor="?attr/colorOnSurface"
             android:fontFamily="sans-serif-medium"
             android:layout_marginBottom="8dp" />
 
@@ -63,8 +64,8 @@
             android:inputType="phone"
             android:background="@drawable/bg_input_field"
             android:padding="16dp"
-            android:textColor="#101828"
-            android:textColorHint="#99A1AF"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
             android:fontFamily="sans-serif"
             android:textSize="14sp"
             android:layout_marginBottom="20dp" />
@@ -75,7 +76,7 @@
             android:layout_height="wrap_content"
             android:text="Password"
             android:textSize="13sp"
-            android:textColor="#364153"
+            android:textColor="?attr/colorOnSurface"
             android:fontFamily="sans-serif-medium"
             android:layout_marginBottom="8dp" />
 
@@ -88,8 +89,8 @@
             android:inputType="textPassword"
             android:background="@drawable/bg_input_field"
             android:padding="16dp"
-            android:textColor="#101828"
-            android:textColorHint="#99A1AF"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
             android:fontFamily="sans-serif"
             android:textSize="14sp"
             android:layout_marginBottom="32dp" />
@@ -103,7 +104,7 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:fontFamily="sans-serif-black"
-            android:backgroundTint="#22C55E"
+            android:backgroundTint="?attr/colorPrimary"
             android:layout_marginBottom="20dp" />
 
         <!-- Signup Link -->
@@ -117,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Don't have an account? "
-                android:textColor="#6A7282"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:fontFamily="sans-serif"
                 android:textSize="14sp" />
 
@@ -126,13 +127,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
-                android:textColor="#22C55E"
+                android:textColor="?attr/colorPrimary"
                 android:fontFamily="sans-serif-black"
                 android:textSize="14sp"
                 android:clickable="true"
                 android:focusable="true" />
 
         </LinearLayout>
+
+        <!-- Admin Login Link (subtle) -->
+        <TextView
+            android:id="@+id/adminLoginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login as Admin"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="12sp"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_admin_shield"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
 
     </LinearLayout>
 

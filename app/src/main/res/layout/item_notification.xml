@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Individual notification item card -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_section_card"
+    android:elevation="1dp"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Icon circle -->
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <View
+            android:id="@+id/icon_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_circle_light_green" />
+
+        <ImageView
+            android:id="@+id/iv_notif_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:contentDescription="Notification"
+            android:src="@drawable/ic_check_circle"
+            app:tint="#22C55E" />
+    </FrameLayout>
+
+    <!-- Content -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_notif_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Notification Title"
+            android:textColor="#101828"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_notif_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif"
+            android:maxLines="3"
+            android:text="Notification message"
+            android:textColor="#6A7282"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_notif_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif"
+            android:text="Just now"
+            android:textColor="#99A1AF"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- Unread dot -->
+    <View
+        android:id="@+id/dot_unread"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="top"
+        android:background="@drawable/bg_circle_green"
+        android:visibility="gone" />
+
+</LinearLayout>

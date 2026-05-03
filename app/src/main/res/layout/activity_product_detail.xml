@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
     <!-- Toolbar -->
     <LinearLayout
@@ -39,6 +40,17 @@
             android:text="Product Details"
             android:textColor="#101828"
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/btn_wishlist"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Wishlist"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_wishlist" />
 
     </LinearLayout>
 

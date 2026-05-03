@@ -5,27 +5,7 @@
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <TextView
-        android:id="@+id/btn_login_banner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:clickable="true"
-        android:elevation="4dp"
-        android:focusable="true"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="12dp"
-
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="?android:attr/windowBackground">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view_content"
@@ -34,10 +14,11 @@
         android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbars="none"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/layout_bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login_banner">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/layout_scroll_content"
@@ -51,9 +32,9 @@
                 android:id="@+id/layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="12dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
 
                 <LinearLayout
@@ -76,7 +57,7 @@
                         android:contentDescription="Location"
                         android:importantForAccessibility="no"
                         android:src="@drawable/map_button"
-                        app:tint="#22C55E" />
+                        app:tint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/tv_deliver_to_label"
@@ -85,7 +66,7 @@
                         android:layout_marginStart="8dp"
                         android:fontFamily="sans-serif"
                         android:text="Deliver to"
-                        android:textColor="#6A7282"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="13sp" />
 
                     <ImageView
@@ -96,12 +77,12 @@
                         android:contentDescription="Select address"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_drop_down"
-                        app:tint="#6A7282" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_profile_avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -111,6 +92,9 @@
                     android:focusable="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_account_circle2"
+                    app:shapeAppearanceOverlay="@style/CircleImage"
+                    app:strokeColor="?attr/colorOutline"
+                    app:strokeWidth="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -120,17 +104,16 @@
                     android:id="@+id/btn_notifications"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="1dp"
+                    android:layout_marginEnd="4dp"
                     android:background="@drawable/bg_circle_light_green"
                     android:clickable="true"
                     android:contentDescription="View notifications"
                     android:focusable="true"
-                    android:padding="2dp"
+                    android:padding="8dp"
                     android:src="@drawable/ic_notif_bell"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btn_profile_avatar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -139,7 +122,8 @@
                 android:id="@+id/btn_search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
                 android:background="@drawable/bg_search_bar"
                 android:clickable="true"
                 android:focusable="true"
@@ -154,7 +138,7 @@
                     android:contentDescription="Search"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_search_icon"
-                    app:tint="#99A1AF" />
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/tv_search_hint"
@@ -164,7 +148,7 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
                     android:text="Search groceries, fruits..."
-                    android:textColor="#99A1AF"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -173,9 +157,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btn_promo_banner"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="180dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="@android:color/transparent"
@@ -226,7 +210,7 @@
                         android:letterSpacing="-0.025"
                         android:lineSpacingMultiplier="1.2"
                         android:text="Stock up on Daily Essentials in "
-                        android:textColor="@color/white"
+                        android:textColor="#FFFFFF"
                         android:textSize="22sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_banner_subtitle" />
@@ -244,43 +228,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_banner_title" />
 
-                    <LinearLayout
-                        android:id="@+id/btn_shop_now"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/bg_button_white_rounded"
-                        android:clickable="true"
-                        android:elevation="4dp"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <TextView
-                            android:id="@+id/tv_shop_now_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif"
-                            android:text="Shop Now"
-                            android:textColor="#22C55E"
-                            android:textSize="13sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_shop_now_arrow"
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_marginStart="8dp"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_arrow"
-                            app:tint="#22C55E" />
-
-                    </LinearLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -291,9 +238,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/tv_categories_title"
@@ -303,7 +250,7 @@
                     android:fontFamily="sans-serif-black"
                     android:letterSpacing="-0.025"
                     android:text="Categories"
-                    android:textColor="#101828"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -317,209 +264,28 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="4dp"
                     android:text="See All"
-                    android:textColor="#22C55E"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hsv_categories"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:overScrollMode="never"
-                android:paddingHorizontal="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layout_categories_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/btn_category_dairy_bread"
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_category_dairy"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/bg_category_item"
-                            android:clipToOutline="true"
-                            android:contentDescription="Dairy and Bread"
-                            android:padding="1dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/breads_eggs" />
-
-                        <TextView
-                            android:id="@+id/tv_category_dairy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="Dairy &amp; Bread"
-                            android:textColor="#4A5565"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/btn_category_snacks"
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_category_snacks"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/bg_category_item"
-                            android:clipToOutline="true"
-                            android:contentDescription="Snacks"
-                            android:padding="0dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/snacks"  />
-
-                        <TextView
-                            android:id="@+id/tv_category_snacks"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="Snacks"
-                            android:textColor="#4A5565"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_category_sweet_tooth"
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_category_sweet_tooth"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/bg_category_item"
-                            android:clipToOutline="true"
-                            android:contentDescription="Sweet Tooth"
-                            android:padding="0dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/sweet" />
-
-                        <TextView
-                            android:id="@+id/tv_category_sweet_tooth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="Sweet Tooth"
-                            android:textColor="#4A5565"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_category_pharma"
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_category_pharma"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/bg_category_item"
-                            android:clipToOutline="true"
-                            android:contentDescription="Pharma"
-                            android:padding="0dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/pharmacy" />
-
-                        <TextView
-                            android:id="@+id/tv_category_pharma"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="Pharma"
-                            android:textColor="#4A5565"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_category_beverages"
-                        android:layout_width="72dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_category_beverages"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:background="@drawable/bg_category_item"
-                            android:clipToOutline="true"
-                            android:contentDescription="Beverages"
-                            android:padding="0dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/beverages" />
-
-                        <TextView
-                            android:id="@+id/tv_category_beverages"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="Beverages"
-                            android:textColor="#4A5565"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_offers_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/tv_offers_title"
@@ -528,7 +294,7 @@
                     android:fontFamily="sans-serif-black"
                     android:letterSpacing="-0.025"
                     android:text="Today's Offers"
-                    android:textColor="#101828"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -544,7 +310,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
                     android:text="HOT"
-                    android:textColor="@color/white"
+                    android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_offers_title"
                     app:layout_constraintStart_toEndOf="@id/tv_offers_title"
@@ -562,7 +328,7 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="4dp"
                     android:text="See All"
-                    android:textColor="#22C55E"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -571,47 +337,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <HorizontalScrollView
-                android:id="@+id/hsv_offers"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_offers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:overScrollMode="never"
-                android:paddingHorizontal="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layout_offers_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/offer_card_amul_ice_cream"
-                        layout="@layout/item_offer_card"
-                        android:layout_width="160dp"
-                        android:layout_height="218dp"
-                        android:layout_marginEnd="12dp" />
-
-
-
-                    <include
-                        android:id="@+id/offer_card_pharmacy"
-                        layout="@layout/item_offer_card2"
-                        android:layout_width="160dp"
-                        android:layout_height="218dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/offer_card_personal_care"
-                        layout="@layout/item_offer_card3"
-                        android:layout_width="160dp"
-                        android:layout_height="218dp" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <LinearLayout
@@ -620,9 +353,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/tv_dairy_title"
@@ -632,7 +365,7 @@
                     android:fontFamily="sans-serif-black"
                     android:letterSpacing="-0.025"
                     android:text="Dairy, Milk &amp; Eggs"
-                    android:textColor="#101828"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -646,50 +379,19 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="4dp"
                     android:text="See All"
-                    android:textColor="#22C55E"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hsv_dairy"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dairy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:overScrollMode="never"
-                android:paddingHorizontal="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layout_dairy_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/card_product_yakult"
-                        layout="@layout/item_product_card"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_amul_milk"
-                        layout="@layout/item_product_card2"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_epigamia"
-                        layout="@layout/item_product_card3"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <LinearLayout
@@ -698,9 +400,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/tv_bread_title"
@@ -710,7 +412,7 @@
                     android:fontFamily="sans-serif-black"
                     android:letterSpacing="-0.025"
                     android:text="Bread &amp; Bakery"
-                    android:textColor="#101828"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -724,50 +426,19 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="4dp"
                     android:text="See All"
-                    android:textColor="#22C55E"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hsv_bread"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bread"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:overScrollMode="never"
-                android:paddingHorizontal="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layout_bread_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/card_product_white_bread"
-                        layout="@layout/item_product_card4"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_unibic_cookies"
-                        layout="@layout/item_product_card5"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_elaichi_rusk"
-                        layout="@layout/item_product_card6"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <LinearLayout
@@ -776,9 +447,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/tv_cold_drinks_title"
@@ -788,7 +459,7 @@
                     android:fontFamily="sans-serif-black"
                     android:letterSpacing="-0.025"
                     android:text="Cold Drinks &amp; Juices"
-                    android:textColor="#101828"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -802,61 +473,40 @@
                     android:paddingHorizontal="4dp"
                     android:paddingVertical="4dp"
                     android:text="See All"
-                    android:textColor="#22C55E"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hsv_cold_drinks"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_cold_drinks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:clipChildren="false"
-                android:overScrollMode="never"
-                android:paddingHorizontal="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layout_cold_drinks_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        android:id="@+id/card_product_coca_cola"
-                        layout="@layout/item_product_card7"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_mogu_mogu"
-                        layout="@layout/item_product_card8"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp"
-                        android:layout_marginEnd="12dp" />
-
-                    <include
-                        android:id="@+id/card_product_amul_kool"
-                        layout="@layout/item_product_card9"
-                        android:layout_width="170dp"
-                        android:layout_height="204dp" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/layout_bottom_nav"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:background="@drawable/bg_bottom_nav"
+        android:background="?attr/colorSurface"
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -880,7 +530,7 @@
                 android:id="@+id/indicator_tab_home"
                 android:layout_width="20dp"
                 android:layout_height="2dp"
-                android:background="#22C55E" />
+                android:background="?attr/colorPrimary" />
 
             <ImageView
                 android:id="@+id/iv_tab_home"
@@ -890,7 +540,7 @@
                 android:contentDescription="Home"
                 android:importantForAccessibility="no"
                 android:src="@drawable/homebutton"
-                app:tint="#22C55E" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/tv_tab_home"
@@ -899,7 +549,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Home"
-                android:textColor="#22C55E"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="10sp" />
 
         </LinearLayout>
@@ -924,7 +574,7 @@
                 android:contentDescription="Search"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_search_icon"
-                app:tint="#99A1AF" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:id="@+id/tv_tab_search"
@@ -933,7 +583,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Search"
-                android:textColor="#99A1AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="10sp" />
 
         </LinearLayout>
@@ -962,7 +612,7 @@
                     android:contentDescription="Cart"
                     android:importantForAccessibility="no"
                     android:src="@drawable/cart"
-                    app:tint="#99A1AF" />
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/tv_cart_badge_count"
@@ -987,7 +637,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Cart"
-                android:textColor="#99A1AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="10sp" />
 
         </LinearLayout>
@@ -1012,7 +662,7 @@
                 android:contentDescription="Orders"
                 android:importantForAccessibility="no"
                 android:src="@drawable/orders_button"
-                app:tint="#99A1AF" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:id="@+id/tv_tab_orders"
@@ -1021,7 +671,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Orders"
-                android:textColor="#99A1AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="10sp" />
 
         </LinearLayout>
@@ -1046,7 +696,7 @@
                 android:contentDescription="Profile"
                 android:importantForAccessibility="no"
                 android:src="@drawable/profile_button"
-                app:tint="#99A1AF" />
+                app:tint="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:id="@+id/tv_tab_profile"
@@ -1055,7 +705,7 @@
                 android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Profile"
-                android:textColor="#99A1AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="10sp" />
 
         </LinearLayout>

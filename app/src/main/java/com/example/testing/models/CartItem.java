@@ -1,27 +1,32 @@
 package com.example.testing.models;
 
-public class CartItem {
+import java.io.Serializable;
 
-    private String cartItemId;
-    private String productId;
-    private String productName;
-    private String productQuantity;
-    private double productPrice;
-    private int count;
-    private int drawableResId;
+public class CartItem implements Serializable {
+
+    public String cartItemId;
+    public String productId;
+    public String productName;
+    public String productQuantity;
+    public double productPrice;
+    public int count;
+    public String imageUrl;
+    public double totalPrice; // Added for Firebase mapping
+    public int drawableResId; // Added for Firebase mapping
 
     public CartItem() {
         // Required for Firebase
     }
 
     public CartItem(String productId, String productName, String productQuantity,
-                    double productPrice, int count, int drawableResId) {
+                    double productPrice, int count, String imageUrl) {
         this.productId = productId;
         this.productName = productName;
         this.productQuantity = productQuantity;
         this.productPrice = productPrice;
         this.count = count;
-        this.drawableResId = drawableResId;
+        this.imageUrl = imageUrl;
+        this.totalPrice = productPrice * count;
     }
 
     public String getCartItemId() { return cartItemId; }
@@ -42,10 +47,14 @@ public class CartItem {
     public int getCount() { return count; }
     public void setCount(int count) { this.count = count; }
 
-    public int getDrawableResId() { return drawableResId; }
-    public void setDrawableResId(int drawableResId) { this.drawableResId = drawableResId; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public double getTotalPrice() {
         return productPrice * count;
     }
+    public void setTotalPrice(double totalPrice) { this.totalPrice = totalPrice; }
+
+    public int getDrawableResId() { return drawableResId; }
+    public void setDrawableResId(int drawableResId) { this.drawableResId = drawableResId; }
 }

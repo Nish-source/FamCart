@@ -1,13 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FamCart" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.FamCart" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/green_primary</item>
-        <item name="colorPrimaryDark">@color/green_dark</item>
-        <item name="colorAccent">@color/green_primary</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="colorPrimary">#00C853</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#00E676</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <!-- Surface and background colors -->
+        <item name="android:windowBackground">#F9FAFB</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#101828</item>
+        <item name="colorOnSurfaceVariant">#6A7282</item>
+        <item name="colorOutline">#E5E7EB</item>
+
+        <item name="android:statusBarColor">#FFFFFF</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o">true</item>
     </style>
 
-    <style name="Theme.FamCart" parent="Base.Theme.FamCart" />
+    <style name="CircleImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

@@ -1,40 +1,56 @@
 package com.example.testing.models;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.PropertyName;
+
+@IgnoreExtraProperties
 public class Product {
 
-    private String productId;
-    private String name;
-    private String description;
-    private String category;
-    private String imageUrl;
-    private String quantity;
-    private double price;
-    private double originalPrice;
-    private double rating;
-    private int drawableResId;
+    public String id; // Added for Firebase compatibility
+    public String productId;
+    public String name;
+    public String brand;
+    public String description;
+    public String category;
+    public String imageUrl;
+    public String quantity;
+    public double price;
+    public double originalPrice;
+    public double rating;
+    public int stockQuantity;
 
     public Product() {
         // Required for Firebase
     }
 
-    public Product(String productId, String name, String description, String category,
-                   String quantity, double price, double originalPrice, double rating, int drawableResId) {
+    public Product(String productId, String name, String brand, String description, String category,
+                   String quantity, double price, double originalPrice, double rating, int stockQuantity) {
         this.productId = productId;
+        this.id = productId;
         this.name = name;
+        this.brand = brand;
         this.description = description;
         this.category = category;
         this.quantity = quantity;
         this.price = price;
         this.originalPrice = originalPrice;
         this.rating = rating;
-        this.drawableResId = drawableResId;
+        this.stockQuantity = stockQuantity;
     }
 
-    public String getProductId() { return productId; }
-    public void setProductId(String productId) { this.productId = productId; }
+    @PropertyName("id")
+    public String getId() { return id != null ? id : productId; }
+    @PropertyName("id")
+    public void setId(String id) { this.id = id; this.productId = id; }
+
+    public String getProductId() { return productId != null ? productId : id; }
+    public void setProductId(String productId) { this.productId = productId; this.id = productId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
@@ -57,6 +73,6 @@ public class Product {
     public double getRating() { return rating; }
     public void setRating(double rating) { this.rating = rating; }
 
-    public int getDrawableResId() { return drawableResId; }
-    public void setDrawableResId(int drawableResId) { this.drawableResId = drawableResId; }
+    public int getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
 }
