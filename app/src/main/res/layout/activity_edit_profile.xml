@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
 =======
     android:background="#F8F9FA">
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     <!-- Toolbar -->
     <LinearLayout
@@ -17,10 +20,13 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
 =======
         android:background="@color/white"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -39,11 +45,14 @@
             android:focusable="true"
             android:padding="11dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:src="@drawable/ic_back_arrow"
             app:tint="?attr/colorOnSurface" />
 =======
             android:src="@drawable/ic_back_arrow" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,12 +62,15 @@
             android:letterSpacing="-0.025"
             android:text="Edit Profile"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 =======
             android:textColor="#101828"
             android:textSize="18sp" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     </LinearLayout>
 
     <!-- Scrollable Form -->
@@ -108,15 +120,16 @@
                         app:strokeWidth="2dp" />
 =======
                     android:layout_width="96dp"
-                    android:layout_height="96dp">
 
-                    <ImageView
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:contentDescription="Profile picture"
                         android:src="@drawable/ic_account_circle2"
+<<<<<<< HEAD
                         app:tint="#22C55E" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
                     <FrameLayout
                         android:layout_width="28dp"
@@ -143,10 +156,13 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="Full Name"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
 =======
                 android:textColor="#364153"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <EditText
@@ -160,12 +176,15 @@
                 android:inputType="textPersonName"
                 android:paddingHorizontal="16dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#101828"
                 android:textColorHint="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <!-- Email Field (read-only) -->
@@ -176,10 +195,13 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="Email"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
 =======
                 android:textColor="#364153"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <EditText
@@ -194,12 +216,15 @@
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="16dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#99A1AF"
                 android:textColorHint="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <!-- Phone Field -->
@@ -210,10 +235,13 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="Phone Number"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
 =======
                 android:textColor="#364153"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <EditText
@@ -228,12 +256,15 @@
                 android:maxLength="10"
                 android:paddingHorizontal="16dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#101828"
                 android:textColorHint="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <!-- Address Field -->
@@ -244,10 +275,13 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="Delivery Address"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
 =======
                 android:textColor="#364153"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
             <EditText
@@ -262,12 +296,15 @@
                 android:minHeight="80dp"
                 android:padding="16dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#101828"
                 android:textColorHint="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -280,10 +317,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
 =======
         android:background="@color/white"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         android:elevation="8dp"
         android:gravity="center"
         android:paddingHorizontal="20dp"

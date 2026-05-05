@@ -135,6 +135,7 @@
 
         </LinearLayout>
 
+<<<<<<< HEAD
         <!-- Admin Login Link (subtle) -->
         <TextView
             android:id="@+id/adminLoginText"
@@ -156,6 +157,8 @@
             android:focusable="true"
             android:padding="8dp" />
 
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     </LinearLayout>
 
 </ScrollView>

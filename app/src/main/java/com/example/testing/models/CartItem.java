@@ -1,5 +1,6 @@
 package com.example.testing.models;
 
+<<<<<<< HEAD
 import java.io.Serializable;
 <<<<<<< HEAD
 =======
@@ -8,6 +9,9 @@ public class CartItem implements Serializable {
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
 public class CartItem implements Serializable {
+=======
+public class CartItem {
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     public String cartItemId;
     public String productId;

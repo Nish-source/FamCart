@@ -5,12 +5,14 @@ plugins {
 
 android {
     namespace = "com.example.famcart"
-    compileSdk = 35
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.example.famcart"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -28,8 +30,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
@@ -43,8 +45,11 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("com.google.firebase:firebase-auth:23.0.0")
+<<<<<<< HEAD
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 }

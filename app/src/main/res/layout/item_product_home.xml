@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="170dp"
     android:layout_height="204dp"
+<<<<<<< HEAD
     android:layout_marginEnd="12dp"
     android:clickable="true"
     android:focusable="true"
@@ -11,6 +12,14 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="1dp"
     app:rippleColor="?attr/colorPrimary"
+=======
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:rippleColor="#2222C55E"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,10 +37,51 @@
             android:clipToOutline="true"
             android:contentDescription="Product image"
             android:scaleType="centerCrop"
+<<<<<<< HEAD
+=======
+            android:src="@drawable/epigamia"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< HEAD
+=======
+        <LinearLayout
+            android:id="@+id/layout_product_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_rating_badge"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="1dp"
+            app:layout_constraintEnd_toEndOf="@id/iv_product_image"
+            app:layout_constraintTop_toTopOf="@id/iv_product_image">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:text="★"
+                android:textColor="#F59E0B"
+                android:textSize="7sp" />
+
+            <TextView
+                android:id="@+id/tv_product_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="4.2"
+                android:textColor="#364153"
+                android:textSize="7sp" />
+
+        </LinearLayout>
+
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         <TextView
             android:id="@+id/tv_product_name"
             android:layout_width="0dp"
@@ -42,7 +92,12 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="2"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
+=======
+            android:text="Epigamia"
+            android:textColor="#101828"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +112,12 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="sans-serif"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurfaceVariant"
+=======
+            android:text="90g"
+            android:textColor="#99A1AF"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,13 +130,22 @@
             android:layout_marginStart="12dp"
             android:layout_marginBottom="12dp"
             android:fontFamily="sans-serif-black"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
+=======
+            android:text="₹66"
+            android:textColor="#101828"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
+<<<<<<< HEAD
             android:id="@+id/btn_add_to_cart_home"
+=======
+            android:id="@+id/btn_add_to_cart"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginEnd="12dp"

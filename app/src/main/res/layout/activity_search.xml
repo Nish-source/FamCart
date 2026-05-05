@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
 
@@ -16,9 +17,15 @@
     <!-- Toolbar (white header)                      -->
     <!-- ═══════════════════════════════════════════ -->
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+    android:background="@color/white">
+
+    <!-- Toolbar -->
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="0dp"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
 <<<<<<< HEAD
         android:background="?attr/colorSurface"
@@ -33,10 +40,17 @@
         android:paddingTop="12dp"
         android:paddingBottom="16dp"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,10 +64,20 @@
         <!-- Row 1: Back + Title -->
         <LinearLayout
             android:layout_width="match_parent"
+=======
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Go back"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_back_arrow" />
 
+<<<<<<< HEAD
             <LinearLayout
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:id="@+id/btn_back"
@@ -442,32 +466,78 @@
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
         <!-- Results count -->
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         <TextView
-            android:id="@+id/tv_results_count"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp"
-            android:textColor="#6A7282"
-            android:textSize="12sp" />
-
-        <!-- Results RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_results"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingHorizontal="20dp"
-            android:paddingBottom="16dp" />
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="-0.025"
+            android:text="Search"
+            android:textColor="#101828"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- EMPTY STATE: No results found               -->
-    <!-- ═══════════════════════════════════════════ -->
+    <!-- Search Input -->
+    <LinearLayout
+        android:id="@+id/layout_search_input"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_search_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="Search"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_search_icon"
+            app:tint="#99A1AF" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif"
+            android:hint="Search groceries, fruits..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="#101828"
+            android:textColorHint="#99A1AF"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Results RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_results"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_search_input" />
+
+    <!-- Empty State -->
     <LinearLayout
         android:id="@+id/layout_empty_state"
         android:layout_width="wrap_content"
@@ -479,6 +549,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@id/layout_header">
 
         <ImageView
@@ -486,11 +557,14 @@
             android:layout_height="120dp"
 =======
         app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+=======
+        app:layout_constraintTop_toBottomOf="@id/layout_search_input">
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:contentDescription="No results"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             android:src="@drawable/ic_search_icon"

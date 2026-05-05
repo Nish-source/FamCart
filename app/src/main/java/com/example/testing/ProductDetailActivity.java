@@ -1,6 +1,5 @@
 package com.example.testing;
 
-import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -13,13 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.famcart.R;
 import com.example.testing.models.Product;
+<<<<<<< HEAD
 import com.google.android.material.snackbar.Snackbar;
+=======
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
 import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private ImageView ivProductImage, btnWishlist;
+    private ImageView ivProductImage;
     private TextView tvName, tvQuantity, tvPrice, tvOriginalPrice, tvDiscountBadge;
     private TextView tvRating, tvDescription, tvCategory;
     private TextView tvQtyCount;
@@ -27,7 +32,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private Product currentProduct;
     private int quantity = 1;
-    private boolean isWishlisted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +71,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
     private void handleProductNotFound() {
         Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
         finish();
+=======
+        populateUI();
+        setupQuantityControls();
+        setupAddToCart();
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     }
 
     private void initViews() {
@@ -84,7 +94,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvCategory = findViewById(R.id.tv_category);
         tvQtyCount = findViewById(R.id.tv_qty_count);
         btnAddToCart = findViewById(R.id.btn_add_to_cart);
-        btnWishlist = findViewById(R.id.btn_wishlist);
     }
 
     private void populateUI() {
@@ -149,6 +158,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupAddToCart() {
         btnAddToCart.setOnClickListener(v -> {
+<<<<<<< HEAD
             if (currentProduct == null) return;
             // Disable button briefly to prevent double-taps
             btnAddToCart.setEnabled(false);
@@ -219,3 +229,51 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 }
+=======
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            if (auth.getCurrentUser() == null) {
+                Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String userId = auth.getCurrentUser().getUid();
+            DatabaseReference cartRef = FirebaseDatabase.getInstance()
+                    .getReference("users")
+                    .child(userId)
+                    .child("cart");
+
+            // Check if product already exists in cart
+            cartRef.orderByChild("productId").equalTo(currentProduct.getProductId())
+                    .get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult().exists()) {
+                            // Update existing item
+                            String existingKey = task.getResult().getChildren().iterator().next().getKey();
+                            CartItem existingItem = task.getResult().getChildren().iterator().next().getValue(CartItem.class);
+                            if (existingItem != null && existingKey != null) {
+                                int newCount = existingItem.getCount() + quantity;
+                                cartRef.child(existingKey).child("count").setValue(newCount);
+                                Toast.makeText(this, "Cart updated!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // Add new item
+                            String key = cartRef.push().getKey();
+                            CartItem cartItem = new CartItem(
+                                    currentProduct.getProductId(),
+                                    currentProduct.getName(),
+                                    currentProduct.getQuantity(),
+                                    currentProduct.getPrice(),
+                                    quantity,
+                                    currentProduct.getDrawableResId()
+                            );
+                            cartItem.setCartItemId(key);
+                            if (key != null) {
+                                cartRef.child(key).setValue(cartItem);
+                            }
+                            Toast.makeText(this, "Added to cart!", Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+                    });
+        });
+    }
+}
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929

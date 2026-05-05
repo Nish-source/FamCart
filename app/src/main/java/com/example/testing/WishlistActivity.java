@@ -79,6 +79,7 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
                 List<String> ids = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String productId = child.getValue(String.class);
+<<<<<<< HEAD
                     if (productId != null) ids.add(productId);
                 }
                 
@@ -94,6 +95,8 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
                         if (p.getProductId().equals(id)) {
                             wishlistProducts.add(p);
                             break;
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         }
                     }
                 }
@@ -143,6 +146,7 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
 
     @Override
     public void onAddToCart(Product product) {
+<<<<<<< HEAD
         CartManager.addToCart(product, 1, new CartManager.CartCallback() {
             @Override
             public void onSuccess(String message) {
@@ -152,6 +156,10 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
             @Override
             public void onFailure(Exception e) {
                 Toast.makeText(WishlistActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+=======
+            }
+
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             }
         });
     }

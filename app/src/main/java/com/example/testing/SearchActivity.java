@@ -1,21 +1,12 @@
 package com.example.testing;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,15 +16,11 @@ import com.example.famcart.R;
 import com.example.testing.adapters.SearchAdapter;
 import com.example.testing.models.Product;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 public class SearchActivity extends AppCompatActivity implements SearchAdapter.OnProductClickListener {
 
+<<<<<<< HEAD
     private static final String PREFS_NAME = "search_prefs";
     private static final String KEY_RECENT = "recent_searches";
 
@@ -43,24 +30,19 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             "Rice", "Pasta", "Buns"
     };
 
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     private EditText etSearch;
-    private ImageView btnClearSearch;
     private RecyclerView rvResults;
-    private TextView tvResultsCount;
-    private View layoutIdleState, layoutResultsState, layoutEmptyState;
-    private LinearLayout layoutRecentHeader;
-    private LinearLayout rowRecent1, rowRecent2;
-    private LinearLayout rowPopular1, rowPopular2;
+    private LinearLayout layoutEmptyState;
     private SearchAdapter adapter;
-
-    private SharedPreferences prefs;
-    private List<String> recentSearches = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+<<<<<<< HEAD
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         initViews();
@@ -90,20 +72,13 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void initViews() {
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         etSearch = findViewById(R.id.et_search);
-        btnClearSearch = findViewById(R.id.btn_clear_search);
         rvResults = findViewById(R.id.rv_search_results);
-        tvResultsCount = findViewById(R.id.tv_results_count);
-        layoutIdleState = findViewById(R.id.layout_idle_state);
-        layoutResultsState = findViewById(R.id.layout_results_state);
         layoutEmptyState = findViewById(R.id.layout_empty_state);
-        layoutRecentHeader = findViewById(R.id.layout_recent_header);
-        rowRecent1 = findViewById(R.id.row_recent_1);
-        rowRecent2 = findViewById(R.id.row_recent_2);
-        rowPopular1 = findViewById(R.id.row_popular_1);
-        rowPopular2 = findViewById(R.id.row_popular_2);
-    }
 
+<<<<<<< HEAD
     private void setupRecyclerView() {
         adapter = new SearchAdapter(this);
         rvResults.setLayoutManager(new LinearLayoutManager(this));
@@ -127,28 +102,35 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             });
         }
     }
+=======
+        // Back button
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-    private void setupSearchInput() {
+        // Setup RecyclerView
+        adapter = new SearchAdapter(this);
+        rvResults.setLayoutManager(new LinearLayoutManager(this));
+        rvResults.setAdapter(adapter);
+
+        // Load all products initially
+        List<Product> allProducts = ProductDataProvider.getAllProducts();
+        adapter.updateProducts(allProducts);
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
+
+        // Real-time search filtering
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim();
-                if (query.isEmpty()) {
-                    showIdleState();
-                    btnClearSearch.setVisibility(View.GONE);
-                } else {
-                    btnClearSearch.setVisibility(View.VISIBLE);
-                    filterProducts(query);
-                }
+                filterProducts(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
+<<<<<<< HEAD
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             String query = etSearch.getText().toString().trim();
             if (!query.isEmpty()) {
@@ -176,19 +158,26 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         if (layoutIdleState != null) layoutIdleState.setVisibility(View.GONE);
         if (layoutResultsState != null) layoutResultsState.setVisibility(View.GONE);
         if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.VISIBLE);
+=======
+        // Focus search input on open
+        etSearch.requestFocus();
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     }
 
     private void filterProducts(String query) {
         List<Product> filtered = ProductDataProvider.searchProducts(query);
         adapter.updateProducts(filtered);
 
-        if (filtered.isEmpty()) {
-            showEmptyState();
+        if (filtered.isEmpty() && !query.trim().isEmpty()) {
+            layoutEmptyState.setVisibility(View.VISIBLE);
+            rvResults.setVisibility(View.GONE);
         } else {
-            showResultsState(filtered.size());
+            layoutEmptyState.setVisibility(View.GONE);
+            rvResults.setVisibility(View.VISIBLE);
         }
     }
 
+<<<<<<< HEAD
     private void populateIdleState() {
         populateRecentChips();
         populatePopularChips();
@@ -356,10 +345,15 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     @Override
     public void onProductClick(Product product) {
         addToRecentSearches(product.getName());
+=======
+    @Override
+    public void onProductClick(Product product) {
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         Intent intent = new Intent(this, ProductDetailActivity.class);
         intent.putExtra("product_id", product.getProductId());
         startActivity(intent);
     }
+<<<<<<< HEAD
 
     @Override
     public void onAddToCartClick(Product product) {
@@ -389,3 +383,6 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         }
     }
 }
+=======
+}
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929

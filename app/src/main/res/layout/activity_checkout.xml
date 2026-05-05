@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
 =======
     android:background="#F8F9FA">
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+    android:background="@color/white">
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     <!-- Toolbar -->
     <LinearLayout
@@ -17,11 +21,14 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
 =======
         android:background="@color/white"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
         android:elevation="2dp"
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
@@ -33,22 +40,26 @@
             android:id="@+id/btn_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/bg_search_bar"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:contentDescription="Go back"
             android:focusable="true"
+<<<<<<< HEAD
             android:padding="11dp"
 <<<<<<< HEAD
             android:src="@drawable/ic_back_arrow"
             app:tint="?attr/colorOnSurface" />
 =======
+=======
+            android:padding="8dp"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:src="@drawable/ic_back_arrow" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025"
@@ -58,8 +69,12 @@
             android:textSize="20sp" />
 =======
             android:textColor="#101828"
+<<<<<<< HEAD
             android:textSize="18sp" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+            android:textSize="20sp" />
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     </LinearLayout>
 
@@ -79,26 +94,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="8dp"
             android:paddingBottom="24dp">
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             <!-- Delivery Address -->
 =======
             <!-- ═══════ SECTION 1: Delivery Address ═══════ -->
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+            <!-- Order Summary Header -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="-0.025"
+                android:text="Order Summary"
+                android:textColor="#101828"
+                android:textSize="16sp" />
+
+            <!-- Order Items Container -->
+            <LinearLayout
+                android:id="@+id/layout_order_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#F3F4F6" />
+
+            <!-- Price Breakdown -->
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:background="@drawable/bg_section_card"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -145,38 +188,43 @@
                     android:textColor="#101828"
                     android:textColorHint="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif"
+                    android:text="Subtotal"
+                    android:textColor="#6A7282"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_subtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="#101828"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                     android:textSize="14sp" />
 
             </LinearLayout>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             <!-- Delivery Time -->
 =======
             <!-- ═══════ SECTION 2: Delivery Time ═══════ -->
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_delivery_time_card"
-                android:elevation="2dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="14dp">
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⚡"
-                    android:textSize="18sp" />
-
-                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
+<<<<<<< HEAD
                     android:orientation="vertical">
 
                     <TextView
@@ -874,8 +922,89 @@
                     android:textColor="#22C55E"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                     android:textSize="12sp" />
+=======
+                    android:fontFamily="sans-serif"
+                    android:text="Delivery Fee"
+                    android:textColor="#6A7282"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_delivery_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="FREE"
+                    android:textColor="#22C55E"
+                    android:textSize="14sp" />
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
             </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#F3F4F6" />
+
+            <!-- Total -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Total"
+                    android:textColor="#101828"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="#22C55E"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#F3F4F6" />
+
+            <!-- Delivery Address Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="-0.025"
+                android:text="Delivery Address"
+                android:textColor="#101828"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_field"
+                android:fontFamily="sans-serif"
+                android:hint="Enter your delivery address"
+                android:inputType="textMultiLine"
+                android:minHeight="60dp"
+                android:padding="16dp"
+                android:textColor="#101828"
+                android:textColorHint="#99A1AF"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -888,14 +1017,14 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorSurface"
         android:elevation="8dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:gravity="center"
         android:paddingHorizontal="20dp"
         android:paddingVertical="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+<<<<<<< HEAD
         <!-- Total column -->
         <LinearLayout
             android:layout_width="wrap_content"
@@ -929,21 +1058,21 @@
         </LinearLayout>
 
         <!-- Place Order Button -->
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         <TextView
             android:id="@+id/btn_place_order"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_button_green_16"
+            android:background="@drawable/bg_button_primary"
             android:clickable="true"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:focusable="true"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif-black"
             android:gravity="center"
-            android:text="Place Order  →"
+            android:text="Place Order"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

@@ -5,19 +5,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+<<<<<<< HEAD
         android:name="com.example.testing.FamCartApp"
         android:allowBackup="false"
+=======
+        android:allowBackup="true"
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/famcart_logo"
         android:label="FamCart"
         android:roundIcon="@drawable/famcart_logo"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="false"
         android:theme="@style/Theme.FamCart">
 
-        <activity android:name="com.example.testing.SignupActivity" />
+        <activity android:name="com.example.testing.SignupActivity"
+            tools:ignore="MissingClass" />
         <activity android:name="com.example.testing.LoginActivity" />
         <activity
             android:name="com.example.testing.SplashActivity"
@@ -47,6 +50,7 @@
         <activity
             android:name="com.example.testing.OrdersActivity"
             android:exported="false" />
+<<<<<<< HEAD
         <activity
             android:name="com.example.testing.OrderPlacedActivity"
             android:exported="false" />
@@ -95,6 +99,8 @@
         <activity
             android:name="com.example.testing.AddEditAddressActivity"
             android:exported="false" />
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     </application>
 
 </manifest>

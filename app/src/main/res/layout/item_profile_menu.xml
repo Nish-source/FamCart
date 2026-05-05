@@ -41,10 +41,13 @@
             android:fontFamily="sans-serif-medium"
             android:text="Menu Item"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
 =======
             android:textColor="#101828"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:textSize="14sp" />
 
         <TextView
@@ -55,10 +58,13 @@
             android:fontFamily="sans-serif"
             android:text="Description"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurfaceVariant"
 =======
             android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             android:textSize="11sp" />
     </LinearLayout>
 

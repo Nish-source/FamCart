@@ -21,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Locale;
-
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView tvUserName, tvUserEmail, tvUserPhone;
@@ -62,19 +60,15 @@ public class ProfileActivity extends AppCompatActivity {
         setupMenuItem(R.id.menu_wishlist, "Wishlist", "Items you've saved", R.drawable.ic_wishlist);
 
         setupMenuItem(R.id.menu_refer, "Refer & Earn", "Get ₹50 for every referral", R.drawable.ic_refer);
+<<<<<<< HEAD
         setupMenuItem(R.id.menu_rewards, "FamCart Rewards", "Points available", R.drawable.ic_rewards);
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         setupMenuItem(R.id.menu_notifications, "Notifications", "Order & promo alerts", R.drawable.ic_notif_bell);
         setupMenuItem(R.id.menu_app_settings, "App Settings", "Language, theme & more", R.drawable.ic_settings);
         setupMenuItem(R.id.menu_help, "Help & Support", "FAQs and contact us", R.drawable.ic_help);
         setupMenuItem(R.id.menu_privacy, "Privacy & Security", "Data and account safety", R.drawable.ic_privacy);
-
-        // Set proper edit icon
-        ImageView btnEditProfile = findViewById(R.id.btn_edit_profile);
-        if (btnEditProfile != null) {
-            btnEditProfile.setImageResource(R.drawable.ic_edit);
-            btnEditProfile.setAlpha(1.0f);
-        }
     }
 
     private void setupMenuItem(int viewId, String title, String subtitle, int iconRes) {
@@ -103,37 +97,46 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(this, OrdersActivity.class)));
 
         findViewById(R.id.menu_addresses).setOnClickListener(v ->
+<<<<<<< HEAD
                 startActivity(new Intent(this, SavedAddressesActivity.class)));
 
         findViewById(R.id.menu_payments).setOnClickListener(v ->
                 Toast.makeText(this, "Payment methods can be managed during checkout", Toast.LENGTH_SHORT).show());
 
+=======
+
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         findViewById(R.id.menu_wishlist).setOnClickListener(v ->
                 startActivity(new Intent(this, WishlistActivity.class)));
 
         findViewById(R.id.menu_refer).setOnClickListener(v ->
+<<<<<<< HEAD
                 startActivity(new Intent(this, ReferEarnActivity.class)));
 
         findViewById(R.id.menu_rewards).setOnClickListener(v ->
                 startActivity(new Intent(this, RewardsActivity.class)));
+=======
+
+        findViewById(R.id.menu_rewards).setOnClickListener(v ->
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         findViewById(R.id.menu_notifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 
         findViewById(R.id.menu_app_settings).setOnClickListener(v ->
-                Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.menu_help).setOnClickListener(v ->
-                Toast.makeText(this, "Contact us at support@famcart.com", Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.menu_privacy).setOnClickListener(v ->
-                Toast.makeText(this, "Your data is safe with us", Toast.LENGTH_SHORT).show());
 
+<<<<<<< HEAD
         View btnGold = findViewById(R.id.layout_gold_membership);
         if (btnGold != null) {
             btnGold.setOnClickListener(v -> startActivity(new Intent(this, MembershipActivity.class)));
         }
 
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         findViewById(R.id.btn_logout).setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Log Out")
@@ -159,30 +162,40 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+<<<<<<< HEAD
         findViewById(R.id.btn_tab_search).setOnClickListener(v -> startActivity(new Intent(this, SearchActivity.class)));
         findViewById(R.id.btn_tab_cart).setOnClickListener(v -> startActivity(new Intent(this, CartActivity.class)));
         findViewById(R.id.btn_tab_orders).setOnClickListener(v -> startActivity(new Intent(this, OrdersActivity.class)));
         findViewById(R.id.btn_tab_profile).setOnClickListener(v -> { });
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
     }
 
     private void loadUserData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+<<<<<<< HEAD
         if (user == null) {
             if (tvUserName != null) tvUserName.setText("Guest User");
             if (tvUserEmail != null) tvUserEmail.setText("Please login to continue");
             return;
         }
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         final String email = user.getEmail();
         if (email != null && tvUserEmail != null) {
             tvUserEmail.setText(email);
         }
 
+<<<<<<< HEAD
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("name").getValue(String.class);
+<<<<<<< HEAD
                 if (tvUserName != null) {
                     if (name != null && !name.isEmpty()) {
                         tvUserName.setText(name);
@@ -191,6 +204,8 @@ public class ProfileActivity extends AppCompatActivity {
                         tvUserName.setText(fallbackName);
                     }
                 }
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
                 String phone = snapshot.child("phone").getValue(String.class);
                 if (phone == null && email != null && email.endsWith("@famcart.com")) {
@@ -202,12 +217,15 @@ public class ProfileActivity extends AppCompatActivity {
                     tvUserPhone.setVisibility(View.VISIBLE);
                 }
 
+<<<<<<< HEAD
                 String profileImageUrl = snapshot.child("profileImage").getValue(String.class);
                 if (profileImageUrl != null && !profileImageUrl.isEmpty() && ivAvatar != null) {
                     Glide.with(ProfileActivity.this)
                             .load(profileImageUrl)
                             .placeholder(R.drawable.ic_account_circle2)
                             .into(ivAvatar);
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 }
                 
                 updateWishlistSubtitle(snapshot);
@@ -217,23 +235,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void updateWishlistSubtitle(DataSnapshot userSnapshot) {
-        long wishlistCount = userSnapshot.child("wishlist").getChildrenCount();
-        View wishlistItem = findViewById(R.id.menu_wishlist);
-        if (wishlistItem != null) {
-            TextView tvSub = wishlistItem.findViewById(R.id.tv_menu_subtitle);
-            if (tvSub != null) {
-                if (wishlistCount > 0) {
-                    tvSub.setText(wishlistCount + " items saved");
-                } else {
-                    tvSub.setText("Items you've saved");
-                }
-            }
-        }
-    }
-
     private void loadStats() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+<<<<<<< HEAD
         if (user == null) {
             if (tvOrdersCount != null) tvOrdersCount.setText("0");
             if (tvSavedAmount != null) tvSavedAmount.setText("₹0");
@@ -277,6 +281,15 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 }
             }
+=======
+
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            }
+
+            }
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });

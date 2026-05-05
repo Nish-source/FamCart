@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
 =======
     android:background="#F9FAFB">
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -36,10 +39,13 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:paddingTop="20dp"
 =======
                 android:paddingTop="56dp"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:paddingBottom="24dp">
 
                 <!-- Toolbar -->
@@ -58,11 +64,14 @@
                         android:focusable="true"
                         android:padding="11dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:src="@drawable/ic_back_arrow"
                         app:tint="?attr/colorOnSurface" />
 =======
                         android:src="@drawable/ic_back_arrow" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -71,12 +80,15 @@
                         android:letterSpacing="-0.025"
                         android:text="Profile"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="20sp" />
 =======
                         android:textColor="#101828"
                         android:textSize="18sp" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 </LinearLayout>
 
                 <!-- User Info Card -->
@@ -95,10 +107,13 @@
                         android:layout_width="4dp"
                         android:layout_height="64dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:background="?attr/colorPrimary" />
 =======
                         android:background="#22C55E" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
                     <!-- Avatar -->
                     <FrameLayout
@@ -106,10 +121,13 @@
                         android:layout_height="64dp"
                         android:layout_marginStart="12dp">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <com.google.android.material.imageview.ShapeableImageView
 =======
                         <ImageView
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                             android:id="@+id/iv_avatar"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
@@ -122,8 +140,11 @@
                             app:strokeWidth="2dp" />
 =======
                             android:src="@drawable/ic_account_circle2"
+<<<<<<< HEAD
                             app:tint="#22C55E" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         <View
                             android:layout_width="16dp"
                             android:layout_height="16dp"
@@ -145,10 +166,13 @@
                             android:fontFamily="sans-serif-black"
                             android:text="FamCart User"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             android:textColor="?attr/colorOnSurface"
 =======
                             android:textColor="#101828"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                             android:textSize="16sp" />
                         <TextView
                             android:id="@+id/tv_user_email"
@@ -158,10 +182,13 @@
                             android:fontFamily="sans-serif"
                             android:text="user@famcart.com"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             android:textColor="?attr/colorOnSurfaceVariant"
 =======
                             android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                             android:textSize="13sp" />
                         <TextView
                             android:id="@+id/tv_user_phone"
@@ -170,10 +197,13 @@
                             android:layout_marginTop="2dp"
                             android:fontFamily="sans-serif"
 <<<<<<< HEAD
+<<<<<<< HEAD
                             android:textColor="?attr/colorOnSurfaceVariant"
 =======
                             android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                             android:textSize="12sp"
                             android:visibility="gone" />
                     </LinearLayout>
@@ -214,10 +244,13 @@
                         android:fontFamily="sans-serif-black"
                         android:text="12"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
 =======
                         android:textColor="#101828"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="18sp" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -225,21 +258,27 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="Orders"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurfaceVariant"
 =======
                         android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="11sp" />
                 </LinearLayout>
                 <View
                     android:layout_width="0.8dp"
                     android:layout_height="40dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                     android:background="?attr/colorOutline"
                     android:alpha="0.2" />
 =======
                     android:background="#F3F4F6" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -253,10 +292,13 @@
                         android:fontFamily="sans-serif-black"
                         android:text="₹248"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
 =======
                         android:textColor="#101828"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="18sp" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -264,21 +306,27 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="Saved"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurfaceVariant"
 =======
                         android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="11sp" />
                 </LinearLayout>
                 <View
                     android:layout_width="0.8dp"
                     android:layout_height="40dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                     android:background="?attr/colorOutline"
                     android:alpha="0.2" />
 =======
                     android:background="#F3F4F6" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -292,10 +340,13 @@
                         android:fontFamily="sans-serif-black"
                         android:text="240"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
 =======
                         android:textColor="#101828"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="18sp" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -303,10 +354,13 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="Points"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurfaceVariant"
 =======
                         android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -373,10 +427,13 @@
                 android:text="MY ACCOUNT"
                 android:textAllCaps="true"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="11sp" />
 
             <LinearLayout
@@ -390,6 +447,7 @@
 
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_my_orders" />
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_addresses" />
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
@@ -397,11 +455,15 @@
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
 =======
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_addresses" />
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_payments" />
+<<<<<<< HEAD
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_wishlist" />
             </LinearLayout>
 
@@ -416,10 +478,13 @@
                 android:text="REWARDS &amp; OFFERS"
                 android:textAllCaps="true"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="11sp" />
 
             <LinearLayout
@@ -433,10 +498,13 @@
 
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_refer" />
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
 =======
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_rewards" />
             </LinearLayout>
 
@@ -451,10 +519,13 @@
                 android:text="SETTINGS"
                 android:textAllCaps="true"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#99A1AF"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="11sp" />
 
             <LinearLayout
@@ -468,6 +539,7 @@
 
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_notifications" />
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_app_settings" />
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
@@ -475,11 +547,15 @@
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="?attr/colorOutline" android:alpha="0.2" />
 =======
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_app_settings" />
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_help" />
+<<<<<<< HEAD
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:background="#F3F4F6" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 <include layout="@layout/item_profile_menu" android:id="@+id/menu_privacy" />
             </LinearLayout>
 
@@ -520,10 +596,13 @@
                 android:gravity="center"
                 android:text="FamCart v2.4.1"
 <<<<<<< HEAD
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
 =======
                 android:textColor="#D1D5DC"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 android:textSize="11sp" />
 
         </LinearLayout>
@@ -535,10 +614,13 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
 =======
         android:background="@drawable/bg_bottom_nav"
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -548,6 +630,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout android:id="@+id/btn_tab_home" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+<<<<<<< HEAD
 <<<<<<< HEAD
             <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Home" android:src="@drawable/homebutton" app:tint="?attr/colorOnSurfaceVariant" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Home" android:textColor="?attr/colorOnSurfaceVariant" android:textSize="10sp" />
@@ -570,23 +653,22 @@
 =======
             <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Home" android:src="@drawable/homebutton" app:tint="#99A1AF" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Home" android:textColor="#99A1AF" android:textSize="10sp" />
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         </LinearLayout>
         <LinearLayout android:id="@+id/btn_tab_search" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
-            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Search" android:src="@drawable/ic_search_icon" app:tint="#99A1AF" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Search" android:textColor="#99A1AF" android:textSize="10sp" />
         </LinearLayout>
         <LinearLayout android:id="@+id/btn_tab_cart" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
-            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Cart" android:src="@drawable/cart" app:tint="#99A1AF" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Cart" android:textColor="#99A1AF" android:textSize="10sp" />
         </LinearLayout>
         <LinearLayout android:id="@+id/btn_tab_orders" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
-            <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Orders" android:src="@drawable/orders_button" app:tint="#99A1AF" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Orders" android:textColor="#99A1AF" android:textSize="10sp" />
         </LinearLayout>
         <LinearLayout android:id="@+id/btn_tab_profile" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical">
+<<<<<<< HEAD
             <ImageView android:layout_width="22dp" android:layout_height="22dp" android:contentDescription="Profile" android:src="@drawable/profile_button" app:tint="#22C55E" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:fontFamily="sans-serif-medium" android:text="Profile" android:textColor="#22C55E" android:textSize="10sp" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
         </LinearLayout>
     </LinearLayout>
 

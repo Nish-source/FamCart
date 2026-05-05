@@ -93,6 +93,7 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+<<<<<<< HEAD
         userId = user.getUid();
         userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
 
@@ -129,13 +130,19 @@ public class EditProfileActivity extends AppCompatActivity {
                                 .error(R.drawable.ic_account_circle2)
                                 .into(ivProfileImage);
                     }
+=======
+
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    }
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditProfileActivity.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
-            }
         });
     }
 
@@ -146,16 +153,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             etName.setError("Name is required");
-            etName.requestFocus();
             return;
         }
 
-        if (!phone.isEmpty() && !phone.matches("[0-9]{10}")) {
-            etPhone.setError("Enter a valid 10-digit number");
-            etPhone.requestFocus();
+    }
+
             return;
         }
 
+<<<<<<< HEAD
         progressDialog.show();
 
         if (imageUri != null) {
@@ -206,11 +212,20 @@ public class EditProfileActivity extends AppCompatActivity {
 
         userRef.updateChildren(updates).addOnCompleteListener(task -> {
             progressDialog.dismiss();
+=======
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("phone", phone);
+        updates.put("address", address);
+        }
+
+        userRef.updateChildren(updates).addOnCompleteListener(task -> {
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show();
             }
         });
     }

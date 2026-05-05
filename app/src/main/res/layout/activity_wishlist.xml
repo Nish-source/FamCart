@@ -5,11 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:background="#F8F9FA"
     android:fitsSystemWindows="true">
 =======
     android:background="#F8F9FA">
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     <!-- Toolbar -->
     <LinearLayout
@@ -46,10 +49,13 @@
             android:text="My Wishlist"
             android:textColor="#101828"
 <<<<<<< HEAD
+<<<<<<< HEAD
             android:textSize="20sp" />
 =======
             android:textSize="18sp" />
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
         <TextView
             android:id="@+id/tv_wishlist_count"

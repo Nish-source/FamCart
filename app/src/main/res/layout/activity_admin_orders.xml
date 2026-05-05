@@ -4,11 +4,14 @@
     android:layout_height="match_parent"
     android:background="#F9FAFB"
 <<<<<<< HEAD
+<<<<<<< HEAD
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 =======
     android:orientation="vertical">
 >>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
+=======
+>>>>>>> e24a567d8ac8039753a386af752c39232bc39929
 
     <!-- Top Bar -->
     <LinearLayout
