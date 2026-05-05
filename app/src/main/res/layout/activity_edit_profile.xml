@@ -4,14 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
 
     <!-- Toolbar -->
     <LinearLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:background="@color/white"
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -29,7 +27,6 @@
             android:contentDescription="Go back"
             android:focusable="true"
             android:padding="11dp"
-            android:src="@drawable/ic_back_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,8 +35,6 @@
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025"
             android:text="Edit Profile"
-            android:textColor="#101828"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <!-- Scrollable Form -->
@@ -71,14 +66,11 @@
 
                 <FrameLayout
                     android:layout_width="96dp"
-                    android:layout_height="96dp">
 
-                    <ImageView
                         android:layout_width="96dp"
                         android:layout_height="96dp"
                         android:contentDescription="Profile picture"
                         android:src="@drawable/ic_account_circle2"
-                        app:tint="#22C55E" />
 
                     <FrameLayout
                         android:layout_width="28dp"
@@ -104,7 +96,6 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Full Name"
-                android:textColor="#364153"
                 android:textSize="14sp" />
 
             <EditText
@@ -117,8 +108,6 @@
                 android:hint="Enter your full name"
                 android:inputType="textPersonName"
                 android:paddingHorizontal="16dp"
-                android:textColor="#101828"
-                android:textColorHint="#99A1AF"
                 android:textSize="14sp" />
 
             <!-- Email Field (read-only) -->
@@ -128,7 +117,6 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Email"
-                android:textColor="#364153"
                 android:textSize="14sp" />
 
             <EditText
@@ -142,8 +130,6 @@
                 android:hint="your@email.com"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="16dp"
-                android:textColor="#99A1AF"
-                android:textColorHint="#99A1AF"
                 android:textSize="14sp" />
 
             <!-- Phone Field -->
@@ -153,7 +139,6 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Phone Number"
-                android:textColor="#364153"
                 android:textSize="14sp" />
 
             <EditText
@@ -167,8 +152,6 @@
                 android:inputType="phone"
                 android:maxLength="10"
                 android:paddingHorizontal="16dp"
-                android:textColor="#101828"
-                android:textColorHint="#99A1AF"
                 android:textSize="14sp" />
 
             <!-- Address Field -->
@@ -178,7 +161,6 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Delivery Address"
-                android:textColor="#364153"
                 android:textSize="14sp" />
 
             <EditText
@@ -192,8 +174,6 @@
                 android:inputType="textMultiLine"
                 android:minHeight="80dp"
                 android:padding="16dp"
-                android:textColor="#101828"
-                android:textColorHint="#99A1AF"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -205,7 +185,6 @@
         android:id="@+id/layout_bottom_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:elevation="8dp"
         android:gravity="center"
         android:paddingHorizontal="20dp"

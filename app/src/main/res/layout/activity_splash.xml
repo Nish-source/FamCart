@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="?android:attr/windowBackground"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_centerInParent="true"
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="FamCart"
             android:textSize="32sp"
-            android:textColor="#22C55E"
+            android:textColor="?attr/colorPrimary"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025" />
 
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Fresh groceries, delivered fast"
             android:textSize="14sp"
-            android:textColor="#99A1AF"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:fontFamily="sans-serif"
             android:layout_marginTop="4dp" />
 

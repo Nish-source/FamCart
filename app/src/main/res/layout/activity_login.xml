@@ -134,23 +134,6 @@
 
         </LinearLayout>
 
-        <!-- Admin Login Link (subtle) -->
-        <TextView
-            android:id="@+id/adminLoginText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login as Admin"
-            android:textColor="#99A1AF"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="12sp"
-            android:layout_marginTop="24dp"
-            android:drawableStart="@drawable/ic_admin_shield"
-            android:drawablePadding="6dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="8dp" />
-
     </LinearLayout>
 
 </ScrollView>

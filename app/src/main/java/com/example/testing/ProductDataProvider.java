@@ -1,79 +1,220 @@
 package com.example.testing;
 
-import com.example.famcart.R;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.example.testing.models.Category;
 import com.example.testing.models.Product;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides the local product catalog.
- * Products are loaded once and filtered locally for search.
+ * Provides product catalog from Firebase with real-time updates.
  */
 public class ProductDataProvider {
 
-    private static List<Product> allProducts;
+    private static final String TAG = "ProductDataProvider";
+    private static List<Product> cachedProducts = new ArrayList<>();
+    private static List<Category> cachedCategories = new ArrayList<>();
+    private static ValueEventListener productListener;
 
-    public static List<Product> getAllProducts() {
-        if (allProducts == null) {
-            allProducts = new ArrayList<>();
+    public interface ProductFetchListener {
+        void onProductsFetched(List<Product> products);
+        void onError(String error);
+    }
 
-            // Dairy, Milk & Eggs
-            allProducts.add(new Product("p1", "Yakult Probiotic Drink", "Yakult probiotic health drink for gut health. Contains live Lactobacillus casei strain Shirota.", "Dairy & Milk", "65ml (Pack of 5)", 90, 110, 4.5, R.drawable.yakultfavv));
-            allProducts.add(new Product("p2", "Amul Taaza Milk", "Amul Taaza Toned Milk. Pasteurized and homogenized. Rich source of calcium and protein.", "Dairy & Milk", "500ml", 28, 30, 4.3, R.drawable.amul_milk));
-            allProducts.add(new Product("p3", "Epigamia Greek Yogurt", "Epigamia Greek Yogurt – Strawberry flavour. High protein, no preservatives.", "Dairy & Milk", "90g", 45, 55, 4.6, R.drawable.epigamia));
+    public interface CategoryFetchListener {
+        void onCategoriesFetched(List<Category> categories);
+        void onError(String error);
+    }
 
-            // Bread & Bakery
-            allProducts.add(new Product("p4", "English Oven White Bread", "English Oven premium white bread. Soft and fresh for everyday sandwiches.", "Bread & Bakery", "400g", 45, 50, 4.2, R.drawable.bread_english));
-            allProducts.add(new Product("p5", "Unibic Cookies Choco Chip", "Unibic choco chip cookies. Crunchy with real chocolate chips. Perfect tea-time snack.", "Bread & Bakery", "300g", 99, 120, 4.4, R.drawable.unibic_cookies));
-            allProducts.add(new Product("p6", "Britannia Elaichi Rusk", "Britannia Toastea Premium Elaichi Rusk. Rich aroma and crunchy texture.", "Bread & Bakery", "290g", 55, 65, 4.1, R.drawable.rusk));
+    /**
+     * Fetches all products and listens for real-time updates.
+     */
+    public static void fetchAllProducts(ProductFetchListener listener) {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        
+        // Try various common node names
+        String[] nodesToTry = {"products", "Products", "catalog", "items"};
+        tryNextNode(rootRef, nodesToTry, 0, listener);
+    }
 
-            // Cold Drinks & Juices
-            allProducts.add(new Product("p7", "Coca-Cola", "Coca-Cola Classic. Refreshing carbonated beverage. Serve chilled for best taste.", "Cold Drinks & Juices", "750ml", 40, 45, 4.3, R.drawable.coca_cola));
-            allProducts.add(new Product("p8", "Mogu Mogu Lychee", "Mogu Mogu Lychee flavoured drink with Nata de Coco. Fun textured refreshing drink.", "Cold Drinks & Juices", "300ml", 60, 70, 4.5, R.drawable.ic_mogu_mogu));
-            allProducts.add(new Product("p9", "Amul Kool Milkshake", "Amul Kool Koko milkshake. Chocolate flavoured milk-based drink.", "Cold Drinks & Juices", "200ml", 25, 30, 4.0, R.drawable.amul_kool));
-
-            // Snacks
-            allProducts.add(new Product("p10", "Amul Ice Cream", "Amul Vanilla Magic ice cream. Creamy and delicious. Made with real milk.", "Snacks", "750ml", 260, 299, 4.7, R.drawable.amul_icecreams));
-
-            // Personal Care
-            allProducts.add(new Product("p11", "Bath Essentials Kit", "Complete bath essentials kit with soap, shampoo, and conditioner.", "Personal Care", "1 Kit", 349, 450, 4.2, R.drawable.bath_essentials));
-
-            // Pharmacy
-            allProducts.add(new Product("p12", "Pharmacy Doorstep Delivery", "Get your medicines delivered to your doorstep. Quality healthcare products.", "Pharmacy", "Per Order", 0, 0, 4.8, R.drawable.pharmacy_doorstep));
+    private static void tryNextNode(DatabaseReference rootRef, String[] nodes, int index, ProductFetchListener listener) {
+        if (index >= nodes.length) {
+            if (listener != null) listener.onError("Permission denied or products node not found");
+            return;
         }
-        return allProducts;
+
+        String nodeName = nodes[index];
+        DatabaseReference nodeRef = rootRef.child(nodeName);
+
+        if (productListener != null) {
+            // Remove previous listener if switching nodes or re-initializing
+            nodeRef.removeEventListener(productListener);
+        }
+
+        productListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.hasChildren()) {
+                    Log.d(TAG, "Successfully found products at node: " + nodeName);
+                    Log.d("DATA_CHECK", "Total products found at /" + nodeName + ": " + snapshot.getChildrenCount());
+                    processSnapshot(snapshot, listener);
+                } else {
+                    Log.d(TAG, "Node " + nodeName + " is empty or doesn't exist.");
+                    tryNextNode(rootRef, nodes, index + 1, listener);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Node " + nodeName + " failed: " + error.getMessage());
+                if (error.getCode() == DatabaseError.PERMISSION_DENIED) {
+                    tryNextNode(rootRef, nodes, index + 1, listener);
+                } else if (listener != null) {
+                    listener.onError(error.getMessage());
+                }
+            }
+        };
+
+        nodeRef.addValueEventListener(productListener);
+    }
+
+    private static void processSnapshot(DataSnapshot snapshot, ProductFetchListener listener) {
+        cachedProducts.clear();
+        for (DataSnapshot child : snapshot.getChildren()) {
+            try {
+                Product p = child.getValue(Product.class);
+                if (p != null) {
+                    // Support both 'id' and 'productId' fields from Firebase
+                    if (p.productId == null) p.productId = child.getKey();
+                    cachedProducts.add(p);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error mapping product: " + e.getMessage());
+            }
+        }
+        if (listener != null) {
+            listener.onProductsFetched(new ArrayList<>(cachedProducts));
+        }
+    }
+
+    public static void fetchAllCategories(CategoryFetchListener listener) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("categories");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cachedCategories.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Category c = child.getValue(Category.class);
+                        if (c != null) {
+                            cachedCategories.add(c);
+                        }
+                    }
+                }
+                
+                // Fallback: derive from products if dedicated node is empty
+                if (cachedCategories.isEmpty()) {
+                    deriveCategoriesFromProducts();
+                }
+
+                if (listener != null) listener.onCategoriesFetched(new ArrayList<>(cachedCategories));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Categories node inaccessible: " + error.getMessage());
+                // Fallback: derive from products on permission error too
+                deriveCategoriesFromProducts();
+                if (listener != null) listener.onCategoriesFetched(new ArrayList<>(cachedCategories));
+            }
+        });
+    }
+
+    private static void deriveCategoriesFromProducts() {
+        cachedCategories.clear();
+        java.util.Set<String> catNames = new java.util.HashSet<>();
+        for (Product p : cachedProducts) {
+            if (p.getCategory() != null) catNames.add(p.getCategory());
+        }
+        for (String name : catNames) {
+            cachedCategories.add(new Category(name, null));
+        }
+    }
+
+    public static List<Product> getCachedProducts() {
+        return cachedProducts;
     }
 
     public static List<Product> getProductsByCategory(String category) {
         List<Product> filtered = new ArrayList<>();
-        for (Product p : getAllProducts()) {
-            if (p.getCategory().equalsIgnoreCase(category)) {
-                filtered.add(p);
+        if (category == null) return filtered;
+        
+        String query = category.toLowerCase().trim();
+        for (Product p : cachedProducts) {
+            if (p.getCategory() != null) {
+                String pCat = p.getCategory().toLowerCase().trim();
+                // Match exact or contains for better robustness
+                if (pCat.contains(query) || query.contains(pCat)) {
+                    filtered.add(p);
+                }
             }
         }
         return filtered;
     }
 
-    public static Product getProductById(String productId) {
-        for (Product p : getAllProducts()) {
-            if (p.getProductId().equals(productId)) {
-                return p;
+    public static void getProductById(String productId, ProductFetchListener listener) {
+        // Try cache first
+        for (Product p : cachedProducts) {
+            if (productId.equals(p.productId)) {
+                List<Product> list = new ArrayList<>();
+                list.add(p);
+                listener.onProductsFetched(list);
+                return;
             }
         }
-        return null;
+
+        // Fetch from Firebase if not in cache (assuming /products node)
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products").child(productId);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Product p = snapshot.getValue(Product.class);
+                if (p != null) {
+                    if (p.productId == null) p.productId = snapshot.getKey();
+                    List<Product> list = new ArrayList<>();
+                    list.add(p);
+                    listener.onProductsFetched(list);
+                } else {
+                    listener.onError("Product not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onError(error.getMessage());
+            }
+        });
     }
 
     public static List<Product> searchProducts(String query) {
         List<Product> results = new ArrayList<>();
         if (query == null || query.trim().isEmpty()) {
-            return getAllProducts();
+            return new ArrayList<>(cachedProducts);
         }
         String lowerQuery = query.toLowerCase().trim();
-        for (Product p : getAllProducts()) {
-            if (p.getName().toLowerCase().contains(lowerQuery) ||
-                p.getCategory().toLowerCase().contains(lowerQuery) ||
-                p.getDescription().toLowerCase().contains(lowerQuery)) {
+        for (Product p : cachedProducts) {
+            if ((p.getName() != null && p.getName().toLowerCase().contains(lowerQuery)) ||
+                (p.getCategory() != null && p.getCategory().toLowerCase().contains(lowerQuery)) ||
+                (p.getDescription() != null && p.getDescription().toLowerCase().contains(lowerQuery))) {
                 results.add(p);
             }
         }

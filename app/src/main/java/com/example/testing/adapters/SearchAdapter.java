@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.famcart.R;
 import com.example.testing.models.Product;
 
@@ -61,8 +62,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             holder.tvOriginalPrice.setVisibility(View.GONE);
         }
 
-        if (product.getDrawableResId() != 0) {
-            holder.ivImage.setImageResource(product.getDrawableResId());
+        if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(product.getImageUrl())
+                    .placeholder(R.drawable.essentials)
+                    .into(holder.ivImage);
+        } else {
+            holder.ivImage.setImageResource(R.drawable.essentials);
         }
 
         holder.itemView.setOnClickListener(v -> {

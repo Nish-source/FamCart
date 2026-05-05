@@ -4,252 +4,101 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@color/white">
 
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- Toolbar (white header)                      -->
-    <!-- ═══════════════════════════════════════════ -->
+    <!-- Toolbar -->
     <LinearLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="56dp"
         android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="16dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Row 1: Back + Title -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Go back"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_back_arrow" />
 
-            <LinearLayout
-                android:id="@+id/btn_back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_search_bar"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:contentDescription="Go back"
-                    android:src="@drawable/ic_back_arrow" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:fontFamily="sans-serif-black"
-                android:letterSpacing="-0.025"
-                android:text="Search"
-                android:textColor="#101828"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <!-- Row 2: Search Input Bar -->
-        <LinearLayout
-            android:id="@+id/layout_search_input"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_search_bar"
-            android:elevation="2dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:contentDescription="Search"
-                android:src="@drawable/ic_search_icon"
-                app:tint="#99A1AF" />
-
-            <EditText
-                android:id="@+id/et_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:fontFamily="sans-serif"
-                android:hint="Search for groceries..."
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="#101828"
-                android:textColorHint="#99A1AF"
-                android:textSize="14sp" />
-
-            <!-- Clear (X) button — visible only when text is entered -->
-            <ImageView
-                android:id="@+id/btn_clear_search"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="Clear search"
-                android:focusable="true"
-                android:padding="7dp"
-                android:src="@drawable/ic_delete"
-                android:visibility="gone"
-                app:tint="#99A1AF" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- STATE 1: IDLE — Recent + Popular Searches  -->
-    <!-- ═══════════════════════════════════════════ -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/layout_idle_state"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="24dp">
-
-            <!-- ── Recent Searches Header ── -->
-            <LinearLayout
-                android:id="@+id/layout_recent_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Recent Searches"
-                    android:textColor="#101828"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/btn_clear_recent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Clear All"
-                    android:textColor="#22C55E"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Recent Chips Row 1 -->
-            <LinearLayout
-                android:id="@+id/row_recent_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal" />
-
-            <!-- Recent Chips Row 2 -->
-            <LinearLayout
-                android:id="@+id/row_recent_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal" />
-
-            <!-- ── Popular Searches Header ── -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Popular Searches"
-                android:textColor="#101828"
-                android:textSize="16sp" />
-
-            <!-- Popular Chips Row 1 -->
-            <LinearLayout
-                android:id="@+id/row_popular_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal" />
-
-            <!-- Popular Chips Row 2 -->
-            <LinearLayout
-                android:id="@+id/row_popular_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- STATE 2: SEARCH RESULTS                     -->
-    <!-- ═══════════════════════════════════════════ -->
-    <LinearLayout
-        android:id="@+id/layout_results_state"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
-
-        <!-- Results count -->
         <TextView
-            android:id="@+id/tv_results_count"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp"
-            android:textColor="#6A7282"
-            android:textSize="12sp" />
-
-        <!-- Results RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_results"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingHorizontal="20dp"
-            android:paddingBottom="16dp" />
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="-0.025"
+            android:text="Search"
+            android:textColor="#101828"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- EMPTY STATE: No results found               -->
-    <!-- ═══════════════════════════════════════════ -->
+    <!-- Search Input -->
+    <LinearLayout
+        android:id="@+id/layout_search_input"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_search_bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="Search"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_search_icon"
+            app:tint="#99A1AF" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif"
+            android:hint="Search groceries, fruits..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="#101828"
+            android:textColorHint="#99A1AF"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Results RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_results"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_search_input" />
+
+    <!-- Empty State -->
     <LinearLayout
         android:id="@+id/layout_empty_state"
         android:layout_width="wrap_content"
@@ -260,12 +109,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+        app:layout_constraintTop_toBottomOf="@id/layout_search_input">
 
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:contentDescription="No results"
             android:src="@drawable/ic_search_icon"
             app:tint="#D1D5DB" />

@@ -75,10 +75,6 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
                 wishlistProducts.clear();
                 for (DataSnapshot child : snapshot.getChildren()) {
                     String productId = child.getValue(String.class);
-                    if (productId != null) {
-                        Product product = ProductDataProvider.getProductById(productId);
-                        if (product != null) {
-                            wishlistProducts.add(product);
                         }
                     }
                 }
@@ -128,44 +124,10 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
 
     @Override
     public void onAddToCart(Product product) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
-            Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            }
 
-        String userId = auth.getCurrentUser().getUid();
-        DatabaseReference cartRef = FirebaseDatabase.getInstance()
-                .getReference("users")
-                .child(userId)
-                .child("cart");
-
-        // Check if already in cart
-        cartRef.orderByChild("productId").equalTo(product.getProductId())
-                .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult().exists()) {
-                        String existingKey = task.getResult().getChildren().iterator().next().getKey();
-                        CartItem existingItem = task.getResult().getChildren().iterator().next().getValue(CartItem.class);
-                        if (existingItem != null && existingKey != null) {
-                            cartRef.child(existingKey).child("count").setValue(existingItem.getCount() + 1);
-                        }
-                        showCartSnackbar("Cart updated!");
-                    } else {
-                        String key = cartRef.push().getKey();
-                        CartItem cartItem = new CartItem(
-                                product.getProductId(),
-                                product.getName(),
-                                product.getQuantity(),
-                                product.getPrice(),
-                                1,
-                                product.getDrawableResId()
-                        );
-                        if (key != null) {
-                            cartRef.child(key).setValue(cartItem);
-                        }
-                        showCartSnackbar("Added to cart!");
-                    }
-                });
+            }
+        });
     }
 
     private void showCartSnackbar(String message) {

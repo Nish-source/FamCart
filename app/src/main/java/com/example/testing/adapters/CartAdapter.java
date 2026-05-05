@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
 
@@ -52,8 +53,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
         holder.tvQtyCount.setText(String.valueOf(item.getCount()));
 
-        if (item.getDrawableResId() != 0) {
-            holder.ivImage.setImageResource(item.getDrawableResId());
+        if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(item.getImageUrl())
+                    .placeholder(R.drawable.essentials)
+                    .into(holder.ivImage);
+        } else {
+            holder.ivImage.setImageResource(R.drawable.essentials);
         }
 
         holder.btnPlus.setOnClickListener(v -> {

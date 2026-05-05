@@ -1,8 +1,6 @@
 package com.example.testing.models;
 
-import java.io.Serializable;
-
-public class CartItem implements Serializable {
+public class CartItem {
 
     private String cartItemId;
     private String productId;

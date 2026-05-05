@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:text="Menu Item"
-            android:textColor="#101828"
             android:textSize="14sp" />
 
         <TextView
@@ -50,7 +49,6 @@
             android:layout_marginTop="2dp"
             android:fontFamily="sans-serif"
             android:text="Description"
-            android:textColor="#99A1AF"
             android:textSize="11sp" />
     </LinearLayout>
 

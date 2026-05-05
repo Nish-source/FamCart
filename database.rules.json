@@ -1,0 +1,33 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        "cart": {
+          ".indexOn": ["productId"]
+        },
+        "orders": {
+          ".indexOn": ["timestamp"]
+        },
+        "notifications": {
+          ".indexOn": ["timestamp"]
+        }
+      }
+    },
+    "orders": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "products": {
+      ".read": "auth != null",
+      ".write": "root.child('admin').child('allowedEmails').child(auth.token.email.replace('.', ',')).exists()"
+    },
+    "admin": {
+      "allowedEmails": {
+        ".read": "auth != null",
+        ".write": false
+      }
+    }
+  }
+}

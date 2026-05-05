@@ -1,6 +1,5 @@
 package com.example.testing;
 
-import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,7 +20,7 @@ import java.util.Locale;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private ImageView ivProductImage, btnWishlist;
+    private ImageView ivProductImage;
     private TextView tvName, tvQuantity, tvPrice, tvOriginalPrice, tvDiscountBadge;
     private TextView tvRating, tvDescription, tvCategory;
     private TextView tvQtyCount;
@@ -30,7 +28,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private Product currentProduct;
     private int quantity = 1;
-    private boolean isWishlisted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         populateUI();
         setupQuantityControls();
         setupAddToCart();
-        setupWishlist();
     }
 
     private void initViews() {
@@ -72,7 +68,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvCategory = findViewById(R.id.tv_category);
         tvQtyCount = findViewById(R.id.tv_qty_count);
         btnAddToCart = findViewById(R.id.btn_add_to_cart);
-        btnWishlist = findViewById(R.id.btn_wishlist);
     }
 
     private void populateUI() {
@@ -136,9 +131,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 return;
             }
 
-            // Disable button briefly to prevent double-taps
-            btnAddToCart.setEnabled(false);
-
             String userId = auth.getCurrentUser().getUid();
             DatabaseReference cartRef = FirebaseDatabase.getInstance()
                     .getReference("users")
@@ -148,8 +140,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             // Check if product already exists in cart
             cartRef.orderByChild("productId").equalTo(currentProduct.getProductId())
                     .get().addOnCompleteListener(task -> {
-                        btnAddToCart.setEnabled(true);
-
                         if (task.isSuccessful() && task.getResult().exists()) {
                             // Update existing item
                             String existingKey = task.getResult().getChildren().iterator().next().getKey();
@@ -157,7 +147,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             if (existingItem != null && existingKey != null) {
                                 int newCount = existingItem.getCount() + quantity;
                                 cartRef.child(existingKey).child("count").setValue(newCount);
-                                showCartSnackbar("Cart updated! (" + newCount + " in cart)");
+                                Toast.makeText(this, "Cart updated!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // Add new item
@@ -174,67 +164,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                             if (key != null) {
                                 cartRef.child(key).setValue(cartItem);
                             }
-                            showCartSnackbar("Added to cart!");
+                            Toast.makeText(this, "Added to cart!", Toast.LENGTH_SHORT).show();
                         }
-                        // User stays on the current screen — no finish() or navigation
+                        finish();
                     });
         });
-    }
-
-    /**
-     * Show a Snackbar with "View Cart" action — user can optionally navigate
-     * to Cart, or ignore and keep browsing. Modern grocery-app pattern.
-     */
-    private void showCartSnackbar(String message) {
-        View rootView = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
-        snackbar.setAction("View Cart", view -> {
-            startActivity(new Intent(ProductDetailActivity.this, CartActivity.class));
-        });
-        snackbar.setActionTextColor(0xFF22C55E); // Brand green
-        snackbar.setBackgroundTint(0xFF1F2937);   // Dark slate
-        snackbar.setTextColor(0xFFFFFFFF);         // White
-        snackbar.show();
-    }
-
-    /**
-     * Setup wishlist heart toggle — checks current state and toggles on click.
-     */
-    private void setupWishlist() {
-        if (btnWishlist == null || currentProduct == null) return;
-
-        // Check current wishlist state
-        WishlistActivity.isInWishlist(currentProduct.getProductId(), inWishlist -> {
-            isWishlisted = inWishlist;
-            updateWishlistIcon();
-        });
-
-        btnWishlist.setOnClickListener(v -> {
-            isWishlisted = !isWishlisted;
-            updateWishlistIcon();
-            WishlistActivity.toggleWishlist(currentProduct.getProductId());
-
-            View rootView = findViewById(android.R.id.content);
-            if (isWishlisted) {
-                Snackbar.make(rootView, "Added to wishlist ❤", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(0xFF1F2937)
-                        .setTextColor(0xFFFFFFFF)
-                        .show();
-            } else {
-                Snackbar.make(rootView, "Removed from wishlist", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(0xFF1F2937)
-                        .setTextColor(0xFFFFFFFF)
-                        .show();
-            }
-        });
-    }
-
-    private void updateWishlistIcon() {
-        if (btnWishlist == null) return;
-        if (isWishlisted) {
-            btnWishlist.setColorFilter(0xFFEF4444); // Red filled
-        } else {
-            btnWishlist.setColorFilter(0xFF99A1AF); // Grey outline
-        }
     }
 }

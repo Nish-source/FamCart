@@ -1,21 +1,43 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# FamCart ProGuard Rules
+# ========================
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep Firebase models (data classes used with Firebase Realtime Database)
+-keepclassmembers class com.example.testing.models.** {
+    *;
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Firebase Auth
+-keep class com.google.firebase.auth.** { *; }
+-dontwarn com.google.firebase.auth.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Firebase Database
+-keep class com.google.firebase.database.** { *; }
+-dontwarn com.google.firebase.database.**
+
+# Google Play Services
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
+# Material Components
+-keep class com.google.android.material.** { *; }
+-dontwarn com.google.android.material.**
+
+# AndroidX
+-keep class androidx.** { *; }
+-dontwarn androidx.**
+
+# Keep application classes (prevent obfuscation of Activity names referenced in AndroidManifest)
+-keep public class com.example.testing.** extends android.app.Activity
+-keep public class com.example.testing.** extends androidx.appcompat.app.AppCompatActivity
+
+# Keep adapters (RecyclerView adapters reference ViewHolder classes)
+-keep class com.example.testing.adapters.** { *; }
+
+# Preserve line number info for debugging
+-keepattributes SourceFile,LineNumberTable
+
+# Remove debug logging in release
+-assumenosideeffects class android.util.Log {
+    public static int d(...);
+    public static int v(...);
+}

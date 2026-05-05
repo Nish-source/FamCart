@@ -52,8 +52,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.tvQuantity.setText(item.getQuantity());
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getPrice()));
 
-        if (item.getDrawableResId() != 0) {
-            holder.ivImage.setImageResource(item.getDrawableResId());
         }
 
         holder.btnRemove.setOnClickListener(v -> {
