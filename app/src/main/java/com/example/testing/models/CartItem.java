@@ -1,6 +1,11 @@
 package com.example.testing.models;
 
 import java.io.Serializable;
+<<<<<<< HEAD
+=======
+
+public class CartItem implements Serializable {
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
 public class CartItem implements Serializable {
 

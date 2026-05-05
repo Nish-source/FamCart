@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +57,12 @@ public class EditProfileActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_change_photo).setOnClickListener(v -> openGallery());
+        
+        View btnChangePhoto = findViewById(R.id.btn_change_photo);
+        if (btnChangePhoto != null) {
+            btnChangePhoto.setOnClickListener(v -> openGallery());
+        }
+        
         btnSave.setOnClickListener(v -> saveProfile());
 
         loadCurrentProfile();
@@ -74,8 +79,9 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            // Circular preview immediately
-            Glide.with(this).load(imageUri).into(ivProfileImage);
+            if (ivProfileImage != null) {
+                Glide.with(this).load(imageUri).into(ivProfileImage);
+            }
         }
     }
 
@@ -90,18 +96,33 @@ public class EditProfileActivity extends AppCompatActivity {
         userId = user.getUid();
         userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
 
-        etEmail.setText(user.getEmail());
+        final String email = user.getEmail();
+        if (email != null) {
+            etEmail.setText(email);
+        }
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    etName.setText(snapshot.child("name").getValue(String.class));
-                    etPhone.setText(snapshot.child("phone").getValue(String.class));
-                    etAddress.setText(snapshot.child("address").getValue(String.class));
+                    String name = snapshot.child("name").getValue(String.class);
+                    if (name != null) etName.setText(name);
+
+                    String phone = snapshot.child("phone").getValue(String.class);
+                    if (phone != null && !phone.isEmpty()) {
+                        etPhone.setText(phone);
+                    } else if (email != null && email.endsWith("@famcart.com")) {
+                        String extractedPhone = email.replace("@famcart.com", "");
+                        if (extractedPhone.matches("[0-9]{10}")) {
+                            etPhone.setText(extractedPhone);
+                        }
+                    }
+
+                    String address = snapshot.child("address").getValue(String.class);
+                    if (address != null) etAddress.setText(address);
 
                     String profileImageUrl = snapshot.child("profileImage").getValue(String.class);
-                    if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    if (profileImageUrl != null && !profileImageUrl.isEmpty() && ivProfileImage != null) {
                         Glide.with(EditProfileActivity.this)
                                 .load(profileImageUrl)
                                 .placeholder(R.drawable.ic_account_circle2)
@@ -112,7 +133,9 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EditProfileActivity.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -123,6 +146,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             etName.setError("Name is required");
+            etName.requestFocus();
+            return;
+        }
+
+        if (!phone.isEmpty() && !phone.matches("[0-9]{10}")) {
+            etPhone.setError("Enter a valid 10-digit number");
+            etPhone.requestFocus();
             return;
         }
 
@@ -141,16 +171,13 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Use the bucket URL explicitly if possible, or just be very careful with paths
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("profile_images").child(userId + ".jpg");
 
-        // Show specific message
         progressDialog.setMessage("Uploading image...");
 
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Success! Now get the URL
                     storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         updateUserDatabase(name, phone, address, uri.toString());
                     }).addOnFailureListener(e -> {
@@ -171,8 +198,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private void updateUserDatabase(String name, String phone, String address, String imageUrl) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
-        updates.put("phone", phone);
-        updates.put("address", address);
+        if (!phone.isEmpty()) updates.put("phone", phone);
+        if (!address.isEmpty()) updates.put("address", address);
         if (imageUrl != null) {
             updates.put("profileImage", imageUrl);
         }
@@ -183,7 +210,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, "Database update failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9FAFB"
+<<<<<<< HEAD
     android:fillViewport="true"
     android:fitsSystemWindows="true">
+=======
+    android:fillViewport="true">
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
     <LinearLayout
         android:layout_width="match_parent"

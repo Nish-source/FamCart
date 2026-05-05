@@ -4,15 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
+=======
+    android:background="#F8F9FA">
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
     <!-- Toolbar -->
     <LinearLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="0dp"
         android:layout_height="56dp"
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
+=======
+        android:background="@color/white"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -30,8 +38,12 @@
             android:contentDescription="Go back"
             android:focusable="true"
             android:padding="11dp"
+<<<<<<< HEAD
             android:src="@drawable/ic_back_arrow"
             app:tint="?attr/colorOnSurface" />
+=======
+            android:src="@drawable/ic_back_arrow" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,8 +52,13 @@
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025"
             android:text="Edit Profile"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
+=======
+            android:textColor="#101828"
+            android:textSize="18sp" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
     </LinearLayout>
 
     <!-- Scrollable Form -->
@@ -72,6 +89,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
+<<<<<<< HEAD
                     android:id="@+id/btn_change_photo"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
@@ -88,6 +106,17 @@
                         app:shapeAppearanceOverlay="@style/CircleImage"
                         app:strokeColor="?attr/colorPrimary"
                         app:strokeWidth="2dp" />
+=======
+                    android:layout_width="96dp"
+                    android:layout_height="96dp">
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:contentDescription="Profile picture"
+                        android:src="@drawable/ic_account_circle2"
+                        app:tint="#22C55E" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
                     <FrameLayout
                         android:layout_width="28dp"
@@ -113,7 +142,11 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Full Name"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
+=======
+                android:textColor="#364153"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <EditText
@@ -126,8 +159,13 @@
                 android:hint="Enter your full name"
                 android:inputType="textPersonName"
                 android:paddingHorizontal="16dp"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
+=======
+                android:textColor="#101828"
+                android:textColorHint="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <!-- Email Field (read-only) -->
@@ -137,7 +175,11 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Email"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
+=======
+                android:textColor="#364153"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <EditText
@@ -151,8 +193,13 @@
                 android:hint="your@email.com"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="16dp"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
+=======
+                android:textColor="#99A1AF"
+                android:textColorHint="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <!-- Phone Field -->
@@ -162,7 +209,11 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Phone Number"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
+=======
+                android:textColor="#364153"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <EditText
@@ -176,8 +227,13 @@
                 android:inputType="phone"
                 android:maxLength="10"
                 android:paddingHorizontal="16dp"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
+=======
+                android:textColor="#101828"
+                android:textColorHint="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <!-- Address Field -->
@@ -187,7 +243,11 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Delivery Address"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
+=======
+                android:textColor="#364153"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
             <EditText
@@ -201,8 +261,13 @@
                 android:inputType="textMultiLine"
                 android:minHeight="80dp"
                 android:padding="16dp"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
                 android:textColorHint="?attr/colorOnSurfaceVariant"
+=======
+                android:textColor="#101828"
+                android:textColorHint="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -214,7 +279,11 @@
         android:id="@+id/layout_bottom_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
+=======
+        android:background="@color/white"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
         android:elevation="8dp"
         android:gravity="center"
         android:paddingHorizontal="20dp"

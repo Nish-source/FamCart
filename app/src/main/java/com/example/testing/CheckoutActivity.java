@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.famcart.R;
 import com.example.testing.models.CartItem;
-import com.example.testing.models.Order;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -114,8 +113,12 @@ public class CheckoutActivity extends AppCompatActivity {
     private void setupClickListeners() {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         btnPlaceOrder.setOnClickListener(v -> placeOrder());
-        btnApplyPromo.setOnClickListener(v -> validatePromoCode());
-        cbRedeemCoins.setOnCheckedChangeListener((buttonView, isChecked) -> populateOrderSummary());
+        if (btnApplyPromo != null) {
+            btnApplyPromo.setOnClickListener(v -> validatePromoCode());
+        }
+        if (cbRedeemCoins != null) {
+            cbRedeemCoins.setOnCheckedChangeListener((buttonView, isChecked) -> populateOrderSummary());
+        }
     }
 
     private void loadUserData() {
@@ -129,8 +132,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userCoins = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
-                tvAvailableCoins.setText("Redeem " + userCoins + " coins");
-                tvCoinsValue.setText("Save ₹" + (userCoins / 10.0) + " on this order");
+                if (tvAvailableCoins != null) tvAvailableCoins.setText("Redeem " + userCoins + " coins");
+                if (tvCoinsValue != null) tvCoinsValue.setText("Save ₹" + (userCoins / 10.0) + " on this order");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
@@ -141,10 +144,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 isGoldMember = snapshot.exists() && Boolean.TRUE.equals(snapshot.getValue(Boolean.class));
-                if (isGoldMember) {
-                    layoutMembershipBenefit.setVisibility(View.VISIBLE);
-                } else {
-                    layoutMembershipBenefit.setVisibility(View.GONE);
+                if (layoutMembershipBenefit != null) {
+                    layoutMembershipBenefit.setVisibility(isGoldMember ? View.VISIBLE : View.GONE);
                 }
                 populateOrderSummary();
             }
@@ -154,11 +155,14 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void validatePromoCode() {
+        if (etPromoCode == null) return;
         String code = etPromoCode.getText().toString().trim().toUpperCase();
         if (code.isEmpty()) {
-            tvPromoMessage.setText("Enter a code");
-            tvPromoMessage.setTextColor(0xFFE11D48);
-            tvPromoMessage.setVisibility(View.VISIBLE);
+            if (tvPromoMessage != null) {
+                tvPromoMessage.setText("Enter a code");
+                tvPromoMessage.setTextColor(0xFFE11D48);
+                tvPromoMessage.setVisibility(View.VISIBLE);
+            }
             return;
         }
 
@@ -178,16 +182,20 @@ public class CheckoutActivity extends AppCompatActivity {
                                 } else {
                                     promoDiscountAmount = discount;
                                 }
-                                tvPromoMessage.setText("Code " + code + " applied!");
-                                tvPromoMessage.setTextColor(0xFF16A34A);
-                                tvPromoMessage.setVisibility(View.VISIBLE);
+                                if (tvPromoMessage != null) {
+                                    tvPromoMessage.setText("Code " + code + " applied!");
+                                    tvPromoMessage.setTextColor(0xFF16A34A);
+                                    tvPromoMessage.setVisibility(View.VISIBLE);
+                                }
                                 populateOrderSummary();
                             }
                         } else {
                             promoDiscountAmount = 0;
-                            tvPromoMessage.setText("Invalid promo code");
-                            tvPromoMessage.setTextColor(0xFFE11D48);
-                            tvPromoMessage.setVisibility(View.VISIBLE);
+                            if (tvPromoMessage != null) {
+                                tvPromoMessage.setText("Invalid promo code");
+                                tvPromoMessage.setTextColor(0xFFE11D48);
+                                tvPromoMessage.setVisibility(View.VISIBLE);
+                            }
                             populateOrderSummary();
                         }
                     }
@@ -200,32 +208,37 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void setupPaymentMethodSelection() {
-        findViewById(R.id.option_cod).setOnClickListener(v -> selectPaymentMethod("cod"));
-        findViewById(R.id.option_upi).setOnClickListener(v -> selectPaymentMethod("upi"));
-        findViewById(R.id.option_card).setOnClickListener(v -> selectPaymentMethod("card"));
+        View optCod = findViewById(R.id.option_cod);
+        if (optCod != null) optCod.setOnClickListener(v -> selectPaymentMethod("cod"));
+
+        View optUpi = findViewById(R.id.option_upi);
+        if (optUpi != null) optUpi.setOnClickListener(v -> selectPaymentMethod("upi"));
+
+        View optCard = findViewById(R.id.option_card);
+        if (optCard != null) optCard.setOnClickListener(v -> selectPaymentMethod("card"));
     }
 
     private void selectPaymentMethod(String method) {
         selectedPaymentMethod = method;
 
         // Reset all radio visuals
-        radioCod.setSelected(false);
-        radioUpi.setSelected(false);
-        radioCard.setSelected(false);
+        if (radioCod != null) radioCod.setSelected(false);
+        if (radioUpi != null) radioUpi.setSelected(false);
+        if (radioCard != null) radioCard.setSelected(false);
 
         // Set selected
         switch (method) {
             case "cod":
-                radioCod.setSelected(true);
-                tvSelectedMethod.setText("Selected: Cash on Delivery");
+                if (radioCod != null) radioCod.setSelected(true);
+                if (tvSelectedMethod != null) tvSelectedMethod.setText("Selected: Cash on Delivery");
                 break;
             case "upi":
-                radioUpi.setSelected(true);
-                tvSelectedMethod.setText("Selected: UPI Payment");
+                if (radioUpi != null) radioUpi.setSelected(true);
+                if (tvSelectedMethod != null) tvSelectedMethod.setText("Selected: UPI Payment");
                 break;
             case "card":
-                radioCard.setSelected(true);
-                tvSelectedMethod.setText("Selected: Credit / Debit Card");
+                if (radioCard != null) radioCard.setSelected(true);
+                if (tvSelectedMethod != null) tvSelectedMethod.setText("Selected: Credit / Debit Card");
                 break;
         }
 
@@ -273,7 +286,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String address = snapshot.getValue(String.class);
                 if (address != null && !address.isEmpty()) {
-                    etAddress.setText(address);
+                    if (etAddress != null) etAddress.setText(address);
                 }
             }
             @Override
@@ -317,6 +330,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void populateOrderSummary() {
+        if (layoutOrderItems == null) return;
         layoutOrderItems.removeAllViews();
 
         for (CartItem item : cartItems) {
@@ -327,17 +341,21 @@ public class CheckoutActivity extends AppCompatActivity {
             TextView tvPrice = row.findViewById(R.id.tv_item_price);
             ImageView ivImage = row.findViewById(R.id.iv_item_image);
 
-            tvName.setText(item.getProductName());
-            tvQty.setText(String.format(Locale.getDefault(), "%s × %d", item.getProductQuantity(), item.getCount()));
-            tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
+            if (tvName != null) tvName.setText(item.getProductName());
+            if (tvQty != null) tvQty.setText(String.format(Locale.getDefault(), "%s × %d", item.getProductQuantity(), item.getCount()));
+            if (tvPrice != null) tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getTotalPrice()));
 
-            if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
-                Glide.with(this)
-                        .load(item.getImageUrl())
-                        .placeholder(R.drawable.essentials)
-                        .into(ivImage);
-            } else {
-                ivImage.setImageResource(R.drawable.essentials);
+            if (ivImage != null) {
+                if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+                    Glide.with(this)
+                            .load(item.getImageUrl())
+                            .placeholder(R.drawable.essentials)
+                            .into(ivImage);
+                } else if (item.getDrawableResId() != 0) {
+                    ivImage.setImageResource(item.getDrawableResId());
+                } else {
+                    ivImage.setImageResource(R.drawable.essentials);
+                }
             }
 
             layoutOrderItems.addView(row);
@@ -355,7 +373,7 @@ public class CheckoutActivity extends AppCompatActivity {
         membershipDiscountAmount = isGoldMember ? (subtotalAmount * 0.05) : 0;
 
         // 3. Rewards Discount
-        rewardsDiscountAmount = cbRedeemCoins.isChecked() ? (userCoins / 10.0) : 0;
+        rewardsDiscountAmount = (cbRedeemCoins != null && cbRedeemCoins.isChecked()) ? (userCoins / 10.0) : 0;
 
         // 4. Taxes (on subtotal after membership discount)
         double taxes = (subtotalAmount - membershipDiscountAmount) * TAX_RATE;
@@ -366,37 +384,43 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // --- UI UPDATES ---
         
-        tvSubtotal.setText(String.format(Locale.getDefault(), "₹%.0f", subtotalAmount));
+        if (tvSubtotal != null) tvSubtotal.setText(String.format(Locale.getDefault(), "₹%.0f", subtotalAmount));
 
-        if (delivery == 0) {
-            tvDeliveryFee.setText("FREE");
-            tvDeliveryFee.setTextColor(0xFF22C55E);
-        } else {
-            tvDeliveryFee.setText(String.format(Locale.getDefault(), "₹%.0f", delivery));
-            tvDeliveryFee.setTextColor(0xFF101828);
+        if (tvDeliveryFee != null) {
+            if (delivery == 0) {
+                tvDeliveryFee.setText("FREE");
+                tvDeliveryFee.setTextColor(0xFF22C55E);
+            } else {
+                tvDeliveryFee.setText(String.format(Locale.getDefault(), "₹%.0f", delivery));
+                tvDeliveryFee.setTextColor(0xFF101828);
+            }
         }
 
         // Promo UI
-        if (promoDiscountAmount > 0) {
-            layoutPromoDiscount.setVisibility(View.VISIBLE);
-            tvPromoDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", promoDiscountAmount));
-        } else {
-            layoutPromoDiscount.setVisibility(View.GONE);
+        if (layoutPromoDiscount != null) {
+            if (promoDiscountAmount > 0) {
+                layoutPromoDiscount.setVisibility(View.VISIBLE);
+                if (tvPromoDiscount != null) tvPromoDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", promoDiscountAmount));
+            } else {
+                layoutPromoDiscount.setVisibility(View.GONE);
+            }
         }
 
         // Rewards UI
-        if (rewardsDiscountAmount > 0) {
-            layoutRewardsDiscount.setVisibility(View.VISIBLE);
-            tvRewardsDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", rewardsDiscountAmount));
-        } else {
-            layoutRewardsDiscount.setVisibility(View.GONE);
+        if (layoutRewardsDiscount != null) {
+            if (rewardsDiscountAmount > 0) {
+                layoutRewardsDiscount.setVisibility(View.VISIBLE);
+                if (tvRewardsDiscount != null) tvRewardsDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", rewardsDiscountAmount));
+            } else {
+                layoutRewardsDiscount.setVisibility(View.GONE);
+            }
         }
 
-        tvTaxes.setText(String.format(Locale.getDefault(), "₹%.2f", taxes));
-        tvTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
-        tvBottomTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
+        if (tvTaxes != null) tvTaxes.setText(String.format(Locale.getDefault(), "₹%.2f", taxes));
+        if (tvTotal != null) tvTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
+        if (tvBottomTotal != null) tvBottomTotal.setText(String.format(Locale.getDefault(), "₹%.2f", totalAmount));
         
-        if (isGoldMember) {
+        if (isGoldMember && tvMembershipText != null) {
             tvMembershipText.setText("Gold Member: Free delivery & 5% extra off applied! (Saved ₹" + 
                     String.format(Locale.getDefault(), "%.2f", membershipDiscountAmount + (subtotalAmount >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE)) + ")");
         }
@@ -406,6 +430,7 @@ public class CheckoutActivity extends AppCompatActivity {
         if (isProcessing) return;
 
         // Validate address
+        if (etAddress == null) return;
         String address = etAddress.getText().toString().trim();
         if (address.isEmpty()) {
             etAddress.setError("Please enter a delivery address");
@@ -419,14 +444,18 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         isProcessing = true;
-        btnPlaceOrder.setText("Placing Order...");
-        btnPlaceOrder.setEnabled(false);
+        if (btnPlaceOrder != null) {
+            btnPlaceOrder.setText("Placing Order...");
+            btnPlaceOrder.setEnabled(false);
+        }
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             isProcessing = false;
-            btnPlaceOrder.setText("Place Order  →");
-            btnPlaceOrder.setEnabled(true);
+            if (btnPlaceOrder != null) {
+                btnPlaceOrder.setText("Place Order  →");
+                btnPlaceOrder.setEnabled(true);
+            }
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -452,8 +481,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 if (orderId == null) {
                     isProcessing = false;
-                    btnPlaceOrder.setText("Place Order  →");
-                    btnPlaceOrder.setEnabled(true);
+                    if (btnPlaceOrder != null) {
+                        btnPlaceOrder.setText("Place Order  →");
+                        btnPlaceOrder.setEnabled(true);
+                    }
                     Toast.makeText(CheckoutActivity.this, "Failed to create order. Please try again.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -479,7 +510,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 Log.d(TAG, "Placing order: " + orderId);
 
                 // Update user rewards
-                if (cbRedeemCoins.isChecked()) {
+                if (cbRedeemCoins != null && cbRedeemCoins.isChecked()) {
                     userRef.child("rewards").child("coins").setValue(0); // All used
                 }
                 // Reward for this order: totalAmount / 10
@@ -523,8 +554,10 @@ public class CheckoutActivity extends AppCompatActivity {
                         });
                     } else {
                         isProcessing = false;
-                        btnPlaceOrder.setText("Place Order  →");
-                        btnPlaceOrder.setEnabled(true);
+                        if (btnPlaceOrder != null) {
+                            btnPlaceOrder.setText("Place Order  →");
+                            btnPlaceOrder.setEnabled(true);
+                        }
                         Log.e(TAG, "Failed to place order", task.getException());
                         Toast.makeText(CheckoutActivity.this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
                     }
@@ -534,16 +567,15 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 isProcessing = false;
-                btnPlaceOrder.setText("Place Order  →");
-                btnPlaceOrder.setEnabled(true);
+                if (btnPlaceOrder != null) {
+                    btnPlaceOrder.setText("Place Order  →");
+                    btnPlaceOrder.setEnabled(true);
+                }
                 Toast.makeText(CheckoutActivity.this, "Failed to read user data", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    /**
-     * Add an in-app notification entry to Firebase for this user.
-     */
     private void addNotification(String userId, String title, String message) {
         DatabaseReference notifRef = FirebaseDatabase.getInstance()
                 .getReference("users")

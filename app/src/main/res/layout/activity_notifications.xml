@@ -4,8 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="#F8F9FA"
     android:fitsSystemWindows="true">
+=======
+    android:background="#F8F9FA">
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
     <!-- Toolbar -->
     <LinearLayout
@@ -41,7 +45,11 @@
             android:letterSpacing="-0.025"
             android:text="Notifications"
             android:textColor="#101828"
+<<<<<<< HEAD
             android:textSize="20sp" />
+=======
+            android:textSize="18sp" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
     </LinearLayout>
 
     <!-- Notifications List -->

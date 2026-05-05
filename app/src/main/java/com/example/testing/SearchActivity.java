@@ -23,11 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famcart.R;
 import com.example.testing.adapters.SearchAdapter;
-import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +37,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     private static final String PREFS_NAME = "search_prefs";
     private static final String KEY_RECENT = "recent_searches";
 
-    // Popular search terms (hardcoded from Figma design)
+    // Popular search terms
     private static final String[] POPULAR_SEARCHES = {
             "Instant Oats", "Paneer", "Maggi Noodles",
             "Rice", "Pasta", "Buns"
@@ -115,21 +111,21 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void setupClickListeners() {
-        // Back button
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // Clear search text
         btnClearSearch.setOnClickListener(v -> {
             etSearch.setText("");
             etSearch.requestFocus();
         });
 
-        // Clear all recent searches
-        findViewById(R.id.btn_clear_recent).setOnClickListener(v -> {
-            recentSearches.clear();
-            saveRecentSearches();
-            populateRecentChips();
-        });
+        View btnClearRecent = findViewById(R.id.btn_clear_recent);
+        if (btnClearRecent != null) {
+            btnClearRecent.setOnClickListener(v -> {
+                recentSearches.clear();
+                saveRecentSearches();
+                populateRecentChips();
+            });
+        }
     }
 
     private void setupSearchInput() {
@@ -153,7 +149,6 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             public void afterTextChanged(Editable s) {}
         });
 
-        // On search action (keyboard enter)
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             String query = etSearch.getText().toString().trim();
             if (!query.isEmpty()) {
@@ -164,27 +159,23 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         });
     }
 
-    // ─────────────────────────────────────────────
-    // State Management
-    // ─────────────────────────────────────────────
-
     private void showIdleState() {
-        layoutIdleState.setVisibility(View.VISIBLE);
-        layoutResultsState.setVisibility(View.GONE);
-        layoutEmptyState.setVisibility(View.GONE);
+        if (layoutIdleState != null) layoutIdleState.setVisibility(View.VISIBLE);
+        if (layoutResultsState != null) layoutResultsState.setVisibility(View.GONE);
+        if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.GONE);
     }
 
     private void showResultsState(int count) {
-        layoutIdleState.setVisibility(View.GONE);
-        layoutResultsState.setVisibility(View.VISIBLE);
-        layoutEmptyState.setVisibility(View.GONE);
-        tvResultsCount.setText(String.format(Locale.getDefault(), "%d results found", count));
+        if (layoutIdleState != null) layoutIdleState.setVisibility(View.GONE);
+        if (layoutResultsState != null) layoutResultsState.setVisibility(View.VISIBLE);
+        if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.GONE);
+        if (tvResultsCount != null) tvResultsCount.setText(String.format(Locale.getDefault(), "%d results found", count));
     }
 
     private void showEmptyState() {
-        layoutIdleState.setVisibility(View.GONE);
-        layoutResultsState.setVisibility(View.GONE);
-        layoutEmptyState.setVisibility(View.VISIBLE);
+        if (layoutIdleState != null) layoutIdleState.setVisibility(View.GONE);
+        if (layoutResultsState != null) layoutResultsState.setVisibility(View.GONE);
+        if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.VISIBLE);
     }
 
     private void filterProducts(String query) {
@@ -198,30 +189,26 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         }
     }
 
-    // ─────────────────────────────────────────────
-    // Idle State UI — Recent + Popular chips
-    // ─────────────────────────────────────────────
-
     private void populateIdleState() {
         populateRecentChips();
         populatePopularChips();
     }
 
     private void populateRecentChips() {
+        if (rowRecent1 == null || rowRecent2 == null) return;
         rowRecent1.removeAllViews();
         rowRecent2.removeAllViews();
 
         if (recentSearches.isEmpty()) {
-            layoutRecentHeader.setVisibility(View.GONE);
+            if (layoutRecentHeader != null) layoutRecentHeader.setVisibility(View.GONE);
             rowRecent1.setVisibility(View.GONE);
             rowRecent2.setVisibility(View.GONE);
             return;
         }
 
-        layoutRecentHeader.setVisibility(View.VISIBLE);
+        if (layoutRecentHeader != null) layoutRecentHeader.setVisibility(View.VISIBLE);
         rowRecent1.setVisibility(View.VISIBLE);
 
-        // Split across two rows: row1 gets first 2, row2 gets next 3
         for (int i = 0; i < recentSearches.size() && i < 5; i++) {
             View chip = createRecentChip(recentSearches.get(i));
             if (i < 2) {
@@ -235,10 +222,10 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void populatePopularChips() {
+        if (rowPopular1 == null || rowPopular2 == null) return;
         rowPopular1.removeAllViews();
         rowPopular2.removeAllViews();
 
-        // Row 1: first 3, Row 2: last 3
         for (int i = 0; i < POPULAR_SEARCHES.length; i++) {
             View chip = createPopularChip(POPULAR_SEARCHES[i]);
             if (i < 3) {
@@ -249,15 +236,11 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         }
     }
 
-    /**
-     * Creates a white pill chip with a clock icon — Figma "Recent Searches" style.
-     * bg: white, rounded 20dp, subtle shadow, text: #4A5565, 13sp regular
-     */
     private View createRecentChip(String text) {
         LinearLayout chip = new LinearLayout(this);
         chip.setOrientation(LinearLayout.HORIZONTAL);
         chip.setGravity(Gravity.CENTER_VERTICAL);
-        chip.setBackground(getDrawable(R.drawable.bg_chip_recent));
+        chip.setBackgroundResource(R.drawable.bg_chip_recent);
         chip.setElevation(dpToPx(2));
 
         int hPad = dpToPx(14);
@@ -270,14 +253,12 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         lp.setMarginEnd(dpToPx(8));
         chip.setLayoutParams(lp);
 
-        // Clock icon
         ImageView icon = new ImageView(this);
         icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
         icon.setImageResource(R.drawable.ic_rewards);
         icon.setColorFilter(0xFF99A1AF);
         chip.addView(icon);
 
-        // Text
         TextView tv = new TextView(this);
         LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -300,15 +281,11 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         return chip;
     }
 
-    /**
-     * Creates a green-tinted pill chip with a trending icon — Figma "Popular Searches" style.
-     * bg: #F0FDF4, border: 10% green, text: #16A34A, 13sp medium
-     */
     private View createPopularChip(String text) {
         LinearLayout chip = new LinearLayout(this);
         chip.setOrientation(LinearLayout.HORIZONTAL);
         chip.setGravity(Gravity.CENTER_VERTICAL);
-        chip.setBackground(getDrawable(R.drawable.bg_chip_popular));
+        chip.setBackgroundResource(R.drawable.bg_chip_popular);
 
         int hPad = dpToPx(14);
         int vPad = dpToPx(10);
@@ -321,14 +298,12 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         lp.setMarginStart(0);
         chip.setLayoutParams(lp);
 
-        // Trending icon
         ImageView icon = new ImageView(this);
         icon.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(12), dpToPx(12)));
         icon.setImageResource(R.drawable.ic_arrow);
         icon.setColorFilter(0xFF16A34A);
         chip.addView(icon);
 
-        // Text
         TextView tv = new TextView(this);
         LinearLayout.LayoutParams tvLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -351,17 +326,12 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         return chip;
     }
 
-    // ─────────────────────────────────────────────
-    // Recent Searches Persistence (SharedPreferences)
-    // ─────────────────────────────────────────────
-
     private void loadRecentSearches() {
         Set<String> saved = prefs.getStringSet(KEY_RECENT, null);
         recentSearches.clear();
         if (saved != null) {
             recentSearches.addAll(saved);
         }
-        // Default items when no history exists
         if (recentSearches.isEmpty()) {
             recentSearches.addAll(Arrays.asList(
                     "Organic Milk", "Britannia Cake",
@@ -374,10 +344,8 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void addToRecentSearches(String query) {
-        // Remove duplicate then add at the start
         recentSearches.remove(query);
         recentSearches.add(0, query);
-        // Keep max 5
         while (recentSearches.size() > 5) {
             recentSearches.remove(recentSearches.size() - 1);
         }
@@ -385,15 +353,9 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
         populateRecentChips();
     }
 
-    // ─────────────────────────────────────────────
-    // Adapter Callbacks
-    // ─────────────────────────────────────────────
-
     @Override
     public void onProductClick(Product product) {
-        // Save to recent searches
         addToRecentSearches(product.getName());
-
         Intent intent = new Intent(this, ProductDetailActivity.class);
         intent.putExtra("product_id", product.getProductId());
         startActivity(intent);
@@ -413,10 +375,6 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             }
         });
     }
-
-    // ─────────────────────────────────────────────
-    // Utilities
-    // ─────────────────────────────────────────────
 
     private int dpToPx(int dp) {
         return (int) TypedValue.applyDimension(

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.famcart.R;
 import com.example.testing.adapters.WishlistAdapter;
-import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,7 +50,11 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
         rvWishlist.setAdapter(adapter);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-        findViewById(R.id.btn_browse).setOnClickListener(v -> finish());
+        
+        View btnBrowse = findViewById(R.id.btn_browse);
+        if (btnBrowse != null) {
+            btnBrowse.setOnClickListener(v -> finish());
+        }
 
         loadWishlist();
     }
@@ -84,9 +87,10 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
                     return;
                 }
 
-                // Match against cached products (which should be loaded by now if MainActivity started)
+                // Match against cached products
+                List<Product> cached = ProductDataProvider.getCachedProducts();
                 for (String id : ids) {
-                    for (Product p : ProductDataProvider.getCachedProducts()) {
+                    for (Product p : cached) {
                         if (p.getProductId().equals(id)) {
                             wishlistProducts.add(p);
                             break;
@@ -108,30 +112,30 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
         if (wishlistProducts.isEmpty()) {
             showEmptyState();
         } else {
-            rvWishlist.setVisibility(View.VISIBLE);
-            layoutEmpty.setVisibility(View.GONE);
-            tvWishlistCount.setText(wishlistProducts.size() + " items");
+            if (rvWishlist != null) rvWishlist.setVisibility(View.VISIBLE);
+            if (layoutEmpty != null) layoutEmpty.setVisibility(View.GONE);
+            if (tvWishlistCount != null) tvWishlistCount.setText(wishlistProducts.size() + " items");
             adapter.updateItems(wishlistProducts);
         }
     }
 
     private void showEmptyState() {
-        rvWishlist.setVisibility(View.GONE);
-        layoutEmpty.setVisibility(View.VISIBLE);
-        tvWishlistCount.setText("");
+        if (rvWishlist != null) rvWishlist.setVisibility(View.GONE);
+        if (layoutEmpty != null) layoutEmpty.setVisibility(View.VISIBLE);
+        if (tvWishlistCount != null) tvWishlistCount.setText("");
     }
 
     @Override
     public void onRemoveFromWishlist(Product product) {
         if (wishlistRef != null) {
-            // Find and remove the entry with this product ID
             wishlistRef.orderByValue().equalTo(product.getProductId())
                     .get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             for (DataSnapshot child : task.getResult().getChildren()) {
                                 child.getRef().removeValue();
                             }
-                            Snackbar.make(rvWishlist, "Removed from wishlist", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(rvWishlist != null ? rvWishlist : findViewById(android.R.id.content), 
+                                    "Removed from wishlist", Snackbar.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -153,7 +157,8 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
     }
 
     private void showCartSnackbar(String message) {
-        Snackbar snackbar = Snackbar.make(rvWishlist, message, Snackbar.LENGTH_LONG);
+        View anchor = rvWishlist != null ? rvWishlist : findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar.make(anchor, message, Snackbar.LENGTH_LONG);
         snackbar.setAction("View Cart", v ->
                 startActivity(new Intent(this, CartActivity.class)));
         snackbar.setActionTextColor(0xFF22C55E);
@@ -177,10 +182,6 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
         }
     }
 
-    /**
-     * Static helper — add/remove product from wishlist.
-     * Called from ProductDetailActivity or other screens.
-     */
     public static void toggleWishlist(String productId) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) return;
@@ -193,20 +194,15 @@ public class WishlistActivity extends AppCompatActivity implements WishlistAdapt
 
         ref.orderByValue().equalTo(productId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                // Already in wishlist — remove
                 for (DataSnapshot child : task.getResult().getChildren()) {
                     child.getRef().removeValue();
                 }
             } else {
-                // Not in wishlist — add
                 ref.push().setValue(productId);
             }
         });
     }
 
-    /**
-     * Static helper — check if product is in wishlist.
-     */
     public static void isInWishlist(String productId, WishlistCheckCallback callback) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {

@@ -141,7 +141,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login as Admin"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurfaceVariant"
+=======
+            android:textColor="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             android:fontFamily="sans-serif-medium"
             android:textSize="12sp"
             android:layout_marginTop="24dp"

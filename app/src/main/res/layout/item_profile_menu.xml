@@ -40,7 +40,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:text="Menu Item"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
+=======
+            android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             android:textSize="14sp" />
 
         <TextView
@@ -50,7 +54,11 @@
             android:layout_marginTop="2dp"
             android:fontFamily="sans-serif"
             android:text="Description"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurfaceVariant"
+=======
+            android:textColor="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             android:textSize="11sp" />
     </LinearLayout>
 

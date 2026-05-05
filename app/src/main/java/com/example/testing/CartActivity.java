@@ -222,10 +222,10 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.CartI
             tvSubtotal.setText(String.format(Locale.getDefault(), "₹%.0f", subtotal));
 
             if (promoDiscount > 0) {
-                layoutPromoDiscountRow.setVisibility(View.VISIBLE);
-                tvPromoDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", promoDiscount));
+                if (layoutPromoDiscountRow != null) layoutPromoDiscountRow.setVisibility(View.VISIBLE);
+                if (tvPromoDiscount != null) tvPromoDiscount.setText(String.format(Locale.getDefault(), "-₹%.2f", promoDiscount));
             } else {
-                layoutPromoDiscountRow.setVisibility(View.GONE);
+                if (layoutPromoDiscountRow != null) layoutPromoDiscountRow.setVisibility(View.GONE);
             }
 
             if (delivery == 0) {

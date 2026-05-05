@@ -9,7 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
 import com.bumptech.glide.Glide;
+=======
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 import com.example.famcart.R;
 import com.example.testing.models.Product;
 
@@ -53,6 +56,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         holder.tvQuantity.setText(item.getQuantity());
         holder.tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", item.getPrice()));
 
+<<<<<<< HEAD
         if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load(item.getImageUrl())
@@ -60,6 +64,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                     .into(holder.ivImage);
         } else {
             holder.ivImage.setImageResource(R.drawable.essentials);
+=======
+        if (item.getDrawableResId() != 0) {
+            holder.ivImage.setImageResource(item.getDrawableResId());
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
         }
 
         holder.btnRemove.setOnClickListener(v -> {

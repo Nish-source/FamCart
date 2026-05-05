@@ -8,17 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.famcart.R;
-import com.example.testing.models.CartItem;
 import com.example.testing.models.Product;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Locale;
 
@@ -93,6 +88,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
+        if (currentProduct == null) return;
         tvName.setText(currentProduct.getName());
         tvQuantity.setText(currentProduct.getQuantity());
         tvPrice.setText(String.format(Locale.getDefault(), "₹%.0f", currentProduct.getPrice()));
@@ -146,12 +142,14 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void updateButtonText() {
+        if (currentProduct == null) return;
         double total = currentProduct.getPrice() * quantity;
         btnAddToCart.setText(String.format(Locale.getDefault(), "Add to Cart — ₹%.0f", total));
     }
 
     private void setupAddToCart() {
         btnAddToCart.setOnClickListener(v -> {
+            if (currentProduct == null) return;
             // Disable button briefly to prevent double-taps
             btnAddToCart.setEnabled(false);
 
@@ -171,10 +169,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Show a Snackbar with "View Cart" action — user can optionally navigate
-     * to Cart, or ignore and keep browsing. Modern grocery-app pattern.
-     */
     private void showCartSnackbar(String message) {
         View rootView = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
@@ -187,9 +181,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    /**
-     * Setup wishlist heart toggle — checks current state and toggles on click.
-     */
     private void setupWishlist() {
         if (btnWishlist == null || currentProduct == null) return;
 

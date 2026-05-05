@@ -4,15 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:background="?android:attr/windowBackground"
     android:fitsSystemWindows="true">
+=======
+    android:background="#F8F9FA">
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
     <!-- Toolbar -->
     <LinearLayout
         android:id="@+id/layout_toolbar"
         android:layout_width="0dp"
         android:layout_height="56dp"
+<<<<<<< HEAD
         android:background="?attr/colorSurface"
+=======
+        android:background="@color/white"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -30,8 +38,12 @@
             android:contentDescription="Go back"
             android:focusable="true"
             android:padding="11dp"
+<<<<<<< HEAD
             android:src="@drawable/ic_back_arrow"
             app:tint="?attr/colorOnSurface" />
+=======
+            android:src="@drawable/ic_back_arrow" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
         <TextView
             android:layout_width="0dp"
@@ -41,8 +53,13 @@
             android:fontFamily="sans-serif-black"
             android:letterSpacing="-0.025"
             android:text="Checkout"
+<<<<<<< HEAD
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
+=======
+            android:textColor="#101828"
+            android:textSize="18sp" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
     </LinearLayout>
 
@@ -65,7 +82,11 @@
             android:paddingTop="16dp"
             android:paddingBottom="24dp">
 
+<<<<<<< HEAD
             <!-- Delivery Address -->
+=======
+            <!-- ═══════ SECTION 1: Delivery Address ═══════ -->
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,8 +106,12 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:contentDescription="Location"
+<<<<<<< HEAD
                         android:src="@drawable/map_button"
                         app:tint="?attr/colorPrimary" />
+=======
+                        android:src="@drawable/map_button" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -94,7 +119,11 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Delivery Address"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -109,13 +138,22 @@
                     android:inputType="textMultiLine"
                     android:minHeight="56dp"
                     android:padding="16dp"
+<<<<<<< HEAD
                     android:textColor="?attr/colorOnSurface"
                     android:textColorHint="?attr/colorOnSurfaceVariant"
+=======
+                    android:textColor="#101828"
+                    android:textColorHint="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                     android:textSize="14sp" />
 
             </LinearLayout>
 
+<<<<<<< HEAD
             <!-- Delivery Time -->
+=======
+            <!-- ═══════ SECTION 2: Delivery Time ═══════ -->
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +184,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
                         android:text="Delivery in 10-15 min"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="13sp" />
 
                     <TextView
@@ -155,7 +197,11 @@
                         android:layout_marginTop="2dp"
                         android:fontFamily="sans-serif"
                         android:text="Express delivery available"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurfaceVariant"
+=======
+                        android:textColor="#99A1AF"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="11sp" />
                 </LinearLayout>
 
@@ -172,7 +218,11 @@
 
             </LinearLayout>
 
+<<<<<<< HEAD
             <!-- Promo & Rewards -->
+=======
+            <!-- ═══════ SECTION 3: Order Summary ═══════ -->
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -187,17 +237,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
+<<<<<<< HEAD
                     android:text="Offers &amp; Rewards"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
 
                 <!-- Promo Code -->
+=======
+                    android:text="Order Summary"
+                    android:textColor="#101828"
+                    android:textSize="15sp" />
+
+                <!-- Order Items Container -->
+                <LinearLayout
+                    android:id="@+id/layout_order_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#F3F4F6" />
+
+                <!-- Subtotal -->
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
+<<<<<<< HEAD
                     <EditText
                         android:id="@+id/et_promo_code"
                         android:layout_width="0dp"
@@ -310,11 +384,117 @@
                         android:text="Gold Member: Free delivery &amp; 5% extra off applied!"
                         android:textColor="#1E40AF"
                         android:textSize="12sp" />
+=======
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:text="Subtotal"
+                        android:textColor="#6A7282"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_subtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Delivery Fee -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:text="Delivery Fee"
+                        android:textColor="#6A7282"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_delivery_fee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="FREE"
+                        android:textColor="#22C55E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Taxes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif"
+                        android:text="Taxes"
+                        android:textColor="#6A7282"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_taxes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#101828"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#F3F4F6" />
+
+                <!-- Total -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Total"
+                        android:textColor="#101828"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="#101828"
+                        android:textSize="20sp" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 </LinearLayout>
 
             </LinearLayout>
 
+<<<<<<< HEAD
             <!-- Order Summary -->
+=======
+            <!-- ═══════ SECTION 4: Payment Method ═══════ -->
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -325,6 +505,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+<<<<<<< HEAD
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -520,6 +701,8 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+=======
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -530,8 +713,12 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:contentDescription="Payment"
+<<<<<<< HEAD
                         android:src="@drawable/ic_payment"
                         app:tint="?attr/colorPrimary" />
+=======
+                        android:src="@drawable/ic_payment" />
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -539,7 +726,11 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="Payment Method"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -569,7 +760,11 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="Cash on Delivery"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="14sp" />
 
                     <TextView
@@ -607,7 +802,11 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="UPI Payment"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="14sp" />
 
                     <TextView
@@ -645,7 +844,11 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="Credit / Debit Card"
+<<<<<<< HEAD
                         android:textColor="?attr/colorOnSurface"
+=======
+                        android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                         android:textSize="14sp" />
 
                     <TextView
@@ -665,7 +868,11 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif"
                     android:text="Selected: Cash on Delivery"
+<<<<<<< HEAD
                     android:textColor="?attr/colorPrimary"
+=======
+                    android:textColor="#22C55E"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -700,7 +907,11 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:text="Total"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurfaceVariant"
+=======
+                android:textColor="#6A7282"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="12sp" />
 
             <TextView
@@ -708,7 +919,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
+<<<<<<< HEAD
                 android:textColor="?attr/colorOnSurface"
+=======
+                android:textColor="#101828"
+>>>>>>> 5ca5e1075dd70c549c30ca34e25cc36adec93a17
                 android:textSize="18sp" />
 
         </LinearLayout>
